@@ -22,7 +22,6 @@ app.get("/webhook", function (req, res) {
     res.sendStatus(403);
   }
 });
-/*
 app.post('/webhook', function (req, res) {
 	var data = req.body;
 
@@ -36,7 +35,7 @@ app.post('/webhook', function (req, res) {
 				//Iterate over each messaging event
 				entry.messaging.forEach(function(event) {
 					if(event.message) {
-						;//receivedMessage(event);
+						receivedMessage(event);
 					} else {
 						console.log("Webhook recieved unknown event: ", event);
 					}
@@ -45,8 +44,7 @@ app.post('/webhook', function (req, res) {
 		res.sendStatus(200);
 	}
 });
-*/
-/*
+
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
@@ -119,8 +117,8 @@ function callSendAPI(messageData) {
 }
 
 
-*/
+
 app.listen((process.env.PORT || 5000), function () {
-	console.log("Server Started on Port %d" (process.env.PORT || 5000));
+	console.log("Server Started on Port %d", (process.env.PORT || 5000));
 });
 
