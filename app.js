@@ -90,7 +90,7 @@ function sendGenericMessage(recipientId, messageText) {
           elements: {
             title: "Options",
             subtitle: "Choose something to do next",
-            //item_url: "https://www.oculus.com/en-us/rift/",               
+            item_url: "https://www.oculus.com/en-us/rift/",               
             image_url: "https://serendipitouslife.files.wordpress.com/2009/05/sapling.jpg",
             buttons: [{
               type: "postback",
