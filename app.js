@@ -78,7 +78,50 @@ function receivedMessage(event) {
 }
 
 function sendGenericMessage(recipientId, messageText) {
-  // To be expanded in later sections
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: [{
+            title: "options",
+            subtitle: "choose something to do",
+            //item_url: "https://www.oculus.com/en-us/rift/",               
+            image_url: "https://serendipitouslife.files.wordpress.com/2009/05/sapling.jpg",
+            buttons: [{
+              type: "postback1",
+              title: "Call Postback1",
+              payload: "Payload for first bubble1",
+            }, {
+              type: "postback2",
+              title: "Call Postback2",
+              payload: "Payload for first bubble2",
+            }],
+          }, {
+            title: "touch",
+            subtitle: "Your Hands, Now in VR",
+            item_url: "https://www.oculus.com/en-us/touch/",               
+            image_url: "http://messengerdemo.parseapp.com/img/touch.png",
+            buttons: [{
+              type: "web_url",
+              url: "https://www.oculus.com/en-us/touch/",
+              title: "Open Web URL"
+            }, {
+              type: "postback",
+              title: "Call Postback",
+              payload: "Payload for second bubble",
+            }]
+          }]
+        }
+      }
+    }
+  };  
+
+  callSendAPI(messageData);
 }
 
 function sendTextMessage(recipientId, messageText) {
