@@ -87,7 +87,7 @@ function sendGenericMessage(recipientId, messageText) {
         type: "template",
         payload: {
           template_type: "generic",
-          elements: {
+          elements: [{
             title: "Options",
             subtitle: "Choose something to do next",
             item_url: "https://www.oculus.com/en-us/rift/",               
@@ -101,7 +101,7 @@ function sendGenericMessage(recipientId, messageText) {
               title: "Call Postback2",
               payload: "Payload for first bubble2",
             }],
-          }
+          }]
         }
       }
     }
