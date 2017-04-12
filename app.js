@@ -88,18 +88,18 @@ function sendGenericMessage(recipientId, messageText) {
         payload: {
           template_type: "generic",
           elements: [{
-            title: "options",
-            subtitle: "choose something to do",
-            //item_url: "https://www.oculus.com/en-us/rift/",               
-            image_url: "https://serendipitouslife.files.wordpress.com/2009/05/sapling.jpg",
+            title: "rift",
+            subtitle: "Next-generation virtual reality",
+            item_url: "https://www.oculus.com/en-us/rift/",               
+            image_url: "http://messengerdemo.parseapp.com/img/rift.png",
             buttons: [{
-              type: "postback1",
-              title: "Call Postback1",
-              payload: "Payload for first bubble1",
+              type: "web_url",
+              url: "https://www.oculus.com/en-us/rift/",
+              title: "Open Web URL"
             }, {
-              type: "postback2",
-              title: "Call Postback2",
-              payload: "Payload for first bubble2",
+              type: "postback",
+              title: "Call Postback",
+              payload: "Payload for first bubble",
             }],
           }, {
             title: "touch",
