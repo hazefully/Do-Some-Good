@@ -46,7 +46,7 @@ app.post('/webhook', function (req, res) {
 	}
 });
 */
-
+/*
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
@@ -119,7 +119,7 @@ function callSendAPI(messageData) {
 }
 
 
-
+*/
 app.listen((process.env.PORT || 5000), function () {
 	console.log("Server Started on Port %d" (process.env.PORT || 5000));
 });
