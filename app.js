@@ -87,35 +87,21 @@ function sendGenericMessage(recipientId, messageText) {
         type: "template",
         payload: {
           template_type: "generic",
-          elements: [{
-            title: "rift",
-            subtitle: "Next-generation virtual reality",
-            item_url: "https://www.oculus.com/en-us/rift/",               
-            image_url: "http://messengerdemo.parseapp.com/img/rift.png",
+          elements: {
+            title: "Options",
+            subtitle: "Choose something to do next",
+            //item_url: "https://www.oculus.com/en-us/rift/",               
+            image_url: "https://serendipitouslife.files.wordpress.com/2009/05/sapling.jpg",
             buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/rift/",
-              title: "Open Web URL"
+              type: "postback",
+              title: "Call Postback1",
+              payload: "Payload for first bubble1",
             }, {
               type: "postback",
-              title: "Call Postback",
-              payload: "Payload for first bubble",
+              title: "Call Postback2",
+              payload: "Payload for first bubble2",
             }],
-          }, {
-            title: "touch",
-            subtitle: "Your Hands, Now in VR",
-            item_url: "https://www.oculus.com/en-us/touch/",               
-            image_url: "http://messengerdemo.parseapp.com/img/touch.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/touch/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for second bubble",
-            }]
-          }]
+          }
         }
       }
     }
