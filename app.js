@@ -125,7 +125,6 @@ function createNewEntry(event, step)
         sendTextMessage(senderId, message);
       });
       var message = "Please enter the full name of the person that needs help."
-      c = 1;
       sendTextMessage(senderId, message);
     }
     else if(step == 1)
@@ -141,8 +140,8 @@ function createNewEntry(event, step)
                               content_type:"location",
               }
            ]
-        };
-      }  
+        }
+      };  
       callSendAPI(messageData);
     }
     else if(step == 2)
@@ -173,8 +172,8 @@ function createNewEntry(event, step)
                   title: "Low"
                }
              ]
-        };
-      }
+        }
+      };
       callSendAPI(messageData);
     }
   else{
