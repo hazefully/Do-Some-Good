@@ -131,9 +131,11 @@ function listEntries(senderId)
   console.log(list);
   for(var elem in list)
   {
+    var titlle = elem.description;
+    var subtitlle = elem.priority;
     elms.push({
-        title: elem.description,
-        subtitle: elem.priority,
+        title: titlle,
+        subtitle: subtitlle,
 
         buttons: [
         {
