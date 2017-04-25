@@ -1,6 +1,13 @@
 var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
+
+var db = mongoose.connect(process.env.MONGODB_URI);
+
+var //locations = require("./models/locations");
+var //extras = require("./models/extras");
+var session = require("./models/session");
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -53,6 +60,9 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
+
+  var currentSession = new session(senderID);
+  
 
   console.log("Received message for user %d and page %d at %d with message:", 
     senderID, recipientID, timeOfMessage);

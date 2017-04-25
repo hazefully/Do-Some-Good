@@ -4,8 +4,8 @@ var Schema = mongoose.Schema;
 var LocationSchema = new Schema({
 	// _id is a unique identifier to the entity
 	sender_id: String,
-  	{type: String, default: 'N/A'},
- 	{type: String, default: 'N/A'},
+  	first_name: {type: String, default: 'N/A'},
+ 	second_name: {type: String, default: 'N/A'},
  	date: { type: Date, default: Date.now },
  	description: String,
  	
