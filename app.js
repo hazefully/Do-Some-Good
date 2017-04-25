@@ -158,6 +158,7 @@ function listEntries(event)
       }
     }
   }
+  callSendAPI(messageData);
 }
 function createNewEntry(event, step)
 {
