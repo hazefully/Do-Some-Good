@@ -150,9 +150,10 @@ function sendGenericMessage(recipientId, messageText) {
         type: "template",
         payload: {
           template_type: "button",
-          elements: [{
-            title: "What do you want to do?",
-            subtitle: "You can either add information about a new call for help, or list calls for help around your area.",
+          text: "What do you want to do?",
+//          elements: [{
+
+//            subtitle: "You can either add information about a new call for help, or list calls for help around your area.",
             // image_url: "https://cdn.pixabay.com/photo/2017/02/10/12/03/volunteer-2055010_960_720.png",
             buttons: [{
               type: "postback",
@@ -162,8 +163,8 @@ function sendGenericMessage(recipientId, messageText) {
               type: "postback",
               title: "List calls for help around my area",
               payload: "ListEntries",
-            }],
-          }]
+            }]
+  //        }]
         }
       }
     }
