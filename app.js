@@ -37,6 +37,7 @@ app.post('/webhook', function (req, res) {
 					if(event.message) {
 						receivedMessage(event);
 					} else if(event.postback) {
+            // console.log("I am supposed to handle something here?!");
             processPostback(event);
           }
           else {
@@ -85,11 +86,40 @@ function receivedMessage(event) {
 function processPostback(event) {
   var senderId = event.sender.id;
   var payload = event.postback.payload;
-
+  console.log(payload);
   if (payload === "Greeting") {
-    // Get user's first name from the User Profile API
-    // and include it in the greeting
-    request({
+    // // Get user's first name from the User Profile API
+    // // and include it in the greeting
+    // request({
+    //   url: "https://graph.facebook.com/v2.6/" + senderId,
+    //   qs: {
+    //     access_token: process.env.PAGE_ACCESS_TOKEN,
+    //     fields: "first_name"
+    //   },
+    //   method: "GET"
+    // }, function(error, response, body) {
+    //   var greeting = "";
+    //   if (error) {
+    //     console.log("Error getting user's name: " +  error);
+    //   } else {
+    //     var bodyObj = JSON.parse(body);
+    //     name = bodyObj.first_name;
+    //     greeting = "Hi " + name + ". ";
+    //   }
+    //   var message = greeting + "My name is SP Movie Bot. I can tell you various details regarding movies. What movie would you like to know about?";
+    //   sendTextMessage(senderId, {text: message});
+    // });
+
+    getStarted(event);
+    // sendGenericMessage(senderId);
+  }
+}
+function getStarted(event)
+{
+  var senderId = event.sender.id;
+  var payload = event.postback.payload;
+
+  request({
       url: "https://graph.facebook.com/v2.6/" + senderId,
       qs: {
         access_token: process.env.PAGE_ACCESS_TOKEN,
@@ -103,14 +133,13 @@ function processPostback(event) {
       } else {
         var bodyObj = JSON.parse(body);
         name = bodyObj.first_name;
-        greeting = "Hi " + name + ". ";
+        greeting = "Hi " + name + "!\n";
       }
-      var message = greeting + "My name is SP Movie Bot. I can tell you various details regarding movies. What movie would you like to know about?";
-      sendMessage(senderId, {text: message});
+      var message = greeting + "This messanger bot allows you to reach poor people who need help in your area, and also add information about people who need help so other users can reach them too. Together, we can create a better world!";
+      sendTextMessage(senderId, message);
     });
-  }
+    sendGenericMessage(senderId);
 }
-
 function sendGenericMessage(recipientId, messageText) {
   var messageData = {
     recipient: {
@@ -120,22 +149,22 @@ function sendGenericMessage(recipientId, messageText) {
       attachment: {
         type: "template",
         payload: {
-          template_type: "generic",
-          elements: [{
-            title: "Options",
-            subtitle: "Choose something to do next",
-            //item_url: "https://www.oculus.com/en-us/rift/",               
-            image_url: "https://serendipitouslife.files.wordpress.com/2009/05/sapling.jpg",
+          template_type: "button",
+          text: "What do you want to do?",
+//          elements: [{
+
+//            subtitle: "You can either add information about a new call for help, or list calls for help around your area.",
+            // image_url: "https://cdn.pixabay.com/photo/2017/02/10/12/03/volunteer-2055010_960_720.png",
             buttons: [{
               type: "postback",
-              title: "Call Postback1",
-              payload: "Payload for first bubble1",
+              title: "Add a new call for help",
+              payload: "NewEntry",
             }, {
               type: "postback",
-              title: "Call Postback2",
-              payload: "Payload for first bubble2",
-            }],
-          }]
+              title: "List calls for help around my area",
+              payload: "ListEntries",
+            }]
+  //        }]
         }
       }
     }
