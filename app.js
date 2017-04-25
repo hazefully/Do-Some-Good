@@ -5,7 +5,7 @@ var bodyParser = require("body-parser");
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-
+var c = 0;
 // server index page
 app.get("/", function (req, res) {
 	res.send("Deployed!");
@@ -68,6 +68,8 @@ function receivedMessage(event) {
 
     // If we receive a text message, check to see if it matches a keyword
     // and send back the example. Otherwise, just echo the text we received.
+    if(c != 0)
+      createNewEntry(event, c);
     switch (messageText) {
       case 'generic':
         sendGenericMessage(senderID);
@@ -88,31 +90,103 @@ function processPostback(event) {
   var payload = event.postback.payload;
   console.log(payload);
   if (payload === "Greeting") {
-    // // Get user's first name from the User Profile API
-    // // and include it in the greeting
-    // request({
-    //   url: "https://graph.facebook.com/v2.6/" + senderId,
-    //   qs: {
-    //     access_token: process.env.PAGE_ACCESS_TOKEN,
-    //     fields: "first_name"
-    //   },
-    //   method: "GET"
-    // }, function(error, response, body) {
-    //   var greeting = "";
-    //   if (error) {
-    //     console.log("Error getting user's name: " +  error);
-    //   } else {
-    //     var bodyObj = JSON.parse(body);
-    //     name = bodyObj.first_name;
-    //     greeting = "Hi " + name + ". ";
-    //   }
-    //   var message = greeting + "My name is SP Movie Bot. I can tell you various details regarding movies. What movie would you like to know about?";
-    //   sendTextMessage(senderId, {text: message});
-    // });
-
     getStarted(event);
-    // sendGenericMessage(senderId);
   }
+  else if (payload == "NewEntry"){
+    createNewEntry(event, c);
+  }
+  else if (payload == "ListEntries"){
+
+  }
+  else if (payload == "UpdateStatus"){
+
+  }
+}
+function createNewEntry(event, step)
+{
+
+  var senderId = event.sender.id;
+  switch(c)
+  {
+    case 0:
+      request({
+        url: "https://graph.facebook.com/v2.6/" + senderId,
+        qs: {
+          access_token: process.env.PAGE_ACCESS_TOKEN,
+          fields: "first_name"
+        },
+        method: "GET"
+      }, function(error, response, body) {
+        var startNewEntry = "";
+        if (error) {
+          console.log("Error getting user's name: " +  error);
+        } else {
+          var bodyObj = JSON.parse(body);
+          name = bodyObj.first_name;
+          startNewEntry = "Okay " + name + ", ";
+        }
+        var message = startNewEntry + "I will guide you through the process of adding a new entry."
+        sendTextMessage(senderId, message);
+      });
+      var message = "Please enter the full name of the person that needs help."
+      c = 1;
+      sendTextMessage(senderId, message);
+      break;
+    case 1:
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text:"Please share the location of this call for help",
+             quick_replies:[
+               {
+                 content_type:"location",
+               }
+             ]
+        };
+      }  
+      callSendAPI(messageData);
+      c=2;
+      break;
+    case 2:
+      var message = "Please specify a description for this call for help.";
+      sendTextMessage(senderId, message);
+      c=3;
+      break;
+    case 3:
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text:"Please specify the priority of this call for help",
+             quick_replies:[
+               {
+                 content_type:"text",
+                 title: "High"
+               },
+               {
+                 content_type:"text",
+                 title: "Medium"
+               },
+               {
+                  content_type:"text",
+                  title: "Low"
+               }
+             ]
+        };
+      }
+      callSendAPI(messageData);
+      c=4;
+      break;
+
+    default:
+      sendGenericMessage(senderId);
+      c=0;
+
+  }
+  
 }
 function getStarted(event)
 {
@@ -149,22 +223,21 @@ function sendGenericMessage(recipientId, messageText) {
       attachment: {
         type: "template",
         payload: {
-          template_type: "button",
-          text: "What do you want to do?",
-//          elements: [{
-
-//            subtitle: "You can either add information about a new call for help, or list calls for help around your area.",
-            // image_url: "https://cdn.pixabay.com/photo/2017/02/10/12/03/volunteer-2055010_960_720.png",
+          template_type: "generic",
+          elements: [{
+            title: "What do you want to do?",
+            subtitle: "You can either add new calls for help, or list near calls for help",
+            image_url: "https://cdn.pixabay.com/photo/2017/02/10/12/03/volunteer-2055010_960_720.png",
             buttons: [{
               type: "postback",
-              title: "Add a new call for help",
+              title: "Add a call for help",
               payload: "NewEntry",
             }, {
               type: "postback",
-              title: "List calls for help around my area",
+              title: "List calls for help",
               payload: "ListEntries",
-            }]
-  //        }]
+            }],
+          }]
         }
       }
     }
