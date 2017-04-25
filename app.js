@@ -128,6 +128,7 @@ function listEntries(event)
   }
   ]; //hatly de mn el database
   var elms = [];
+  console.log(list);
   for(var elem in list)
   {
     elms.push({
@@ -142,6 +143,7 @@ function listEntries(event)
         ]
     })
   }
+  console.log(elms);
   var messageData = {
     recipient:{
       id: event.senderId
