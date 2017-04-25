@@ -108,10 +108,53 @@ function processPostback(event) {
     createNewEntry(event, '0');
   }
   else if (payload == "ListEntries"){
-
+    listEntries(event);
   }
   else if (payload == "UpdateStatus"){
 
+  }
+}
+
+function listEntries(event)
+{
+  var list = [
+  {
+    priority: "HIGH",
+    description: "loolohkmfkmnhdfnhnfslnhfd"
+  },
+  {
+    priority: "LOW",
+    description: "fslmfsknfsmfls"
+  }
+  ]; //hatly de mn el database
+  var elms = [];
+  for(var elem in list)
+  {
+    elms.add({
+        title: elem.priority,
+        subtitle: elem.description,
+        buttons: [
+        {
+          title: "View",
+          type: "postback",
+          payload: "ViewEntry"
+        }
+        ]
+    })
+  }
+  var messageData = {
+    recipient:{
+      id: event.senderId
+    },
+    message:{
+      attachment:{
+        type : "template",
+        payload:{
+          template_type: "list",
+          elements: elms
+        }
+      }
+    }
   }
 }
 function createNewEntry(event, step)
