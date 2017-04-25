@@ -72,17 +72,19 @@ function receivedMessage(event) {
         sendGenericMessage(senderID);
         break;
       case 'name':
-        createNewEntry(event, '0');
-        break;
-      case 'loc':
         createNewEntry(event, '1');
         break;
-      case 'des':
+      case 'loc':
         createNewEntry(event, '2');
         break;
-      case 'pri':
+      case 'des':
         createNewEntry(event, '3');
         break;
+      case 'pri':
+        createNewEntry(event, '4');
+        break;
+      case 'rev':
+        createNewEntry(event, '5');
       default:
         sendTextMessage(senderID, messageText);
     }
@@ -134,12 +136,14 @@ function createNewEntry(event, step)
         }
         var message = startNewEntry + "I will guide you through the process of adding a new entry."
         sendTextMessage(senderId, message);
-        var message = "Please enter the full name of the person that needs help."
-        setTimeout(sendTextMessage(senderId, message), 100);
       });
 
     }
-    else if(step == '1')
+    else if(step == '1'){
+      var message = "Please enter the full name of the person that needs help.";
+      sendTextMessage(senderId, message);
+    }
+    else if(step == '2')
     {
       var messageData = {
       recipient: {
@@ -156,12 +160,12 @@ function createNewEntry(event, step)
       };  
       callSendAPI(messageData);
     }
-    else if(step == '2')
+    else if(step == '3')
     {
       var message = "Please specify a description for this call for help.";
       sendTextMessage(senderId, message);
     }
-    else if(step == '3')
+    else if(step == '4')
     {
     
       var messageData = {
@@ -192,6 +196,43 @@ function createNewEntry(event, step)
       };
       callSendAPI(messageData);
     }
+  else if(step == '5')
+  {
+    var message = "Okay, let's review this entry\n";
+    message += "Full name: " + "aywa da mn el database\n";
+    message += "Location: " + "aywa da mn el database\n";
+    message += "Description: " + "aywa da mn el database\n";
+    message += "Priority: " + "aywa da mn el database\n";
+    sendTextMessage(senderId, message);
+    var messageData = {
+      recipient:{
+        id: senderId
+      },
+      message:{
+        attachment:{
+          type:template,
+          payload:{
+            template_type:"button",
+            text:"Are you sure you want to add this entry?",
+            buttons:[
+            {
+              type:"postback",
+              title:"Yes",
+              payload:"ConfirmNewEntry"
+            },
+            {
+              type:"postback",
+              title:"No",
+              payload:"CancelNewEntry"
+            }
+            ]
+          }
+        }       
+      }
+    }
+    callSendAPI(messageData);
+
+  }
   else{
     getStarted(event);
   }  
@@ -220,7 +261,8 @@ function getStarted(event)
       var message = greeting + "This messanger bot allows you to reach poor people who need help in your area, and also add information about people who need help so other users can reach them too. Together, we can create a better world!";
       sendTextMessage(senderId, message);
     });
-    sendGenericMessage(senderId);
+    sendGenericMessage(senderId);    sendGenericMessage(senderId);
+
 }
 function sendGenericMessage(recipientId, messageText) {
   var messageData = {
