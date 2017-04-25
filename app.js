@@ -143,7 +143,7 @@ function createNewEntry(event, step)
     {
       var messageData = {
       recipient: {
-         id: senderId;
+         id: senderId
        },
        message: {
         text:"Please share the location of this call for help",
@@ -166,7 +166,7 @@ function createNewEntry(event, step)
     
       var messageData = {
         recipient: {
-          id: senderId;
+          id: senderId
         },
         message: {
           text:"Please specify the priority of this call for help",
