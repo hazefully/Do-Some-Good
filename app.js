@@ -132,8 +132,8 @@ function listEntries(senderId)
   for(var elem in list)
   {
     elms.push({
-        title: "elem.description",
-        subtitle: "elem.priority",
+        title: elem.description,
+        subtitle: elem.priority,
 
         buttons: [
         {
