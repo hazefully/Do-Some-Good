@@ -170,9 +170,9 @@ function listEntries(senderId, offset)
         payload:{
           template_type: "list",
           top_element_style: "compact",
-          elements: elms
+          elements: elms,
+          buttons: btns
         }
-      buttons: btns
       }
     }
 
