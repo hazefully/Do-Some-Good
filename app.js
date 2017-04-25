@@ -116,6 +116,9 @@ function processPostback(event) {
 }
 function getStarted(event)
 {
+  var senderId = event.sender.id;
+  var payload = event.postback.payload;
+
   request({
       url: "https://graph.facebook.com/v2.6/" + senderId,
       qs: {
