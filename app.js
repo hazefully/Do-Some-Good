@@ -132,8 +132,8 @@ function listEntries(event)
   for(var elem in list)
   {
     elms.push({
-        title: elem.priority,
-        subtitle: elem.description,
+        title: "GNSDKNGSKDN",
+        subtitle: "FSfsfs",
         buttons: [
         {
           title: "View",
