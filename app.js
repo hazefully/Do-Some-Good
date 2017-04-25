@@ -134,15 +134,16 @@ function createNewEntry(event, step)
         }
         var message = startNewEntry + "I will guide you through the process of adding a new entry."
         sendTextMessage(senderId, message);
+        var message = "Please enter the full name of the person that needs help."
+        sendTextMessage(senderId, message);
       });
-      var message = "Please enter the full name of the person that needs help."
-      sendTextMessage(senderId, message);
+
     }
     else if(step == '1')
     {
       var messageData = {
       recipient: {
-         id: recipientId
+         id: senderId;
        },
        message: {
         text:"Please share the location of this call for help",
@@ -165,7 +166,7 @@ function createNewEntry(event, step)
     
       var messageData = {
         recipient: {
-          id: recipientId
+          id: senderId;
         },
         message: {
           text:"Please specify the priority of this call for help",
