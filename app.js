@@ -162,7 +162,7 @@ function listEntries(senderId, offset)
   if(list.length - offset + 1 < 5)
     btns = [];
 
-  for(var i = offset ; i < list.length && i < 5 ; i++)
+  for(var i = offset ; i < list.length && i < 4 ; i++)
   {
     var titlle = list[i].description;
     var subtitlle = list[i].priority;
