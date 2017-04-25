@@ -173,15 +173,19 @@ function createNewEntry(event, step)
              quick_replies:[
                {
                  content_type:"text",
-                 title: "High"
+                 title: "High",
+                 payload: "HighPriority"
                },
                {
                  content_type:"text",
-                 title: "Medium"
+                 title: "Medium",
+                 payload: "MediumPriority"
+
                },
                {
                   content_type:"text",
-                  title: "Low"
+                  title: "Low",
+                  payload: "LowPriority"
                }
              ]
         }
