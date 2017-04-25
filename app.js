@@ -37,7 +37,7 @@ app.post('/webhook', function (req, res) {
 					if(event.message) {
 						receivedMessage(event);
 					} else if(event.postback) {
-            processPostback(event);
+            // processPostback(event);
           }
           else {
 						console.log("Webhook recieved unknown event: ", event);
@@ -87,8 +87,8 @@ function processPostback(event) {
   var payload = event.postback.payload;
 
   if (payload === "Greeting") {
-    // Get user's first name from the User Profile API
-    // and include it in the greeting
+    // // Get user's first name from the User Profile API
+    // // and include it in the greeting
     request({
       url: "https://graph.facebook.com/v2.6/" + senderId,
       qs: {
