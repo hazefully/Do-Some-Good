@@ -200,7 +200,7 @@ function createNewEntry(event, step)
     }
   else if(step == '5')
   {
-    //console.log("yeah baby");
+    console.log("yeah baby");
     //var message = "Okay, let's review this entry\n";
     //message += "Full name: " + "aywa da mn el database\n";
     //message += "Location: " + "aywa da mn el database\n";
@@ -213,7 +213,7 @@ function createNewEntry(event, step)
       },
       message:{
         attachment:{
-          type:template,
+          type: "template",
           payload:{
             template_type:"button",
             text:"Are you sure you want to add this entry?",
