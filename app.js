@@ -172,8 +172,8 @@ function listEntries(senderId, offset)
           top_element_style: "compact",
           elements: elms
         }
-      }
       buttons: btns
+      }
     }
 
   }
