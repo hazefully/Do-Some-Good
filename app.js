@@ -135,7 +135,7 @@ function createNewEntry(event, step)
         var message = startNewEntry + "I will guide you through the process of adding a new entry."
         sendTextMessage(senderId, message);
         var message = "Please enter the full name of the person that needs help."
-        sendTextMessage(senderId, message);
+        setTimeout(sendTextMessage(senderId, message), 100);
       });
 
     }
@@ -149,7 +149,7 @@ function createNewEntry(event, step)
         text:"Please share the location of this call for help",
            quick_replies:[
              {
-                              content_type:"location",
+                  content_type:"location",
               }
            ]
         }
@@ -193,7 +193,7 @@ function createNewEntry(event, step)
       callSendAPI(messageData);
     }
   else{
-
+    getStarted(event);
   }  
 }
 function getStarted(event)
