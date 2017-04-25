@@ -5,8 +5,8 @@ var mongoose = require("mongoose");
 
 var db = mongoose.connect(process.env.MONGODB_URI);
 
-var //locations = require("./models/locations");
-var //extras = require("./models/extras");
+//var locations = require("./models/locations");
+//var extras = require("./models/extras");
 var session = require("./models/session");
 
 var app = express();
@@ -61,7 +61,7 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-//  var currentSession = new session(senderID);
+  var currentSession = new session(senderID);
 
 
   console.log("Received message for user %d and page %d at %d with message:", 
