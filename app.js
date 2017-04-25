@@ -131,7 +131,7 @@ function listEntries(senderId)
   // console.log(list);
   // console.log(list[0]);
   // return;
-  list.forEach(var elem)
+  list.forEach(elem)
   {
     console.log(elem);
     return;
