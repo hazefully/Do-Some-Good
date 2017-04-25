@@ -83,9 +83,9 @@ function receivedMessage(event) {
       case 'pri':
         createNewEntry(event, '4');
         break;
-      case 'rev':
-        createNewEntry(event, '5');
-        break;
+      // case 'rev':
+        // createNewEntry(event, '5');
+        // break;
         
       default:
         sendTextMessage(senderID, messageText);
@@ -206,33 +206,33 @@ function createNewEntry(event, step)
     message += "Description: " + "aywa da mn el database\n";
     message += "Priority: " + "aywa da mn el database\n";
     sendTextMessage(senderId, message);
-    var messageData = {
-      recipient:{
-        id: senderId
-      },
-      message:{
-        attachment:{
-          type:template,
-          payload:{
-            template_type:"button",
-            text:"Are you sure you want to add this entry?",
-            buttons:[
-            {
-              type:"postback",
-              title:"Yes",
-              payload:"ConfirmNewEntry"
-            },
-            {
-              type:"postback",
-              title:"No",
-              payload:"CancelNewEntry"
-            }
-            ]
-          }
-        }       
-      }
-    }
-    callSendAPI(messageData);
+    // var messageData = {
+    //   recipient:{
+    //     id: senderId
+    //   },
+    //   message:{
+    //     attachment:{
+    //       type:template,
+    //       payload:{
+    //         template_type:"button",
+    //         text:"Are you sure you want to add this entry?",
+    //         buttons:[
+    //         {
+    //           type:"postback",
+    //           title:"Yes",
+    //           payload:"ConfirmNewEntry"
+    //         },
+    //         {
+    //           type:"postback",
+    //           title:"No",
+    //           payload:"CancelNewEntry"
+    //         }
+    //         ]
+    //       }
+    //     }       
+    //   }
+    // }
+    // callSendAPI(messageData);
 
   }
   else{
