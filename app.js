@@ -113,6 +113,28 @@ function processPostback(event) {
   else if (payload == "UpdateStatus"){
 
   }
+  else if (payload == "ViewEntry"){
+
+  }
+  else if (payload == "ViewMore"){
+
+  }
+  else if (payload == "HighPriority"){
+
+  }
+  else if (payload == "LowPriority"){
+
+  }
+  else if (payload == "MediumPriority"){
+
+  }
+  else if (payload == "ConfirmNewEntry"){
+
+  }
+  else if (payload == "CancelNewEntry"){
+    //ems7 ya abdo
+    getStarted(event); 
+  }
 }
 
 function listEntries(senderId, offset)
@@ -148,14 +170,12 @@ function listEntries(senderId, offset)
   }
   ]; //hatly de mn el database
   var elms = [];
-  // console.log(list);
-  // console.log(list[0]);
-  // return;
+
   var btns = [
   {
     title: "View More",
     type: "postback",
-    payload: "payload"
+    payload: "ViewMore"
   }
   ];
   
