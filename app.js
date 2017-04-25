@@ -37,6 +37,7 @@ app.post('/webhook', function (req, res) {
 					if(event.message) {
 						receivedMessage(event);
 					} else if(event.postback) {
+            console.log("I am supposed to handle something here?!");
             // processPostback(event);
           }
           else {
