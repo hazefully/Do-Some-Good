@@ -108,14 +108,14 @@ function processPostback(event) {
     createNewEntry(event, '0');
   }
   else if (payload == "ListEntries"){
-    listEntries(event);
+    listEntries(senderId);
   }
   else if (payload == "UpdateStatus"){
 
   }
 }
 
-function listEntries(event)
+function listEntries(senderId)
 {
   var list = [
   {
@@ -146,7 +146,7 @@ function listEntries(event)
   console.log(elms);
   var messageData = {
     recipient:{
-      id: event.senderId
+      id: senderId
     },
     message:{
       attachment:{
