@@ -71,9 +71,18 @@ function receivedMessage(event) {
       case 'generic':
         sendGenericMessage(senderID);
         break;
-      case 'name'
-        createNewEntry(event, )
-
+      case 'name':
+        createNewEntry(event, '0');
+        break;
+      case 'loc':
+        createNewEntry(event, '1');
+        break;
+      case 'des':
+        createNewEntry(event, '2');
+        break;
+      case 'pri':
+        createNewEntry(event, '3');
+        break;
       default:
         sendTextMessage(senderID, messageText);
     }
@@ -92,7 +101,7 @@ function processPostback(event) {
     getStarted(event);
   }
   else if (payload == "NewEntry"){
-    createNewEntry(event, 0);
+    createNewEntry(event, '0');
   }
   else if (payload == "ListEntries"){
 
@@ -105,7 +114,7 @@ function createNewEntry(event, step)
 {
 
   var senderId = event.sender.id;
-  if(step == 0)
+  if(step == '0')
   {
       request({
         url: "https://graph.facebook.com/v2.6/" + senderId,
@@ -129,7 +138,7 @@ function createNewEntry(event, step)
       var message = "Please enter the full name of the person that needs help."
       sendTextMessage(senderId, message);
     }
-    else if(step == 1)
+    else if(step == '1')
     {
       var messageData = {
       recipient: {
@@ -146,12 +155,12 @@ function createNewEntry(event, step)
       };  
       callSendAPI(messageData);
     }
-    else if(step == 2)
+    else if(step == '2')
     {
       var message = "Please specify a description for this call for help.";
       sendTextMessage(senderId, message);
     }
-    else if(step == 3)
+    else if(step == '3')
     {
     
       var messageData = {
