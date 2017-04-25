@@ -131,6 +131,7 @@ function listEntries(senderId)
   console.log(list);
   for(var elem in list)
   {
+    console.log(elem);
     var titlle = elem.description;
     var subtitlle = elem.priority;
     elms.push({
