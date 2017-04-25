@@ -149,11 +149,11 @@ function sendGenericMessage(recipientId, messageText) {
       attachment: {
         type: "template",
         payload: {
-          template_type: "generic",
+          template_type: "button",
           elements: [{
             title: "What do you want to do?",
-            subtitle: "You can either add information about someone who isn't already present in the database, or list people who need help around your area.",
-            image_url: "https://cdn.pixabay.com/photo/2017/02/10/12/03/volunteer-2055010_960_720.png",
+            subtitle: "You can either add information about a new call for help, or list calls for help around your area.",
+            // image_url: "https://cdn.pixabay.com/photo/2017/02/10/12/03/volunteer-2055010_960_720.png",
             buttons: [{
               type: "postback",
               title: "Add a new call for help",
