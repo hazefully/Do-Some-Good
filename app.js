@@ -109,10 +109,34 @@ function processPostback(event) {
     //   var message = greeting + "My name is SP Movie Bot. I can tell you various details regarding movies. What movie would you like to know about?";
     //   sendTextMessage(senderId, {text: message});
     // });
-    sendGenericMessage(senderId);
+
+    getStarted(event);
+    // sendGenericMessage(senderId);
   }
 }
-
+function getStarted(event)
+{
+  request({
+      url: "https://graph.facebook.com/v2.6/" + senderId,
+      qs: {
+        access_token: process.env.PAGE_ACCESS_TOKEN,
+        fields: "first_name"
+      },
+      method: "GET"
+    }, function(error, response, body) {
+      var greeting = "";
+      if (error) {
+        console.log("Error getting user's name: " +  error);
+      } else {
+        var bodyObj = JSON.parse(body);
+        name = bodyObj.first_name;
+        greeting = "Hi " + name + "!\n";
+      }
+      var message = greeting + "This messanger bot allows you to reach poor people who need help in your area, and also add information about people who need help so other users can reach them too. Together, we can create a better world!";
+      sendTextMessage(senderId, message);
+    });
+    sendGenericMessage(senderId);
+}
 function sendGenericMessage(recipientId, messageText) {
   var messageData = {
     recipient: {
@@ -124,18 +148,17 @@ function sendGenericMessage(recipientId, messageText) {
         payload: {
           template_type: "generic",
           elements: [{
-            title: "Options",
-            subtitle: "Choose something to do next",
-            //item_url: "https://www.oculus.com/en-us/rift/",               
-            image_url: "https://serendipitouslife.files.wordpress.com/2009/05/sapling.jpg",
+            title: "What do you want to do?",
+            subtitle: "You can either add information about someone who isn't already present in the database, or list people who need help around your area.",
+            image_url: "https://cdn.pixabay.com/photo/2017/02/10/12/03/volunteer-2055010_960_720.png",
             buttons: [{
               type: "postback",
-              title: "Call Postback1",
-              payload: "Payload for first bubble1",
+              title: "Add a new call for help",
+              payload: "NewEntry",
             }, {
               type: "postback",
-              title: "Call Postback2",
-              payload: "Payload for first bubble2",
+              title: "List calls for help around my area",
+              payload: "ListEntries",
             }],
           }]
         }
