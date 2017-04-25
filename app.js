@@ -83,10 +83,10 @@ function receivedMessage(event) {
       case 'pri':
         createNewEntry(event, '4');
         break;
-      // case 'rev':
-        // createNewEntry(event, '5');
-        // break;
-        
+       case 'rev':
+        createNewEntry(event, '5');
+        break;
+
       default:
         sendTextMessage(senderID, messageText);
     }
@@ -200,12 +200,13 @@ function createNewEntry(event, step)
     }
   else if(step == '5')
   {
-    var message = "Okay, let's review this entry\n";
-    message += "Full name: " + "aywa da mn el database\n";
-    message += "Location: " + "aywa da mn el database\n";
-    message += "Description: " + "aywa da mn el database\n";
-    message += "Priority: " + "aywa da mn el database\n";
-    sendTextMessage(senderId, message);
+    console.log("yeah baby");
+    //var message = "Okay, let's review this entry\n";
+    //message += "Full name: " + "aywa da mn el database\n";
+    //message += "Location: " + "aywa da mn el database\n";
+    //message += "Description: " + "aywa da mn el database\n";
+    //message += "Priority: " + "aywa da mn el database\n";
+   // sendTextMessage(senderId, message);
     // var messageData = {
     //   recipient:{
     //     id: senderId
@@ -263,7 +264,7 @@ function getStarted(event)
       var message = greeting + "This messanger bot allows you to reach poor people who need help in your area, and also add information about people who need help so other users can reach them too. Together, we can create a better world!";
       sendTextMessage(senderId, message);
     });
-    sendGenericMessage(senderId);    sendGenericMessage(senderId);
+    sendGenericMessage(senderId);
 
 }
 function sendGenericMessage(recipientId, messageText) {
