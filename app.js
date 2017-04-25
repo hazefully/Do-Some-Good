@@ -200,40 +200,40 @@ function createNewEntry(event, step)
     }
   else if(step == '5')
   {
-    console.log("yeah baby");
+    //console.log("yeah baby");
     //var message = "Okay, let's review this entry\n";
     //message += "Full name: " + "aywa da mn el database\n";
     //message += "Location: " + "aywa da mn el database\n";
     //message += "Description: " + "aywa da mn el database\n";
     //message += "Priority: " + "aywa da mn el database\n";
    // sendTextMessage(senderId, message);
-    // var messageData = {
-    //   recipient:{
-    //     id: senderId
-    //   },
-    //   message:{
-    //     attachment:{
-    //       type:template,
-    //       payload:{
-    //         template_type:"button",
-    //         text:"Are you sure you want to add this entry?",
-    //         buttons:[
-    //         {
-    //           type:"postback",
-    //           title:"Yes",
-    //           payload:"ConfirmNewEntry"
-    //         },
-    //         {
-    //           type:"postback",
-    //           title:"No",
-    //           payload:"CancelNewEntry"
-    //         }
-    //         ]
-    //       }
-    //     }       
-    //   }
-    // }
-    // callSendAPI(messageData);
+    var messageData = {
+      recipient:{
+        id: senderId
+      },
+      message:{
+        attachment:{
+          type:template,
+          payload:{
+            template_type:"button",
+            text:"Are you sure you want to add this entry?",
+            buttons:[
+            {
+              type:"postback",
+              title:"Yes",
+              payload:"ConfirmNewEntry"
+            },
+            {
+              type:"postback",
+              title:"No",
+              payload:"CancelNewEntry"
+            }
+            ]
+          }
+        }       
+      }
+    }
+    callSendAPI(messageData);
 
   }
   else{
