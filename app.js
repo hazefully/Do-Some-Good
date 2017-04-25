@@ -71,6 +71,8 @@ function receivedMessage(event) {
       case 'generic':
         sendGenericMessage(senderID);
         break;
+      case 'name'
+        createNewEntry(event, )
 
       default:
         sendTextMessage(senderID, messageText);
@@ -90,7 +92,7 @@ function processPostback(event) {
     getStarted(event);
   }
   else if (payload == "NewEntry"){
-    createNewEntry(event, c);
+    createNewEntry(event, 0);
   }
   else if (payload == "ListEntries"){
 
