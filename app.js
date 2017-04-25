@@ -128,12 +128,13 @@ function listEntries(senderId)
   }
   ]; //hatly de mn el database
   var elms = [];
-  console.log(list);
-  console.log(list[0]);
-  return;
-  for(var elem in list)
+  // console.log(list);
+  // console.log(list[0]);
+  // return;
+  list.forEach(var elem)
   {
     console.log(elem);
+    return;
     var titlle = elem.description;
     var subtitlle = elem.priority;
     elms.push({
