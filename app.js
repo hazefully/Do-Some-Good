@@ -103,10 +103,8 @@ function createNewEntry(event, step)
 {
 
   var senderId = event.sender.id;
-  var c = 0;
-  switch(step)
+  if(step == 0)
   {
-    case 0:
       request({
         url: "https://graph.facebook.com/v2.6/" + senderId,
         qs: {
@@ -129,30 +127,32 @@ function createNewEntry(event, step)
       var message = "Please enter the full name of the person that needs help."
       c = 1;
       sendTextMessage(senderId, message);
-      break;
-    case 1:
+    }
+    else if(step == 1)
+    {
       var messageData = {
-        recipient: {
-          id: recipientId
-        },
-        message: {
-          text:"Please share the location of this call for help",
-             quick_replies:[
-               {
-                 content_type:"location",
-               }
-             ]
+      recipient: {
+         id: recipientId
+       },
+       message: {
+        text:"Please share the location of this call for help",
+           quick_replies:[
+             {
+                              content_type:"location",
+              }
+           ]
         };
       }  
       callSendAPI(messageData);
-      c=2;
-      break;
-    case 2:
+    }
+    else if(step == 2)
+    {
       var message = "Please specify a description for this call for help.";
       sendTextMessage(senderId, message);
-      c=3;
-      break;
-    case 3:
+    }
+    else if(step == 3)
+    {
+    
       var messageData = {
         recipient: {
           id: recipientId
@@ -176,15 +176,10 @@ function createNewEntry(event, step)
         };
       }
       callSendAPI(messageData);
-      c=4;
-      break;
+    }
+  else{
 
-    default:
-      sendGenericMessage(senderId);
-      c=0;
-
-  }
-  
+  }  
 }
 function getStarted(event)
 {
