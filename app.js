@@ -125,30 +125,6 @@ function listEntries(senderId)
   {
     priority: "LOW",
     description: "fslmfsknfsmfls"
-  },
-    {
-    priority: "LOW",
-    description: "fslmfsknfsmfls"
-  },
-    {
-    priority: "LOW",
-    description: "fslmfsknfsmfls"
-  },
-    {
-    priority: "LOW",
-    description: "fslmfsknfsmfls"
-  },
-    {
-    priority: "LOW",
-    description: "fslmfsknfsmfls"
-  }, 
-   {
-    priority: "LOW",
-    description: "fslmfsknfsmfls"
-  },
-    {
-    priority: "LOW",
-    description: "fslmfsknfsmfls"
   }
   ]; //hatly de mn el database
   var elms = [];
@@ -156,8 +132,8 @@ function listEntries(senderId)
   for(var elem in list)
   {
     elms.push({
-        title: "GNSDKNGSKDN",
-        subtitle: "FSfsfs",
+        title: 'elem.description',
+        subtitle: 'elem.priority',
 
         buttons: [
         {
