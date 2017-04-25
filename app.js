@@ -5,7 +5,6 @@ var bodyParser = require("body-parser");
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-var c = 0;
 // server index page
 app.get("/", function (req, res) {
 	res.send("Deployed!");
@@ -68,8 +67,6 @@ function receivedMessage(event) {
 
     // If we receive a text message, check to see if it matches a keyword
     // and send back the example. Otherwise, just echo the text we received.
-    if(c != 0)
-      createNewEntry(event, c);
     switch (messageText) {
       case 'generic':
         sendGenericMessage(senderID);
@@ -106,7 +103,8 @@ function createNewEntry(event, step)
 {
 
   var senderId = event.sender.id;
-  switch(c)
+  var c = 0;
+  switch(step)
   {
     case 0:
       request({
