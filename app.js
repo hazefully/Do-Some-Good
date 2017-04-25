@@ -109,7 +109,7 @@ function processPostback(event) {
     //   var message = greeting + "My name is SP Movie Bot. I can tell you various details regarding movies. What movie would you like to know about?";
     //   sendTextMessage(senderId, {text: message});
     // });
-    sendGenericMessage(senderID);
+    sendGenericMessage(senderId);
   }
 }
 
