@@ -134,6 +134,7 @@ function listEntries(senderId)
     elms.push({
         title: "GNSDKNGSKDN",
         subtitle: "FSfsfs",
+        
         buttons: [
         {
           title: "View",
@@ -153,6 +154,7 @@ function listEntries(senderId)
         type : "template",
         payload:{
           template_type: "list",
+          top_element_style: "compact",
           elements: elms
         }
       }
