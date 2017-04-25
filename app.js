@@ -130,7 +130,7 @@ function listEntries(event)
   var elms = [];
   for(var elem in list)
   {
-    elms.add({
+    elms.push({
         title: elem.priority,
         subtitle: elem.description,
         buttons: [
