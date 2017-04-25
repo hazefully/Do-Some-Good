@@ -200,13 +200,13 @@ function createNewEntry(event, step)
     }
   else if(step == '5')
   {
-    console.log("yeah baby");
-    //var message = "Okay, let's review this entry\n";
-    //message += "Full name: " + "aywa da mn el database\n";
-    //message += "Location: " + "aywa da mn el database\n";
-    //message += "Description: " + "aywa da mn el database\n";
-    //message += "Priority: " + "aywa da mn el database\n";
-   // sendTextMessage(senderId, message);
+    // console.log("yeah baby");
+    var message = "Okay, let's review this entry\n";
+    message += "Full name: " + "aywa da mn el database\n";
+    message += "Location: " + "aywa da mn el database\n";
+    message += "Description: " + "aywa da mn el database\n";
+    message += "Priority: " + "aywa da mn el database\n";
+   sendTextMessage(senderId, message);
     var messageData = {
       recipient:{
         id: senderId
