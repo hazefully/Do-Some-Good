@@ -85,6 +85,8 @@ function receivedMessage(event) {
         break;
       case 'rev':
         createNewEntry(event, '5');
+        break;
+        
       default:
         sendTextMessage(senderID, messageText);
     }
