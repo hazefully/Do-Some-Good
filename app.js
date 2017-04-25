@@ -108,14 +108,14 @@ function processPostback(event) {
     createNewEntry(event, '0');
   }
   else if (payload == "ListEntries"){
-    listEntries(senderId);
+    listEntries(senderId, 0);
   }
   else if (payload == "UpdateStatus"){
 
   }
 }
 
-function listEntries(senderId)
+function listEntries(senderId, offset)
 {
   var list = [
   {
@@ -131,7 +131,18 @@ function listEntries(senderId)
   // console.log(list);
   // console.log(list[0]);
   // return;
-  for(var i = 0; i < list.length; i++)
+  var btns = [
+  {
+    title: "View More",
+    type: "postback",
+    payload: "payload"
+  }
+  ];
+  
+  if(list.length - offset + 1 < 5)
+    btns = [];
+
+  for(var i = offset ; i < list.length ; i++)
   {
     var titlle = list[i].description;
     var subtitlle = list[i].priority;
@@ -162,7 +173,9 @@ function listEntries(senderId)
           elements: elms
         }
       }
+      buttons: btns
     }
+
   }
   callSendAPI(messageData);
 }
