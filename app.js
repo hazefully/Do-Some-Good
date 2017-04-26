@@ -296,6 +296,7 @@ function createNewEntry(event, sessionObj)
 		//console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
     	//console.log(util.inspect(sessionObj, false, null));
     	sessionObj.new_entry.name = messageText;
+    	sessionObj.markModified('new_entry');
 
 		var messageData = {
 			recipient: {
