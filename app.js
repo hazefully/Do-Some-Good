@@ -299,7 +299,7 @@ function createNewEntry(event, sessionObj)
 		//console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
     	//console.log(util.inspect(sessionObj, false, null));
     	if(!messageText) {
-    		sendTextMessage(sednerId, "Invalid Input!");
+    		sendTextMessage(senderId, "Invalid Input!");
     		getStarted(event, sessionObj);
     		return;
     	}
@@ -326,7 +326,7 @@ function createNewEntry(event, sessionObj)
     	//console.log("---------------------------------------------------");
     	//console.log(util.inspect(messageAttachments, false, null));
     	if(!messageAttachments || !messageAttachments.length || !messageAttachments[0].type != 'location') {
-    		sendTextMessage(sednerId, "Invalid Input!");
+    		sendTextMessage(senderId, "Invalid Input!");
     		getStarted(event, sessionObj);
     		return;
     	}
@@ -340,7 +340,7 @@ function createNewEntry(event, sessionObj)
     else if(sessionObj.step == 4)
     {
     	if(!messageText) {
-    		sendTextMessage(sednerId, "Invalid Input!");
+    		sendTextMessage(senderId, "Invalid Input!");
     		getStarted(event, sessionObj);
     		return;
     	}
@@ -378,7 +378,7 @@ function createNewEntry(event, sessionObj)
   else if(sessionObj.step == 5)
   {
   		if(!payload) {
-    		sendTextMessage(sednerId, "Invalid Input!");
+    		sendTextMessage(senderId, "Invalid Input!");
     		getStarted(event, sessionObj);
     		return;
     	}
