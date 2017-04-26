@@ -259,7 +259,8 @@ function createNewEntry(event, sessionObj)
       }, function(error, response, body) {
         var startNewEntry = "";
         if (error) {
-          console.log("Error getting user's name: " +  error);
+          console.log("Error getting user's name!");
+          //console.log("Error getting user's name: " +  error);
         } else {
           var bodyObj = JSON.parse(body);
           name = bodyObj.first_name;
@@ -385,7 +386,8 @@ function getStarted(event)
     }, function(error, response, body) {
       var greeting = "";
       if (error) {
-        console.log("Error getting user's name: " +  error);
+        //console.log("Error getting user's name: " +  error);
+        console.log("Error getting user's name!");
       } else {
         var bodyObj = JSON.parse(body);
         name = bodyObj.first_name;
@@ -458,8 +460,8 @@ function callSendAPI(messageData) {
         messageId, recipientId);
     } else {
       console.error("Unable to send message.");
-      console.error(response);
-      console.error(error);
+      //console.error(response);
+      //console.error(error);
     }
   });  
 }
