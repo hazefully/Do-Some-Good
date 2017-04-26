@@ -127,11 +127,15 @@ function processPostback(event, sessionObj) {
 
   }
   else if (payload == "ConfirmNewEntry"){
-  	sendTextMessage(senderID, "Thanks You!");
-  	getStarted(event, sessionObj);
+  	sendTextMessage(senderID, "Thank you! Your efforts will help make this world a better world!");
+  	sendGenericMessage(event, sessionObj);
   }
   else if (payload == "CancelNewEntry"){
-    getStarted(event, sessionObj); 
+    sendTextMessage(senderID, "Your entry has been cancelled, please try again.");
+    sendGenericMessage(event, sessionObj); 
+  }
+  else if(payload == "UpdateStatus"){
+
   }
 }
 
@@ -260,7 +264,8 @@ function createNewEntry(event, sessionObj)
     	//var pattern2 = new regex("/\S/"); // at least one letter
     	//console.log("------------------------------------------------------------------------\n");
     	//console.log(messageText);
-    	//if(pattern1.test(messageText)){// && pattern2.test(messageText)) {
+    	//if(pattern1.test(messageText)){// && pattern2.test(messageText)) {\
+        //this line is causing crashing!!!!
     		sessionObj.new_entry.name = messageText;
     	//}
     	//else {
