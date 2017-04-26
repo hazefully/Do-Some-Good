@@ -378,12 +378,12 @@ function createNewEntry(event, sessionObj)
     }
   else if(sessionObj.step == 5)
   {
-  		if(!payload) {
+  		if(!messageText) {
     		sendTextMessage(senderId, "Invalid Input!");
     		getStarted(event, sessionObj);
     		return;
     	}
-    	sessionObj.new_entry.priority = payload;
+    	sessionObj.new_entry.priority = messageText;
     	sessionObj.markModified('new_entry');
 
 		// console.log("yeah baby");
