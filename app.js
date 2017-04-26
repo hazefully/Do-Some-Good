@@ -14,10 +14,10 @@ var session = require("./models/session");
 
 
 // testing database
-
+/*
 var sessionTest = new session.model({sender_id: '123456789'});
 sessionTest.new_entry = new location({sender_id: '123456789'});
-//sessionTest.markModified('new_entry');
+sessionTest.markModified('new_entry');
 sessionTest.save(function(err) {
 	if(err) {
 		console.error("can't save sesisonTest :", err);
@@ -30,7 +30,7 @@ sessionTest.save(function(err) {
 	console.log("-------------------------");
 	console.log(sessionTest.new_entry);
 	console.log(util.inspect(sessionTest.new_entry, false, null));
-});
+});*/
 
 
 
@@ -261,6 +261,7 @@ function createNewEntry(event, sessionObj)
   if(sessionObj.step == 1)
   {
   	  sessionObj.new_entry = new location({sender_id: senderId});
+  	  sessionObj.markModified('new_entry');
 
   	  //console.log("*************************************************");
       //console.log(util.inspect(sessionObj, false, null));
@@ -292,8 +293,8 @@ function createNewEntry(event, sessionObj)
     else if(sessionObj.step == 2)
     {
     	
-		console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    	console.log(util.inspect(sessionObj, false, null));
+		//console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    	//console.log(util.inspect(sessionObj, false, null));
     	sessionObj.new_entry.name = messageText;
 
 		var messageData = {
@@ -393,8 +394,8 @@ function createNewEntry(event, sessionObj)
 	}
  	++sessionObj.step;
 
- 	console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    console.log(util.inspect(sessionObj.new_entry, false, null));
+ 	//console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    //console.log(util.inspect(sessionObj.new_entry, false, null));
 
 	sessionObj.save(function(err) {
 		if(err) {
@@ -432,10 +433,10 @@ function getStarted(event, sessionObj, flag = false)
 	    });
 	}
     sendGenericMessage(senderId);
-    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5");
-    console.log(sessionObj);
-    console.log(event);
-    session.end(sessionObj);
+    //console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5");
+    //console.log(sessionObj);
+    //console.log(event);
+    //session.end(sessionObj);
 
 }
 function sendGenericMessage(recipientId, messageText) {
