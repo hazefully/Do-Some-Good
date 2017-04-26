@@ -155,11 +155,11 @@ function processPostback(event, sessionObj) {
 
   }
   else if (payload == "ConfirmNewEntry"){
-  	sendTextMessage(senderID, "Thank you! Your efforts will help make this world a better world!");
+  	sendTextMessage(senderId, "Thank you! Your efforts will help make this world a better world!");
   	sendGenericMessage(event, sessionObj);
   }
   else if (payload == "CancelNewEntry"){
-    sendTextMessage(senderID, "Your entry has been cancelled, please try again.");
+    sendTextMessage(senderId, "Your entry has been cancelled, please try again.");
     sendGenericMessage(event, sessionObj); 
   }
   else {
@@ -315,8 +315,8 @@ function createNewEntry(event, sessionObj)
     }
     else if(sessionObj.step == 3)
     {
-    	//console.log("---------------------------------------------------");
-    	//console.log(util.inspect(messageAttachments, false, null));
+    	console.log("---------------------------------------------------");
+    	console.log(util.inspect(messageAttachments, false, null));
 
 		var message = "Please specify a description for this call for help.";
 		sendTextMessage(senderId, message);
