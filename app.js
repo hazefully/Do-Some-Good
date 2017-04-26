@@ -221,10 +221,12 @@ function createNewEntry(event, sessionObj)
 {
 
   var senderId = event.sender.id;
-  var messageText = event.message.text;
-  var messageAttachments = event.message.attachments;
-  var step = sessionObj.step;
-  if(step == 1)
+  var messageText, messageAttachments;
+  if(event.message) {
+  	messageText = event.message.text;
+  	messageAttachments = event.message.attachments;
+  }
+  if(sessionObj.step == 1)
   {
   	  sessionObj.new_entry = new location();
 
@@ -252,7 +254,7 @@ function createNewEntry(event, sessionObj)
       var message = "Please enter the full name of the person that needs help.";
       sendTextMessage(senderId, message);
     }
-    else if(step == 2)
+    else if(sessionObj.step == 2)
     {
     	var pattern1 = new regex("/^[a-zA-Z ]+$/"); // letters and whitespaces
     	var pattern2 = new regex("/\S/"); // at least one letter
@@ -279,12 +281,12 @@ function createNewEntry(event, sessionObj)
 		};
 		callSendAPI(messageData);
     }
-    else if(step == 3)
+    else if(sessionObj.step == 3)
     {
       var message = "Please specify a description for this call for help.";
       sendTextMessage(senderId, message);
     }
-    else if(step == 4)
+    else if(sessionObj.step == 4)
     {
     
       var messageData = {
@@ -315,7 +317,7 @@ function createNewEntry(event, sessionObj)
       };
       callSendAPI(messageData);
     }
-  else if(step == 5)
+  else if(sessionObj.step == 5)
   {
 		// console.log("yeah baby");
 		var message = "Okay, let's review this entry\n";
