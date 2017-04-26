@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var SessionSchema = new Schema({
 	sender_id: Number,
 	step: {type: Number, default: 0},
-	new_entery: Schema.Types.Mixed
+	new_entry: Schema.Types.Mixed
 });
 
 var session = mongoose.model("session", SessionSchema);
