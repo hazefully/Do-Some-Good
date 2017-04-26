@@ -62,6 +62,9 @@ function receivedMessage(event) {
   var message = event.message;
 
   var currentSession = session(senderID);
+  console.log(senderID);
+  console.log(currentSession.sender_id);
+  console.log("-------------");
 
 
   console.log("Received message for user %d and page %d at %d with message:", 
