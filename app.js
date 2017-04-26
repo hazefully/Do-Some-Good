@@ -266,7 +266,10 @@ function createNewEntry(event, sessionObj)
     }
     else if(sessionObj.step == 2)
     {
-    		sessionObj.new_entry.name = messageText;
+    	
+		console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    	console.log(util.inspect(sessionObj.new_entry, false, null));
+    	sessionObj.new_entry.name = messageText;
 
 		var messageData = {
 			recipient: {
@@ -285,8 +288,8 @@ function createNewEntry(event, sessionObj)
     }
     else if(sessionObj.step == 3)
     {
-    	console.log("---------------------------------------------------");
-    	console.log(util.inspect(messageAttachments, false, null));
+    	//console.log("---------------------------------------------------");
+    	//console.log(util.inspect(messageAttachments, false, null));
 
 		var message = "Please specify a description for this call for help.";
 		sendTextMessage(senderId, message);
