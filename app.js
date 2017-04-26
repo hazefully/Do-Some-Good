@@ -237,7 +237,7 @@ function createNewEntry(event, sessionObj)
   	  sessionObj.new_entry = new location();
 
   	  console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    	console.log(util.inspect(messageAttachments, false, null));
+    	console.log(util.inspect(sessionObj.new_entry, false, null));
 
 
 
