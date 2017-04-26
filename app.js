@@ -35,41 +35,41 @@ app.post('/webhook', function (req, res) {
 
 		// Iterate over each entry - there may be multiple if batched
 		data.entry.forEach(function (entry) {
-				var pageID = entry.id;
-				var timeOfEvent = entry.time;
+			var pageID = entry.id;
+			var timeOfEvent = entry.time;
 
-				//Iterate over each messaging event
-				entry.messaging.forEach(function(event) {
-					if(event.message) {
-						receivedMessage(event);
-					} else if(event.postback) {
-            // console.log("I am supposed to handle something here?!");
-            processPostback(event);
-          }
-          else {
-						console.log("Webhook recieved unknown event: ", event);
-					}
-				});
+			//Iterate over each messaging event
+			entry.messaging.forEach(function(event) {
+				if(event.message) {
+					receivedMessage(event);
+				} else if(event.postback) {
+		            // console.log("I am supposed to handle something here?!");
+		            processPostback(event);
+				}
+				else {
+					console.log("Webhook recieved unknown event: ", event);
+				}
+			});
 		});
 		res.sendStatus(200);
 	}
 });
 
 function receivedMessage(event) {
+	session(event, processMessage);
+}
+
+function processMessage(event, sessionObj) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  var currentSession = session(senderID);
-  console.log(senderID);
-  console.log(currentSession.sender_id);
-  console.log("-------------");
-
-
   console.log("Received message for user %d and page %d at %d with message:", 
     senderID, recipientID, timeOfMessage);
   console.log(JSON.stringify(message));
+  console.log("----------------------------------------------------------");
+  console.log(sessionObj.sender_id);
 
   var messageId = message.mid;
 

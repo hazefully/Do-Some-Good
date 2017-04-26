@@ -3,24 +3,18 @@ var Schema = mongoose.Schema;
 
 var SessionSchema = new Schema({
 	sender_id: Number,
+	step: {type: Number, default: 0};
 	//vars: Object;
 });
 
 var session = mongoose.model("session", SessionSchema);
 
 
-module.exports = function (user_id) {
-	//return session.find({ 'sender_id': user_id }, 'vars', function (err, results) {
-	var res;
-	session.find({ 'sender_id': user_id }, function (err, results) {
-		res = new session({'sender_id' : user_id});
-		/*if (err || !results.length) {
-			console.log("New session created.");
-			return new session({'sender_id' : user_id});
-			//return new session({'sender_id' : user_id, 'vars' : new Object()});
-		}
-		console.log("session found for sender_id = %s", sender_id);
-		return results[0];*/
+module.exports = function(event, processMessage) {
+	session.find({'sender_id' : event.sender.id}, function(err, results) {
+		if(err || !results.length)
+			processMessage(event, new session({'sender_id': event.sender.id}));
+		else
+			processMessage(event, results[0]);
 	});
-	return res;
 }
