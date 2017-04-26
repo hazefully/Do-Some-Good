@@ -136,8 +136,8 @@ function processPostback(event, sessionObj) {
     sendTextMessage(senderID, "Your entry has been cancelled, please try again.");
     sendGenericMessage(event, sessionObj); 
   }
-  else if(payload == "UpdateStatus"){
-
+  else {
+  	getStarted(event, sessionObj);
   }
 }
 
