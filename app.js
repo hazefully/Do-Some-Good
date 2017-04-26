@@ -41,10 +41,12 @@ app.post('/webhook', function (req, res) {
 			//Iterate over each messaging event
 			entry.messaging.forEach(function(event) {
 				if(event.message) {
-					receivedMessage(event);
+					session(event, processMessage);
+					//receivedMessage(event);
 				} else if(event.postback) {
+		            session(event, processPostback);
 		            // console.log("I am supposed to handle something here?!");
-		            processPostback(event);
+		            //processPostback(event);
 				}
 				else {
 					console.log("Webhook recieved unknown event: ", event);
@@ -68,8 +70,6 @@ function processMessage(event, sessionObj) {
   console.log("Received message for user %d and page %d at %d with message:", 
     senderID, recipientID, timeOfMessage);
   console.log(JSON.stringify(message));
-  console.log("----------------------------------------------------------");
-  console.log(sessionObj.sender_id);
 
   var messageId = message.mid;
 
@@ -80,9 +80,13 @@ function processMessage(event, sessionObj) {
 
     // If we receive a text message, check to see if it matches a keyword
     // and send back the example. Otherwise, just echo the text we received.
-    switch (messageText) {
+    if(messageText === 'generic')
+    	sendGenericMessage(senderID);
+    else
+    	createNewEntry(event, sessionObj);
+   /* switch (messageText) {
       case 'generic':
-        sendGenericMessage(senderID);
+        
         break;
       case 'name':
         createNewEntry(event, '1');
@@ -102,7 +106,7 @@ function processMessage(event, sessionObj) {
 
       default:
         sendTextMessage(senderID, messageText);
-    }
+    }*/
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
   }
@@ -110,7 +114,7 @@ function processMessage(event, sessionObj) {
 
 
 
-function processPostback(event) {
+function processPostback(event, sessionObj) {
   var senderId = event.sender.id;
   var payload = event.postback.payload;
   console.log(payload);
@@ -118,7 +122,7 @@ function processPostback(event) {
     getStarted(event);
   }
   else if (payload == "NewEntry"){
-    createNewEntry(event, '0');
+    createNewEntry(event, sessionObj);
   }
   else if (payload == "ListEntries"){
     listEntries(senderId, 0);
@@ -232,11 +236,12 @@ function listEntries(senderId, offset)
   }
   callSendAPI(messageData);
 }
-function createNewEntry(event, step)
+function createNewEntry(event, sessionObj)
 {
 
   var senderId = event.sender.id;
-  if(step == '0')
+  var step = sessionObj.step;
+  if(step == 0)
   {
       request({
         url: "https://graph.facebook.com/v2.6/" + senderId,
@@ -259,11 +264,11 @@ function createNewEntry(event, step)
       });
 
     }
-    else if(step == '1'){
+    else if(step == 1){
       var message = "Please enter the full name of the person that needs help.";
       sendTextMessage(senderId, message);
     }
-    else if(step == '2')
+    else if(step == 2)
     {
       var messageData = {
       recipient: {
@@ -277,15 +282,15 @@ function createNewEntry(event, step)
               }
            ]
         }
-      };  
+      };
       callSendAPI(messageData);
     }
-    else if(step == '3')
+    else if(step == 3)
     {
       var message = "Please specify a description for this call for help.";
       sendTextMessage(senderId, message);
     }
-    else if(step == '4')
+    else if(step == 4)
     {
     
       var messageData = {
@@ -316,7 +321,7 @@ function createNewEntry(event, step)
       };
       callSendAPI(messageData);
     }
-  else if(step == '5')
+  else if(step == 5)
   {
     // console.log("yeah baby");
     var message = "Okay, let's review this entry\n";
@@ -352,6 +357,7 @@ function createNewEntry(event, step)
       }
     }
     callSendAPI(messageData);
+    sessionObj.step = (sessionObj.step + 1) % 5;
 
   }
   else{

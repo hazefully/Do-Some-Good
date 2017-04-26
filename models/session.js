@@ -10,11 +10,11 @@ var SessionSchema = new Schema({
 var session = mongoose.model("session", SessionSchema);
 
 
-module.exports = function(event, processMessage) {
+module.exports = function(event, callback) {
 	session.find({'sender_id' : event.sender.id}, function(err, results) {
 		if(err || !results.length)
-			processMessage(event, new session({'sender_id': event.sender.id}));
+			callback(event, new session({'sender_id': event.sender.id}));
 		else
-			processMessage(event, results[0]);
+			callback(event, results[0]);
 	});
 }
