@@ -14,7 +14,7 @@ var session = require("./models/session");
 
 
 // testing database
-var sessionTest = session.start({sender_id: '123456789'});
+var sessionTest = new session.model({sender_id: '123456789'});
 sessionTest.new_entry = new location({sender_id: '123456789'});
 sessionTest.save(function(err) {
 	if(err) {

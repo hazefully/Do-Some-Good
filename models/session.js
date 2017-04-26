@@ -9,6 +9,7 @@ var SessionSchema = new Schema({
 
 var session = mongoose.model("session", SessionSchema);
 
+module.exports.model = session;
 
 module.exports.start = function(event, callback) {
 	session.find({'sender_id' : event.sender.id}, function(err, results) {
