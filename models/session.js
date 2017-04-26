@@ -9,7 +9,7 @@ var SessionSchema = new Schema({
 var session = mongoose.model("session", SessionSchema);
 
 
-module.exports = fucntion (user_id) {
+module.exports = function (user_id) {
 	return true;
 	//return session.find({ 'sender_id': user_id }, 'vars', function (err, results) {
 	//return session.find({ 'sender_id': user_id }, function (err, results) {
