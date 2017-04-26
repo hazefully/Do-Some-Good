@@ -388,12 +388,34 @@ function createNewEntry(event, sessionObj)
 
 		// console.log("yeah baby");
 		var message = "Okay, let's review this entry\n";
-		message += "Full name: " + "aywa da mn el database\n";
-		message += "Location: " + "aywa da mn el database\n";
-		message += "Description: " + "aywa da mn el database\n";
-		message += "Priority: " + "aywa da mn el database\n";
+		message += "Full name: " + sessionObj.new_entry.name + "\n";
+		message += "Description: " + sessionObj.new_entry.description + "\n";
+		message += "Priority: " + sessionObj.new_entry.priority + "\n";
 		sendTextMessage(senderId, message);
+
 		var messageData = {
+			recipient: {id: senderId},
+			message: {
+			    attachment: {
+			        type: "template",
+			        payload: {
+			            template_type: "generic",
+			            elements: [
+			                {
+			                	element: {
+				                    title: "Location",
+				                    image_url: "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="+lat+","+long+"&zoom=25&markers="+lat+","+long,
+				                    item_url: "http:\/\/maps.apple.com\/maps?q="+sessionObj.new_entry.lat+","+sessionObj.new_entry.long+"&z=16"
+			              		}
+			            	}
+			            ]
+			        }
+			    }
+			}
+		}
+		callSendAPI(messageData);
+
+		messageData = {
 		  recipient:{
 		    id: senderId
 		  },
@@ -533,8 +555,8 @@ function callSendAPI(messageData) {
         messageId, recipientId);
     } else {
       console.error("Unable to send message.");
-      console.error(response);
-      console.error(error);
+      //console.error(response);
+      //console.error(error);
     }
   });  
 }
