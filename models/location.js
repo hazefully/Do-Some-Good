@@ -10,9 +10,9 @@ var LocationSchema = new Schema({
  	
  	hidden: { type: Boolean, default: false }, // if downvotes - upvotes > C hide him from the results of nearby locations
  												// inorder to unhide some one back he needs to gain some upvotes again
- 	priority: {type: String, default: 'LOW'},, // range from  1 to 10
+ 	priority: {type: String, default: 'LOW'}, // range from  1 to 10
  	upvotes: { type: Number, default: 0 },
- 	downvotes: { type: Number, default: 0 },
+ 	downvotes: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model("location", LocationSchema);
