@@ -406,6 +406,9 @@ function getStarted(event, sessionObj, flag = false)
 	    });
 	}
     sendGenericMessage(senderId);
+    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5");
+    console.log(sessionObj);
+    console.log(event);
     session.end(sessionObj);
 
 }
