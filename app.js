@@ -236,8 +236,7 @@ function createNewEntry(event, sessionObj)
   {
   	  sessionObj.new_entry = new location();
 
-  	  console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    	console.log(util.inspect(sessionObj.new_entry, false, null));
+  	  
 
 
 
@@ -365,6 +364,10 @@ function createNewEntry(event, sessionObj)
 		return;
 	}
  	++sessionObj.step;
+
+ 	console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    console.log(util.inspect(sessionObj.new_entry, false, null));
+
 	sessionObj.save();
 }
 function getStarted(event, sessionObj, flag = false)
