@@ -489,7 +489,7 @@ function getStarted(event, sessionObj, flag = false)
     //console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5");
     //console.log(sessionObj);
     //console.log(event);
-    //session.end(sessionObj);
+    session.end(sessionObj);
 
 }
 function sendGenericMessage(recipientId, messageText) {
@@ -553,8 +553,8 @@ function callSendAPI(messageData) {
         messageId, recipientId);
     } else {
       console.error("Unable to send message.");
-      //console.error(response);
-      //console.error(error);
+      console.error(response);
+      console.error(error);
     }
   });  
 }
