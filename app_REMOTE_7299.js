@@ -3,8 +3,6 @@ var request = require("request");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var regex = require("regex");
-// util for debugging purposes
-const util = require("util");
 
 var db = mongoose.connect(process.env.MONGODB_URI);
 
@@ -262,9 +260,6 @@ function createNewEntry(event, sessionObj)
     }
     else if(sessionObj.step == 2)
     {
-<<<<<<< HEAD
-    	sessionObj.new_entry.name = messageText;
-=======
     	//var pattern1 = new regex("/^[a-zA-Z ]+$/"); // letters and whitespaces
     	//var pattern2 = new regex("/\S/"); // at least one letter
     	//console.log("------------------------------------------------------------------------\n");
@@ -278,7 +273,6 @@ function createNewEntry(event, sessionObj)
     	//	getStarted(event, sessionObj);
     	//	return;
     	//}
->>>>>>> 5b2cfb748e2fe842b062dd1c53d3da58e84094df
 
 		var messageData = {
 			recipient: {
@@ -297,11 +291,8 @@ function createNewEntry(event, sessionObj)
     }
     else if(sessionObj.step == 3)
     {
-    	console.log("---------------------------------------------------");
-    	console.log(util.inspect(messageAttachments, false, null));
-
-		var message = "Please specify a description for this call for help.";
-		sendTextMessage(senderId, message);
+      var message = "Please specify a description for this call for help.";
+      sendTextMessage(senderId, message);
     }
     else if(sessionObj.step == 4)
     {
