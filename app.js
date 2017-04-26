@@ -5,7 +5,7 @@ var mongoose = require("mongoose");
 
 var db = mongoose.connect(process.env.MONGODB_URI);
 
-db.on('error', console.error.bind(console, 'connection error:'));
+//db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(){
 	console.log("Connected to DB");
 	var bookSchema = mongoose.Schema({
@@ -43,10 +43,7 @@ db.once('open', function(){
 	});
 
 	book1.pages = 500;
-	book1.save(function(err){
-		if ( err ) throw err;
-		console.log("Book Saved Successfully");
-	});
+	book1.save();
 
   //do operations which involve interacting with DB.
 });
