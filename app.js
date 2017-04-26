@@ -43,7 +43,10 @@ db.once('open', function(){
 	});
 
 	book1.pages = 500;
-	book1.save();
+	book1.save(function(err){
+		if ( err ) throw err;
+		console.log("Book Saved Successfully");
+	});
 
   //do operations which involve interacting with DB.
 });
