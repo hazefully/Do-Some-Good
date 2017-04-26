@@ -20,5 +20,5 @@ module.exports = function (user_id) {
 		}
 		console.log("session found for sender_id = %s", sender_id);
 		return results[0];*/
-	//});
+	});
 }
