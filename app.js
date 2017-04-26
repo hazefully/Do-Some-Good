@@ -12,6 +12,27 @@ var location = require("./models/location");
 //var extras = require("./models/extras");
 var session = require("./models/session");
 
+
+// testing database
+var sessionTest = session.start({sender_id: '123456789'});
+sessionTest.new_entry = new location({sender_id: '123456789'});
+sessionTest.save(function(err) {
+	if(err) {
+		console.error("can't save sesisonTest :", err);
+	}
+	else {
+		console.log("sessionTest saved Successfully");
+	}
+	console.log(sessionTest);
+	console.log(util.inspect(sessionTest, false, null));
+});
+
+
+
+
+
+
+
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
