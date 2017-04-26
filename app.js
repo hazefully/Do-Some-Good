@@ -149,14 +149,14 @@ function processPostback(event, sessionObj) {
   else if (payload == "ConfirmNewEntry"){
   	sendTextMessage(senderId, "Thank you! Your efforts will help make this world a better world!");
 
-  	sessionObj.location.save( function(err) {
+  	sessionObj.new_entry.save( function(err) {
   		if(err) {
   			console.error("Unable to save new location");
   		}
   		else {
   			console.log("New location saved Successfully");
   		}
-  		console.log(sessionObj.location);
+  		console.log(sessionObj.new_entry);
   	});
   	getStarted(event, sessionObj);
   }
