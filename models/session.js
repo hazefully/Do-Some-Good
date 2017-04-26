@@ -20,7 +20,7 @@ module.exports.start = function(event, callback) {
 }
 
 module.exports.end = function(sessionObj) {
-	session.remove(sessiobObj, function(err) {
+	session.remove(sessionObj, function(err) {
 		if(err)
 			console.error("Couldn't remove session!");
 		else
