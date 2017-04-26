@@ -266,12 +266,10 @@ function createNewEntry(event, sessionObj)
         sendTextMessage(senderId, message);
       });
 
-    }
-    else if(step == 2){
       var message = "Please enter the full name of the person that needs help.";
       sendTextMessage(senderId, message);
     }
-    else if(step == 3)
+    else if(step == 2)
     {
       var messageData = {
       recipient: {
@@ -288,12 +286,12 @@ function createNewEntry(event, sessionObj)
       };
       callSendAPI(messageData);
     }
-    else if(step == 4)
+    else if(step == 3)
     {
       var message = "Please specify a description for this call for help.";
       sendTextMessage(senderId, message);
     }
-    else if(step == 5)
+    else if(step == 4)
     {
     
       var messageData = {
@@ -324,7 +322,7 @@ function createNewEntry(event, sessionObj)
       };
       callSendAPI(messageData);
     }
-  else if(step == 6)
+  else if(step == 5)
   {
     // console.log("yeah baby");
     var message = "Okay, let's review this entry\n";
@@ -361,7 +359,12 @@ function createNewEntry(event, sessionObj)
     }
     callSendAPI(messageData);
     sessionObj.step = (sessionObj.step + 1) % 6;
-    sessionObj.save();
+    sessionObj.save(function(err) {
+    	if(err)
+    		console.error("can't save sessionObj");
+    	else
+    		console.log("SessionObj saved successfully");
+    });
 
   }
   else{
