@@ -49,7 +49,8 @@ app.post('/webhook', function (req, res) {
 		            //processPostback(event);
 				}
 				else {
-					console.log("Webhook recieved unknown event: ", event);
+					//console.log("Webhook recieved unknown event: ", event);
+					console.log("Webhook recieved unknown event!");
 				}
 			});
 		});
@@ -69,7 +70,7 @@ function processMessage(event, sessionObj) {
 
   console.log("Received message for user %d and page %d at %d with message:", 
     senderID, recipientID, timeOfMessage);
-  console.log(JSON.stringify(message));
+  //console.log(JSON.stringify(message));
 
   var messageId = message.mid;
 
