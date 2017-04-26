@@ -324,52 +324,52 @@ function createNewEntry(event, sessionObj)
     }
   else if(step == 5)
   {
-    // console.log("yeah baby");
-    var message = "Okay, let's review this entry\n";
-    message += "Full name: " + "aywa da mn el database\n";
-    message += "Location: " + "aywa da mn el database\n";
-    message += "Description: " + "aywa da mn el database\n";
-    message += "Priority: " + "aywa da mn el database\n";
-   sendTextMessage(senderId, message);
-    var messageData = {
-      recipient:{
-        id: senderId
-      },
-      message:{
-        attachment:{
-          type: "template",
-          payload:{
-            template_type:"button",
-            text:"Are you sure you want to add this entry?",
-            buttons:[
-            {
-              type:"postback",
-              title:"Yes",
-              payload:"ConfirmNewEntry"
-            },
-            {
-              type:"postback",
-              title:"No",
-              payload:"CancelNewEntry"
-            }
-            ]
-          }
-        }       
-      }
-    }
-    callSendAPI(messageData);
-    sessionObj.step = (sessionObj.step + 1) % 6;
-    sessionObj.save(function(err) {
-    	if(err)
-    		console.error("can't save sessionObj");
-    	else
-    		console.log("SessionObj saved successfully");
-    });
-
-  }
-  else{
-    getStarted(event);
-  }  
+		// console.log("yeah baby");
+		var message = "Okay, let's review this entry\n";
+		message += "Full name: " + "aywa da mn el database\n";
+		message += "Location: " + "aywa da mn el database\n";
+		message += "Description: " + "aywa da mn el database\n";
+		message += "Priority: " + "aywa da mn el database\n";
+		sendTextMessage(senderId, message);
+		var messageData = {
+		  recipient:{
+		    id: senderId
+		  },
+		  message:{
+		    attachment:{
+		      type: "template",
+		      payload:{
+		        template_type:"button",
+		        text:"Are you sure you want to add this entry?",
+		        buttons:[
+		        {
+		          type:"postback",
+		          title:"Yes",
+		          payload:"ConfirmNewEntry"
+		        },
+		        {
+		          type:"postback",
+		          title:"No",
+		          payload:"CancelNewEntry"
+		        }
+		        ]
+		      }
+		    }       
+		  }
+		}
+		callSendAPI(messageData);
+	}
+	else{
+		getStarted(event);
+		return;
+	}
+ 	sessionObj.step = (sessionObj.step + 1) % 6;
+	sessionObj.save(function(err) {
+		if(err)
+			console.error("can't save sessionObj");
+		else
+			console.log("SessionObj saved successfully");
+	});
 }
 function getStarted(event)
 {
