@@ -126,7 +126,7 @@ function processPostback(event, sessionObj) {
   var senderId = event.sender.id;
   var payload = event.postback.payload;
   console.log(payload);
-  if (payload === "Greeting") {
+  if (payload == "Greeting") {
     getStarted(event, sessionObj, true);
   }
   else if (payload == "NewEntry"){
@@ -253,10 +253,13 @@ function createNewEntry(event, sessionObj)
 {
 
   var senderId = event.sender.id;
-  var messageText, messageAttachments;
+  var messageText, messageAttachments, payload;
   if(event.message) {
   	messageText = event.message.text;
   	messageAttachments = event.message.attachments;
+  }
+  if(event.postback) {
+  	payload = event.postback.payload;
   }
   if(sessionObj.step == 1)
   {
@@ -295,6 +298,11 @@ function createNewEntry(event, sessionObj)
     	
 		//console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
     	//console.log(util.inspect(sessionObj, false, null));
+    	if(!messageText) {
+    		sendTextMessage(sednerId, "Invalid Input!");
+    		getStarted(event, sessionObj);
+    		return;
+    	}
     	sessionObj.new_entry.name = messageText;
     	sessionObj.markModified('new_entry');
 
@@ -315,14 +323,29 @@ function createNewEntry(event, sessionObj)
     }
     else if(sessionObj.step == 3)
     {
-    	console.log("---------------------------------------------------");
-    	console.log(util.inspect(messageAttachments, false, null));
+    	//console.log("---------------------------------------------------");
+    	//console.log(util.inspect(messageAttachments, false, null));
+    	if(!messageAttachments || !messageAttachments.length || !messageAttachments[0].type != 'location') {
+    		sendTextMessage(sednerId, "Invalid Input!");
+    		getStarted(event, sessionObj);
+    		return;
+    	}
+    	sessionObj.new_entry.lat = messageAttachments[0].payload.coordinates.lat;
+    	sessionObj.new_entry.long = messageAttachments[0].payload.coordinates.long;
+    	sessionObj.markModified('new_entry');
 
 		var message = "Please specify a description for this call for help.";
 		sendTextMessage(senderId, message);
     }
     else if(sessionObj.step == 4)
     {
+    	if(!messageText) {
+    		sendTextMessage(sednerId, "Invalid Input!");
+    		getStarted(event, sessionObj);
+    		return;
+    	}
+    	sessionObj.new_entry.description = messageText;
+    	sessionObj.markModified('new_entry');
     
       var messageData = {
         recipient: {
@@ -334,18 +357,18 @@ function createNewEntry(event, sessionObj)
                {
                  content_type:"text",
                  title: "High",
-                 payload: "HighPriority"
+                 payload: "High"
                },
                {
                  content_type:"text",
                  title: "Medium",
-                 payload: "MediumPriority"
+                 payload: "Medium"
 
                },
                {
                   content_type:"text",
                   title: "Low",
-                  payload: "LowPriority"
+                  payload: "Low"
                }
              ]
         }
@@ -354,6 +377,14 @@ function createNewEntry(event, sessionObj)
     }
   else if(sessionObj.step == 5)
   {
+  		if(!payload) {
+    		sendTextMessage(sednerId, "Invalid Input!");
+    		getStarted(event, sessionObj);
+    		return;
+    	}
+    	sessionObj.new_entry.priority = payload;
+    	sessionObj.markModified('new_entry');
+
 		// console.log("yeah baby");
 		var message = "Okay, let's review this entry\n";
 		message += "Full name: " + "aywa da mn el database\n";
