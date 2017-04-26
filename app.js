@@ -236,6 +236,11 @@ function createNewEntry(event, sessionObj)
   {
   	  sessionObj.new_entry = new location();
 
+  	  console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    	console.log(util.inspect(messageAttachments, false, null));
+
+
+
       request({
         url: "https://graph.facebook.com/v2.6/" + senderId,
         qs: {
