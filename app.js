@@ -25,6 +25,9 @@ sessionTest.save(function(err) {
 	}
 	console.log(sessionTest);
 	console.log(util.inspect(sessionTest, false, null));
+	console.log("-------------------------");
+	console.log(sessionTest.new_entry);
+	console.log(util.inspect(sessionTest.new_entry, false, null));
 });
 
 
