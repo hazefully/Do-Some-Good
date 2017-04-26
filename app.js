@@ -41,10 +41,10 @@ app.post('/webhook', function (req, res) {
 			//Iterate over each messaging event
 			entry.messaging.forEach(function(event) {
 				if(event.message) {
-					session(event, processMessage);
+					session.start(event, processMessage);
 					//receivedMessage(event);
 				} else if(event.postback) {
-		            session(event, processPostback);
+		            session.start(event, processPostback);
 		            // console.log("I am supposed to handle something here?!");
 		            //processPostback(event);
 				}
