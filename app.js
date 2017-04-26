@@ -17,7 +17,7 @@ var session = require("./models/session");
 
 var sessionTest = new session.model({sender_id: '123456789'});
 sessionTest.new_entry = new location({sender_id: '123456789'});
-sessionTest.markModified('new_entry');
+//sessionTest.markModified('new_entry');
 sessionTest.save(function(err) {
 	if(err) {
 		console.error("can't save sesisonTest :", err);
