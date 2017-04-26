@@ -14,8 +14,14 @@ var session = require("./models/session");
 
 
 // testing database
+function testObj() {
+	this.sender_id = '123456789';
+	this.name = 'abdo';
+}
+
 var sessionTest = new session.model({sender_id: '123456789'});
-sessionTest.new_entry = new location({sender_id: '123456789'});
+//sessionTest.new_entry = new location({sender_id: '123456789'});
+sessionTest.new_entry = new testObj();
 sessionTest.save(function(err) {
 	if(err) {
 		console.error("can't save sesisonTest :", err);
