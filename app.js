@@ -87,7 +87,7 @@ function processMessage(event, sessionObj) {
     	createNewEntry(event, sessionObj);
 
   } else if (messageAttachments) {
-	    if(SessionObj.step === 3)
+	    if(sessionObj.step === 3)
 	    	createNewEntry(event, sessionObj);
 	    else
 	    	sendTextMessage(senderID, "Message with attachment received");
