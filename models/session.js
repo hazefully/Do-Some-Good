@@ -10,9 +10,10 @@ var session = mongoose.model("session", SessionSchema);
 
 
 module.exports = fucntion (user_id) {
+	return true;
 	//return session.find({ 'sender_id': user_id }, 'vars', function (err, results) {
 	//return session.find({ 'sender_id': user_id }, function (err, results) {
-		return new session({'sender_id' : user_id});
+	//	return new session({'sender_id' : user_id});
 		/*if (err || !results.length) {
 			console.log("New session created.");
 			return new session({'sender_id' : user_id});
