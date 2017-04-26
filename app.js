@@ -404,7 +404,7 @@ function createNewEntry(event, sessionObj)
 			                {
 			                	element: {
 				                    title: "Location",
-				                    image_url: "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="+lat+","+long+"&zoom=25&markers="+lat+","+long,
+				                    image_url: "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="+sessionObj.new_entry.lat+","+sessionObj.new_entry.long+"&zoom=25&markers="+sessionObj.new_entry.lat+","+sessionObj.new_entry.long,
 				                    item_url: "http:\/\/maps.apple.com\/maps?q="+sessionObj.new_entry.lat+","+sessionObj.new_entry.long+"&z=16"
 			              		}
 			            	}
