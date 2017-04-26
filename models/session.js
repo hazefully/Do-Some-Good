@@ -18,3 +18,12 @@ module.exports.start = function(event, callback) {
 			callback(event, results[0]);
 	});
 }
+
+module.exports.end = function(sessionObj) {
+	session.remove(sessiobObj, function(err) {
+		if(err)
+			console.error("Couldn't remove session!");
+		else
+			console.log("Session Removed Successfully");
+	});
+}

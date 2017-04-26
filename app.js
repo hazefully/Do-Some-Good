@@ -5,44 +5,6 @@ var mongoose = require("mongoose");
 
 var db = mongoose.connect(process.env.MONGODB_URI);
 
-var bookSchema = mongoose.Schema({
-	name: String,
-	//Also creating index on field isbn
-	isbn: {type: String, index: true},
-	author: String,
-	pages: Number
-});
-var Book = mongoose.model('Book', bookSchema, "mongoose_demo");
-
-var book1 = new Book({
-	name:"Mongoose Demo 1",
-	isbn: "MNG123",
-	author: "Author1,  Author2",
-	pages: 123
-});
-
-//Saving the model instance to the DB
-book1.save(function(err){
-	if ( err ) throw err;
-	console.log("Book Saved Successfully");
-});
-
-var book2 = new Book({
-	name:"Mongoose Demo 2",
-	isbn: "MNG124",
-	author: "Author2,  Author3",
-	pages: 90
-});
-
-book2.save(function(err){
-	if ( err ) throw err;
-	console.log("Book Saved Successfully");
-});
-
-book1.pages = 500;
-book1.save();
-
-
 //var locations = require("./models/locations");
 //var extras = require("./models/extras");
 var session = require("./models/session");
@@ -123,31 +85,13 @@ function processMessage(event, sessionObj) {
     	sendGenericMessage(senderID);
     else
     	createNewEntry(event, sessionObj);
-   /* switch (messageText) {
-      case 'generic':
-        
-        break;
-      case 'name':
-        createNewEntry(event, '1');
-        break;
-      case 'loc':
-        createNewEntry(event, '2');
-        break;
-      case 'des':
-        createNewEntry(event, '3');
-        break;
-      case 'pri':
-        createNewEntry(event, '4');
-        break;
-       case 'rev':
-        createNewEntry(event, '5');
-        break;
 
-      default:
-        sendTextMessage(senderID, messageText);
-    }*/
   } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received");
+	    if(SessionObj.step === 3)
+	    	createNewEntry(event, sessionObj);
+	    else
+	    	sendTextMessage(senderID, "Message with attachment received");
+
   }
 }
 
@@ -158,7 +102,7 @@ function processPostback(event, sessionObj) {
   var payload = event.postback.payload;
   console.log(payload);
   if (payload === "Greeting") {
-    getStarted(event);
+    getStarted(event, true);
   }
   else if (payload == "NewEntry"){
   	sessionObj.step = 1;
@@ -189,7 +133,6 @@ function processPostback(event, sessionObj) {
 
   }
   else if (payload == "CancelNewEntry"){
-    //ems7 ya abdo
     getStarted(event); 
   }
 }
@@ -401,40 +344,41 @@ function createNewEntry(event, sessionObj)
 		getStarted(event);
 		return;
 	}
- 	sessionObj.step = (sessionObj.step + 1) % 6;
-	sessionObj.save(function(err) {
-		if(err)
-			console.error("can't save sessionObj");
-		else
-			console.log("SessionObj saved successfully");
-	});
+ 	if(++sessionObj.step < 6) {
+		sessionObj.save();
+	}
+	else {
+		session.end(sessionObj);
+	}
 }
-function getStarted(event)
+function getStarted(event, flag = false)
 {
   var senderId = event.sender.id;
   //var payload = event.postback.payload;
-
-  request({
-      url: "https://graph.facebook.com/v2.6/" + senderId,
-      qs: {
-        access_token: process.env.PAGE_ACCESS_TOKEN,
-        fields: "first_name"
-      },
-      method: "GET"
-    }, function(error, response, body) {
-      var greeting = "";
-      if (error) {
-        //console.log("Error getting user's name: " +  error);
-        console.log("Error getting user's name!");
-      } else {
-        var bodyObj = JSON.parse(body);
-        name = bodyObj.first_name;
-        greeting = "Hi " + name + "!\n";
-      }
-      var message = greeting + "This messanger bot allows you to reach poor people who need help in your area, and also add information about people who need help so other users can reach them too. Together, we can create a better world!";
-      sendTextMessage(senderId, message);
-    });
+  if(flag) {
+	  request({
+	      url: "https://graph.facebook.com/v2.6/" + senderId,
+	      qs: {
+	        access_token: process.env.PAGE_ACCESS_TOKEN,
+	        fields: "first_name"
+	      },
+	      method: "GET"
+	    }, function(error, response, body) {
+	      var greeting = "";
+	      if (error) {
+	        //console.log("Error getting user's name: " +  error);
+	        console.log("Error getting user's name!");
+	      } else {
+	        var bodyObj = JSON.parse(body);
+	        name = bodyObj.first_name;
+	        greeting = "Hi " + name + "!\n";
+	      }
+	      var message = greeting + "This messanger bot allows you to reach poor people who need help in your area, and also add information about people who need help so other users can reach them too. Together, we can create a better world!";
+	      sendTextMessage(senderId, message);
+	    });
+	}
     sendGenericMessage(senderId);
+    session.end(sessionObj);
 
 }
 function sendGenericMessage(recipientId, messageText) {
