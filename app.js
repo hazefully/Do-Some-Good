@@ -325,7 +325,7 @@ function createNewEntry(event, sessionObj)
     {
     	//console.log("---------------------------------------------------");
     	//console.log(util.inspect(messageAttachments, false, null));
-    	if(!messageAttachments || !messageAttachments.length || !messageAttachments[0].type != 'location') {
+    	if(!messageAttachments || !messageAttachments.length || messageAttachments[0].type != 'location') {
     		sendTextMessage(senderId, "Invalid Input!");
     		getStarted(event, sessionObj);
     		return;
