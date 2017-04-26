@@ -236,8 +236,8 @@ function createNewEntry(event, sessionObj)
   {
   	  sessionObj.new_entry = new location({sender_id: senderId});
 
-  	  console.log("*************************************************");
-    	console.log(util.inspect(sessionObj, false, null));
+  	  //console.log("*************************************************");
+      //console.log(util.inspect(sessionObj, false, null));
 
       request({
         url: "https://graph.facebook.com/v2.6/" + senderId,
@@ -370,7 +370,14 @@ function createNewEntry(event, sessionObj)
  	console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
     console.log(util.inspect(sessionObj.new_entry, false, null));
 
-	sessionObj.save();
+	sessionObj.save(function(err) {
+		if(err) {
+			console.error("err happend during saving :", err);
+		}
+		else {
+			console.log("sessionObj saved Successfully :", sessionObj);
+		}
+	});
 }
 function getStarted(event, sessionObj, flag = false)
 {
