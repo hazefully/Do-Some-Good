@@ -393,7 +393,37 @@ function createNewEntry(event, sessionObj)
 		message += "Priority: " + sessionObj.new_entry.priority + "\n";
 		sendTextMessage(senderId, message);
 
-		var messsageData = {
+		/*var messageData = {
+		    recipient: {
+		      id: recipientId
+		    },
+		    message: {
+		      attachment: {
+		        type: "template",
+		        payload: {
+		          template_type: "generic",
+		          elements: [{
+		            title: "What do you want to do?",
+		            subtitle: "You can either add new calls for help, or list near calls for help",
+		            //image_url: "https://cdn.pixabay.com/photo/2017/02/10/12/03/volunteer-2055010_960_720.png",
+		            image_url: "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="+30+","+30+"&zoom=25&markers="+30+","+30,
+					item_url: "http:\/\/maps.apple.com\/maps?q="+30+","+30+"&z=16",
+		            buttons: [{
+		              type: "postback",
+		              title: "Add a call for help",
+		              payload: "NewEntry",
+		            }, {
+		              type: "postback",
+		              title: "List calls for help",
+		              payload: "ListEntries",
+		            }],
+		          }]
+		        }
+		      }
+		    }
+		 };*/
+
+		var messageData = {
 		    recipient: {
 		      id: senderId
 		    },
@@ -505,9 +535,7 @@ function sendGenericMessage(recipientId, messageText) {
           elements: [{
             title: "What do you want to do?",
             subtitle: "You can either add new calls for help, or list near calls for help",
-            //image_url: "https://cdn.pixabay.com/photo/2017/02/10/12/03/volunteer-2055010_960_720.png",
-            image_url: "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="+30+","+30+"&zoom=25&markers="+30+","+30,
-			item_url: "http:\/\/maps.apple.com\/maps?q="+30+","+30+"&z=16",
+            image_url: "https://cdn.pixabay.com/photo/2017/02/10/12/03/volunteer-2055010_960_720.png",
             buttons: [{
               type: "postback",
               title: "Add a call for help",
