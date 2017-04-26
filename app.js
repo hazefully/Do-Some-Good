@@ -234,11 +234,10 @@ function createNewEntry(event, sessionObj)
   }
   if(sessionObj.step == 1)
   {
-  	  sessionObj.new_entry = new location();
+  	  sessionObj.new_entry = new location({sender_id: senderId});
 
-  	  
-
-
+  	  console.log("*************************************************");
+    	console.log(util.inspect(sessionObj, false, null));
 
       request({
         url: "https://graph.facebook.com/v2.6/" + senderId,

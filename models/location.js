@@ -6,11 +6,11 @@ var LocationSchema = new Schema({
 	sender_id: String,
   	name: {type: String, default: 'N/A'},
  	date: { type: Date, default: Date.now },
- 	description: String,
+ 	description: {type: String, default: 'N/A'},
  	
  	hidden: { type: Boolean, default: false }, // if downvotes - upvotes > C hide him from the results of nearby locations
  												// inorder to unhide some one back he needs to gain some upvotes again
- 	priority: Number, // range from  1 to 10
+ 	priority: {type: String, default: 'LOW'},, // range from  1 to 10
  	upvotes: { type: Number, default: 0 },
  	downvotes: { type: Number, default: 0 },
 });
