@@ -122,6 +122,10 @@ function processPostback(event, sessionObj) {
     getStarted(event);
   }
   else if (payload == "NewEntry"){
+  	console.log("Entering NewEntry");
+  	console.log(sessionObj.step);
+  	console.log(sessionObj.sender_id);
+  	console.log("---------------------------------------");
     createNewEntry(event, sessionObj);
   }
   else if (payload == "ListEntries"){
