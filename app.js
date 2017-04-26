@@ -102,7 +102,7 @@ function processPostback(event, sessionObj) {
   var payload = event.postback.payload;
   console.log(payload);
   if (payload === "Greeting") {
-    getStarted(event, true);
+    getStarted(event, sessionObj, true);
   }
   else if (payload == "NewEntry"){
   	sessionObj.step = 1;
@@ -133,7 +133,7 @@ function processPostback(event, sessionObj) {
 
   }
   else if (payload == "CancelNewEntry"){
-    getStarted(event); 
+    getStarted(event, sessionObj); 
   }
 }
 
@@ -341,7 +341,7 @@ function createNewEntry(event, sessionObj)
 		callSendAPI(messageData);
 	}
 	else{
-		getStarted(event);
+		getStarted(event, sessionObj);
 		return;
 	}
  	if(++sessionObj.step < 6) {
@@ -351,7 +351,7 @@ function createNewEntry(event, sessionObj)
 		session.end(sessionObj);
 	}
 }
-function getStarted(event, flag = false)
+function getStarted(event, sessionObj, flag = false)
 {
   var senderId = event.sender.id;
   //var payload = event.postback.payload;
