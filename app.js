@@ -2,10 +2,11 @@ var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
+var regex = require("regex");
 
 var db = mongoose.connect(process.env.MONGODB_URI);
 
-//var locations = require("./models/locations");
+var location = require("./models/location");
 //var extras = require("./models/extras");
 var session = require("./models/session");
 
@@ -57,10 +58,6 @@ app.post('/webhook', function (req, res) {
 		res.sendStatus(200);
 	}
 });
-
-function receivedMessage(event) {
-	session(event, processMessage);
-}
 
 function processMessage(event, sessionObj) {
   var senderID = event.sender.id;
@@ -130,7 +127,8 @@ function processPostback(event, sessionObj) {
 
   }
   else if (payload == "ConfirmNewEntry"){
-
+  	sendTextMessage(senderID, "Thanks You!");
+  	getStarted(event, sessionObj);
   }
   else if (payload == "CancelNewEntry"){
     getStarted(event, sessionObj); 
@@ -223,9 +221,13 @@ function createNewEntry(event, sessionObj)
 {
 
   var senderId = event.sender.id;
+  var messageText = event.message.text;
+  var messageAttachments = event.message.attachments;
   var step = sessionObj.step;
   if(step == 1)
   {
+  	  sessionObj.new_entry = new location();
+
       request({
         url: "https://graph.facebook.com/v2.6/" + senderId,
         qs: {
@@ -252,20 +254,30 @@ function createNewEntry(event, sessionObj)
     }
     else if(step == 2)
     {
-      var messageData = {
-      recipient: {
-         id: senderId
-       },
-       message: {
-        text:"Please share the location of this call for help",
-           quick_replies:[
-             {
-                  content_type:"location",
-              }
-           ]
-        }
-      };
-      callSendAPI(messageData);
+    	var pattern1 = new regex("/^[a-zA-Z ]+$/"); // letters and whitespaces
+    	var pattern2 = new regex("/\S/"); // at least one letter
+    	if(pattern1.test(messageText) && pattern2.test(messageText)) {
+    		sessionObj.new_entry.name = messageText;
+    	}
+    	else {
+    		sendTextMessage(senderId, "Invalid Input!");
+    		getStarted(event, sessionObj);
+    	}
+
+		var messageData = {
+			recipient: {
+				id: senderId
+			},
+			message: {
+				text:"Please share the location of this call for help",
+				quick_replies:[
+					{
+						content_type:"location",
+					}
+				]
+			}
+		};
+		callSendAPI(messageData);
     }
     else if(step == 3)
     {
@@ -344,12 +356,8 @@ function createNewEntry(event, sessionObj)
 		getStarted(event, sessionObj);
 		return;
 	}
- 	if(++sessionObj.step < 6) {
-		sessionObj.save();
-	}
-	else {
-		session.end(sessionObj);
-	}
+ 	++sessionObj.step;
+	sessionObj.save();
 }
 function getStarted(event, sessionObj, flag = false)
 {

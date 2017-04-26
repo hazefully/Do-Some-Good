@@ -4,8 +4,7 @@ var Schema = mongoose.Schema;
 var LocationSchema = new Schema({
 	// _id is a unique identifier to the entity
 	sender_id: String,
-  	first_name: {type: String, default: 'N/A'},
- 	second_name: {type: String, default: 'N/A'},
+  	name: {type: String, default: 'N/A'},
  	date: { type: Date, default: Date.now },
  	description: String,
  	
@@ -16,4 +15,4 @@ var LocationSchema = new Schema({
  	downvotes: { type: Number, default: 0 },
 });
 
-module.exports = mongoose.model("locations", LocationSchema);
+module.exports = mongoose.model("location", LocationSchema);
