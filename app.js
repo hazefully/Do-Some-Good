@@ -157,11 +157,11 @@ function processPostback(event, sessionObj) {
   }
   else if (payload == "ConfirmNewEntry"){
   	sendTextMessage(senderId, "Thank you! Your efforts will help make this world a better world!");
-  	sendGenericMessage(event, sessionObj);
+  	getStarted(event, sessionObj);
   }
   else if (payload == "CancelNewEntry"){
     sendTextMessage(senderId, "Your entry has been cancelled, please try again.");
-    sendGenericMessage(event, sessionObj); 
+    getStarted(event, sessionObj); 
   }
   else {
   	getStarted(event, sessionObj);
@@ -393,26 +393,24 @@ function createNewEntry(event, sessionObj)
 		message += "Priority: " + sessionObj.new_entry.priority + "\n";
 		sendTextMessage(senderId, message);
 
-		var messageData = {
-			recipient: {id: senderId},
-			message: {
-			    attachment: {
-			        type: "template",
-			        payload: {
-			            template_type: "generic",
-			            elements: [
-			                {
-			                	element: {
-				                    title: "Location",
-				                    image_url: "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="+sessionObj.new_entry.lat+","+sessionObj.new_entry.long+"&zoom=25&markers="+sessionObj.new_entry.lat+","+sessionObj.new_entry.long,
-				                    item_url: "http:\/\/maps.apple.com\/maps?q="+sessionObj.new_entry.lat+","+sessionObj.new_entry.long+"&z=16"
-			              		}
-			            	}
-			            ]
-			        }
-			    }
-			}
-		}
+		var messsageData = {
+		    recipient: {
+		      id: senderId
+		    },
+		    message: {
+		      attachment: {
+		        type: "template",
+		        payload: {
+		          template_type: "generic",
+		          elements: [{
+		            title: "Location",
+		            image_url: "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="+sessionObj.new_entry.lat+","+sessionObj.new_entry.long+"&zoom=25&markers="+sessionObj.new_entry.lat+","+sessionObj.new_entry.long,
+				    item_url: "http:\/\/maps.apple.com\/maps?q="+sessionObj.new_entry.lat+","+sessionObj.new_entry.long+"&z=16"      		
+		          }]
+		        }
+		      }
+		    }
+		};  
 		callSendAPI(messageData);
 
 		messageData = {
@@ -440,7 +438,7 @@ function createNewEntry(event, sessionObj)
 		      }
 		    }       
 		  }
-		}
+		};
 		callSendAPI(messageData);
 	}
 	else{
