@@ -257,10 +257,10 @@ function createNewEntry(event, sessionObj)
     else if(sessionObj.step == 2)
     {
     	var pattern1 = new regex("/^[a-zA-Z ]+$/"); // letters and whitespaces
-    	var pattern2 = new regex("/\S/"); // at least one letter
+    	//var pattern2 = new regex("/\S/"); // at least one letter
     	console.log("------------------------------------------------------------------------\n");
     	console.log(messageText);
-    	if(pattern1.test(messageText) && pattern2.test(messageText)) {
+    	if(pattern1.test(messageText)){// && pattern2.test(messageText)) {
     		sessionObj.new_entry.name = messageText;
     	}
     	else {
