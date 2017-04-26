@@ -126,6 +126,7 @@ function processPostback(event, sessionObj) {
   	console.log(sessionObj.step);
   	console.log(sessionObj.sender_id);
   	console.log("---------------------------------------");
+  	sessionObj.step = 1;
     createNewEntry(event, sessionObj);
   }
   else if (payload == "ListEntries"){
@@ -245,7 +246,7 @@ function createNewEntry(event, sessionObj)
 
   var senderId = event.sender.id;
   var step = sessionObj.step;
-  if(step == 0)
+  if(step == 1)
   {
       request({
         url: "https://graph.facebook.com/v2.6/" + senderId,
@@ -268,11 +269,11 @@ function createNewEntry(event, sessionObj)
       });
 
     }
-    else if(step == 1){
+    else if(step == 2){
       var message = "Please enter the full name of the person that needs help.";
       sendTextMessage(senderId, message);
     }
-    else if(step == 2)
+    else if(step == 3)
     {
       var messageData = {
       recipient: {
@@ -289,12 +290,12 @@ function createNewEntry(event, sessionObj)
       };
       callSendAPI(messageData);
     }
-    else if(step == 3)
+    else if(step == 4)
     {
       var message = "Please specify a description for this call for help.";
       sendTextMessage(senderId, message);
     }
-    else if(step == 4)
+    else if(step == 5)
     {
     
       var messageData = {
@@ -325,7 +326,7 @@ function createNewEntry(event, sessionObj)
       };
       callSendAPI(messageData);
     }
-  else if(step == 5)
+  else if(step == 6)
   {
     // console.log("yeah baby");
     var message = "Okay, let's review this entry\n";
@@ -361,7 +362,7 @@ function createNewEntry(event, sessionObj)
       }
     }
     callSendAPI(messageData);
-    sessionObj.step = (sessionObj.step + 1) % 5;
+    sessionObj.step = (sessionObj.step + 1) % 6;
 
   }
   else{
