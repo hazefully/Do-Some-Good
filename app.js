@@ -5,48 +5,42 @@ var mongoose = require("mongoose");
 
 var db = mongoose.connect(process.env.MONGODB_URI);
 
-//db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function(){
-	console.log("Connected to DB");
-	var bookSchema = mongoose.Schema({
-		name: String,
-		//Also creating index on field isbn
-		isbn: {type: String, index: true},
-		author: String,
-		pages: Number
-	});
-	var Book = mongoose.model('Book', bookSchema, "mongoose_demo");
-
-	var book1 = new Book({
-		name:"Mongoose Demo 1",
-		isbn: "MNG123",
-		author: "Author1,  Author2",
-		pages: 123
-	});
-
-	//Saving the model instance to the DB
-	book1.save(function(err){
-		if ( err ) throw err;
-		console.log("Book Saved Successfully");
-	});
-
-	var book2 = new Book({
-		name:"Mongoose Demo 2",
-		isbn: "MNG124",
-		author: "Author2,  Author3",
-		pages: 90
-	});
-
-	book2.save(function(err){
-		if ( err ) throw err;
-		console.log("Book Saved Successfully");
-	});
-
-	book1.pages = 500;
-	book1.save();
-
-  //do operations which involve interacting with DB.
+var bookSchema = mongoose.Schema({
+	name: String,
+	//Also creating index on field isbn
+	isbn: {type: String, index: true},
+	author: String,
+	pages: Number
 });
+var Book = mongoose.model('Book', bookSchema, "mongoose_demo");
+
+var book1 = new Book({
+	name:"Mongoose Demo 1",
+	isbn: "MNG123",
+	author: "Author1,  Author2",
+	pages: 123
+});
+
+//Saving the model instance to the DB
+book1.save(function(err){
+	if ( err ) throw err;
+	console.log("Book Saved Successfully");
+});
+
+var book2 = new Book({
+	name:"Mongoose Demo 2",
+	isbn: "MNG124",
+	author: "Author2,  Author3",
+	pages: 90
+});
+
+book2.save(function(err){
+	if ( err ) throw err;
+	console.log("Book Saved Successfully");
+});
+
+book1.pages = 500;
+book1.save();
 
 
 //var locations = require("./models/locations");
