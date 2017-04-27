@@ -39,17 +39,17 @@ app.post('/webhook', function (req, res) {
 			entry.messaging.forEach(function(event) {
 				console.log(event);
         sendSeenAndTyping(event);
-				if(event.message) {
+        if(event.message) {
 					// All message events should be handled in processMessage()
 					session.start(event, processMessage);
 				} else if(event.postback) {
 					// All postback events should be handled in processPostback()
-		            session.start(event, processPostback);
-				}
-				else {
-					console.log("Webhook recieved unknown event!");
-				}
-			});
+          session.start(event, processPostback);
+        }
+        else {
+         console.log("Webhook recieved unknown event!");
+       }
+     });
 		});
 		res.sendStatus(200);
 	}
@@ -73,22 +73,25 @@ function processMessage(event, sessionObj) {
 		// if there's ongoing create new entry process
 		createNewEntry(event, sessionObj);
 
-	} else if(sessionObj.offset == 1) {
-		attachs = event.message.attachments;
-
-		if(!attachs || !attachs.length || attachs[0].type != 'location') {
-			triggerListEntries(event, sessionObj);
-		} else {
-			sessionObj.lat = attachs[0].payload.coordinates.lat;
-			sessionObj.long = attachs[0].payload.coordinates.long;
-			sessionObj.save();
-			entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
-		}
-	} else if(sessionObj.upd_step){
-     updateEntry(event, sessionObj);
-  } else{
-		getStarted(event, sessionObj);
 	}
+  else if(sessionObj.offset == 1) {
+		  attachs = event.message.attachments;
+
+		  if(!attachs || !attachs.length || attachs[0].type != 'location') {
+			 triggerListEntries(event, sessionObj);
+		  } else {
+			 sessionObj.lat = attachs[0].payload.coordinates.lat;
+			 sessionObj.long = attachs[0].payload.coordinates.long;
+			 sessionObj.save();
+			 entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
+      }
+  } 
+  else if(sessionObj.upd_step){
+   updateEntry(event, sessionObj);
+ }
+ else{
+  getStarted(event, sessionObj);
+ }
   sendStopTyping(event);
 }
 
@@ -171,33 +174,33 @@ function triggerNewEntry(event, sessionObj) {
 		sessionObj.fresh = false;
 		sessionObj.step = 1;
 		sessionObj.new_entry = new entry.model({user_id: sessionObj.user_id});
-	  	sessionObj.markModified('new_entry');
-		sessionObj.save();
+    sessionObj.markModified('new_entry');
+    sessionObj.save();
 
-		request({
-	        url: "https://graph.facebook.com/v2.6/" + sessionObj.user_id,
-	        qs: {
-	          access_token: process.env.PAGE_ACCESS_TOKEN,
-	          fields: "first_name"
-	        },
-	        method: "GET"
-	      }, function(error, response, body) {
-	        var startNewEntry = "";
-	        if (error) {
-	          console.log("Error getting user's name!");
+    request({
+     url: "https://graph.facebook.com/v2.6/" + sessionObj.user_id,
+     qs: {
+       access_token: process.env.PAGE_ACCESS_TOKEN,
+       fields: "first_name"
+     },
+     method: "GET"
+   }, function(error, response, body) {
+     var startNewEntry = "";
+     if (error) {
+       console.log("Error getting user's name!");
 	          //console.log("Error getting user's name: " +  error);
 	        } else {
-	          var bodyObj = JSON.parse(body);
-	          name = bodyObj.first_name;
-	          startNewEntry = "Okay " + name + ", ";
-	        }
-	        var message = startNewEntry + "I will guide you through the process of adding a new entry."
-	        sendTextMessage(sessionObj.user_id, message);
-	      });
+           var bodyObj = JSON.parse(body);
+           name = bodyObj.first_name;
+           startNewEntry = "Okay " + name + ", ";
+         }
+         var message = startNewEntry + "I will guide you through the process of adding a new entry."
+         sendTextMessage(sessionObj.user_id, message);
+       });
     setTimeout(function(){
       createNewEntry(event, sessionObj);
     }, 1500);
-	}
+  }
 }
 function triggerListEntries(event, sessionObj) {
 	if(!sessionObj.fresh) {
@@ -230,38 +233,38 @@ function processPostback(event, sessionObj) {
 	else if(payload == "ViewMore") {
 		if(sessionObj.offset <= 1)
       triggerListEntries(event, sessionObj);
-		else
-			entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
-	}
-	else if(payload.length >= 10 && payload.substring(0, 10) == "ViewEntry_") {
-		var id = payload.substring(3, payload.length);
-		entry.model.findById(id, function(err, result) {
-			if(err || !result) {
-				sendTextMessage(userID, "Entry Not Found!");
-			} else {
-				showEntry(sessionObj, result);
-			}
-		});
-	}
-	else if (payload == "ConfirmNewEntry") {
-		if(sessionObj.step < 6) {
-			sendTextMessage(userID, "Not enough information to create a new entry");
-		}
-		else {
-			sendTextMessage(userID, "Thank you! Your efforts will help make this world a better world!");
-			var newEntry = new entry.model(sessionObj.new_entry);
-			newEntry.save();
-		}
-		getStarted(event, sessionObj);
-	}
-	else if(payload == "CancelNewEntry") {
-		sendTextMessage(userID, "Your entry has been cancelled, please try again.");
-    	getStarted(event, sessionObj);
-	}
-  else if(payload == "UpdateStatus")
-  {
-    triggerUpdateStatus(event, sessionObj);
+    else
+     entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
+ }
+ else if(payload.length >= 10 && payload.substring(0, 10) == "ViewEntry_") {
+  var id = payload.substring(3, payload.length);
+  entry.model.findById(id, function(err, result) {
+   if(err || !result) {
+    sendTextMessage(userID, "Entry Not Found!");
+  } else {
+    showEntry(sessionObj, result);
   }
+});
+}
+else if (payload == "ConfirmNewEntry") {
+  if(sessionObj.step < 6) {
+   sendTextMessage(userID, "Not enough information to create a new entry");
+ }
+ else {
+   sendTextMessage(userID, "Thank you! Your efforts will help make this world a better world!");
+   var newEntry = new entry.model(sessionObj.new_entry);
+   newEntry.save();
+ }
+ getStarted(event, sessionObj);
+}
+else if(payload == "CancelNewEntry") {
+  sendTextMessage(userID, "Your entry has been cancelled, please try again.");
+  getStarted(event, sessionObj);
+}
+else if(payload == "UpdateStatus")
+{
+  triggerUpdateStatus(event, sessionObj);
+}
 	// all other events should be handled before this one
 	else if(sessionObj.step) {
 		createNewEntry(event, sessionObj);
@@ -283,8 +286,8 @@ function triggerUpdateStatus(event, sessionObj){
     var messageData = {
       recipient: {
         id: userID
-       },
-       message: {
+      },
+      message: {
         text:"Please choose how you would like to search for the call for help you wish to update.",
         quick_replies:[
         {
@@ -308,6 +311,7 @@ function triggerUpdateStatus(event, sessionObj){
   };
   callSendAPI(messageData);
 }
+}
 function sendSeenAndTyping(event){
 
   var messageData = {
@@ -326,6 +330,7 @@ function sendSeenAndTyping(event){
   };
   callSendAPI(messageData);
 }
+
 function sendStopTyping(event){
   messageData = {
     recipient: {
@@ -335,6 +340,7 @@ function sendStopTyping(event){
   };
   callSendAPI(messageData);
 }
+
 function createNewEntry(event, sessionObj) {
 	var userID = event.sender.id;
 	if(event.message) {
@@ -346,129 +352,129 @@ function createNewEntry(event, sessionObj) {
       newEntryErrorHandling(event, sessionObj);
       return;
     }
-		if(sessionObj.step == 2) {
-			sessionObj.new_entry.name = messageText;
-    		sessionObj.markModified('new_entry');
-    		getLocation(userID, "Please share the location of this call for help.");
-		}
-		else if(sessionObj.step == 3) {
-      console.log(attachs);
-			if(!attachs || !attachs.length || attachs[0].type != 'location') {
+    if(sessionObj.step == 2) {
+     sessionObj.new_entry.name = messageText;
+     sessionObj.markModified('new_entry');
+     getLocation(userID, "Please share the location of this call for help.");
+   }
+   else if(sessionObj.step == 3) {
+    console.log(attachs);
+    if(!attachs || !attachs.length || attachs[0].type != 'location') {
 	    		// sendTextMessage(userID, "Invalid Input!");
 	    		// getStarted(event, sessionObj);
 	    		// return;
           newEntryErrorHandling(event, sessionObj);
           return;
-	    	}
-	    	sessionObj.new_entry.location.coordinates[1] = attachs[0].payload.coordinates.lat;
-	    	sessionObj.new_entry.location.coordinates[0] = attachs[0].payload.coordinates.long;
-	    	sessionObj.markModified('new_entry');
+        }
+        sessionObj.new_entry.location.coordinates[1] = attachs[0].payload.coordinates.lat;
+        sessionObj.new_entry.location.coordinates[0] = attachs[0].payload.coordinates.long;
+        sessionObj.markModified('new_entry');
 
-	    var message = "Please specify a description for this call for help.";
-			sendTextMessage(userID, message);
-		}
-		else if(sessionObj.step == 4) {
-			sessionObj.new_entry.description = messageText;
-    		sessionObj.markModified('new_entry');
-
-    		var messageData = {
-		        recipient: {
-		          id: userID
-		        },
-		        message: {
-		          text:"Please specify the priority of this call for help",
-		             quick_replies:[
-		               {
-		                 content_type:"text",
-		                 title: "High",
-		                 payload: "High"
-		               },
-		               {
-		                 content_type:"text",
-		                 title: "Medium",
-		                 payload: "Medium"
-
-		               },
-		               {
-		                  content_type:"text",
-		                  title: "Low",
-		                  payload: "Low"
-		               }
-		             ]
-		        }
-			};
-			callSendAPI(messageData);
-		}
-		else if(sessionObj.step == 5) {
-      if(messageText != "High" && messageText != "Medium" && messageText != "Low")
-      {
-         newEntryErrorHandling(event, sessionObj);
-         return;
+        var message = "Please specify a description for this call for help.";
+        sendTextMessage(userID, message);
       }
-			sessionObj.new_entry.priority = messageText;
-    		sessionObj.markModified('new_entry');
-    		sendTextMessage(userID, "Okay, let's review this entry.\n");
-    		setTimeout(function(){
-          showEntry(sessionObj, sessionObj.new_entry);
-        }, 900);
-        
+      else if(sessionObj.step == 4) {
+       sessionObj.new_entry.description = messageText;
+       sessionObj.markModified('new_entry');
 
-			messageData = {
-				recipient:{
-					id: userID
-				},
-				message:{
-					attachment:{
-						type: "template",
-						payload:{
-							template_type:"button",
-							text:"Are you sure you want to add this entry?",
-							buttons:[
-								{
-									type:"postback",
-									title:"Yes",
-									payload:"ConfirmNewEntry"
-								},
-								{
-									type:"postback",
-									title:"No",
-									payload:"CancelNewEntry"
-								}
-							]
-						}
-					}       
-				}
-			};
+       var messageData = {
+        recipient: {
+          id: userID
+        },
+        message: {
+          text:"Please specify the priority of this call for help",
+          quick_replies:[
+          {
+           content_type:"text",
+           title: "High",
+           payload: "High"
+         },
+         {
+           content_type:"text",
+           title: "Medium",
+           payload: "Medium"
 
-      setTimeout(function(){
-        callSendAPI(messageData);
-      }, 2700);
-		}
-		else {
-			sendTextMessage(userID, "Invalid Input!");
-    		getStarted(event, sessionObj);
-    		return;
-		}
+         },
+         {
+          content_type:"text",
+          title: "Low",
+          payload: "Low"
+        }
+        ]
+      }
+    };
+    callSendAPI(messageData);
+  }
+  else if(sessionObj.step == 5) {
+    if(messageText != "High" && messageText != "Medium" && messageText != "Low")
+    {
+     newEntryErrorHandling(event, sessionObj);
+     return;
+   }
+   sessionObj.new_entry.priority = messageText;
+   sessionObj.markModified('new_entry');
+   sendTextMessage(userID, "Okay, let's review this entry.\n");
+   setTimeout(function(){
+    showEntry(sessionObj, sessionObj.new_entry);
+  }, 900);
 
-	} else if(event.postback) {
-		var payload = event.postback.payload;
-		if(sessionObj.step == 1) {
-			var message = "Please enter the full name of the person that needs help. (If you wish to keep this field empty, just reply with \"N\/A\")";
-      sendTextMessage(userID, message);
-		}
-		else {
-			 sendTextMessage(userID, "Invalid Input!");
-    	 getStarted(event, sessionObj);
-    		return;
-		}
-	}
-	else {
-		sendTextMessage(userID, "Invalid Input!");
-		getStarted(event, sessionObj);
-		return;
-	}
-	++sessionObj.step;
-	sessionObj.save();
+
+   messageData = {
+    recipient:{
+     id: userID
+   },
+   message:{
+     attachment:{
+      type: "template",
+      payload:{
+       template_type:"button",
+       text:"Are you sure you want to add this entry?",
+       buttons:[
+       {
+         type:"postback",
+         title:"Yes",
+         payload:"ConfirmNewEntry"
+       },
+       {
+         type:"postback",
+         title:"No",
+         payload:"CancelNewEntry"
+       }
+       ]
+     }
+   }       
+ }
+};
+
+setTimeout(function(){
+  callSendAPI(messageData);
+}, 2700);
+}
+else {
+ sendTextMessage(userID, "Invalid Input!");
+ getStarted(event, sessionObj);
+ return;
+}
+
+} else if(event.postback) {
+  var payload = event.postback.payload;
+  if(sessionObj.step == 1) {
+   var message = "Please enter the full name of the person that needs help. (If you wish to keep this field empty, just reply with \"N\/A\")";
+   sendTextMessage(userID, message);
+ }
+ else {
+  sendTextMessage(userID, "Invalid Input!");
+  getStarted(event, sessionObj);
+  return;
+}
+}
+else {
+  sendTextMessage(userID, "Invalid Input!");
+  getStarted(event, sessionObj);
+  return;
+}
+++sessionObj.step;
+sessionObj.save();
 }
 
 function showEntry(sessionObj, theEntry) {
@@ -477,35 +483,35 @@ function showEntry(sessionObj, theEntry) {
 	message += "Description: " + theEntry.description + "\n";
 	message += "Priority: " + theEntry.priority + "\n";
   message += "Location: ";
-	sendTextMessage(sessionObj.user_id, message);
+  sendTextMessage(sessionObj.user_id, message);
 
-	var long = theEntry.location.coordinates[0];
-	var lat = theEntry.location.coordinates[1];
-	setTimeout(function(){
+  var long = theEntry.location.coordinates[0];
+  var lat = theEntry.location.coordinates[1];
+  setTimeout(function(){
     sendLocation(sessionObj, lat, long);
   }, 900);	
 }
 
 function sendLocation(sessionObj, lat, long) {
 	var messageData = {
-	    recipient: {
-	      id: sessionObj.user_id
-	    },
-	    message: {
-	      attachment: {
-	        type: "template",
-	        payload: {
-	          template_type: "generic",
-	          elements: [{
-	            title: "Location",
-	            image_url: "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="+lat+","+long+"&zoom=25&markers="+lat+","+long,
-			    item_url: "http:\/\/maps.apple.com\/maps?q="+lat+","+long+"&z=16"      		
-	          }]
-	        }
-	      }
-	    }
-	};
-	callSendAPI(messageData);
+   recipient: {
+     id: sessionObj.user_id
+   },
+   message: {
+     attachment: {
+       type: "template",
+       payload: {
+         template_type: "generic",
+         elements: [{
+           title: "Location",
+           image_url: "https:\/\/maps.googleapis.com\/maps\/api\/staticmap?size=764x400&center="+lat+","+long+"&zoom=25&markers="+lat+","+long,
+           item_url: "http:\/\/maps.apple.com\/maps?q="+lat+","+long+"&z=16"      		
+         }]
+       }
+     }
+   }
+ };
+ callSendAPI(messageData);
 }
 
 function newEntryErrorHandling(event, sessionObj)
@@ -532,42 +538,42 @@ function newEntryErrorHandling(event, sessionObj)
         var message = "Please specify a description for this call for help.";
         sendTextMessage(userID, message);  
       }, 800);
-     }
+    }
     else if(sessionObj.step == 5)
     {
       var messageData = {
-           recipient: {
-              id: userID
-            },
-            message: {
-              text:"Please specify the priority of this call for help.",
-                 quick_replies:[
-                   {
-                     content_type:"text",
-                     title: "High",
-                     payload: "High"
-                   },
-                   {
-                     content_type:"text",
-                     title: "Medium",
-                     payload: "Medium"
+       recipient: {
+        id: userID
+      },
+      message: {
+        text:"Please specify the priority of this call for help.",
+        quick_replies:[
+        {
+         content_type:"text",
+         title: "High",
+         payload: "High"
+       },
+       {
+         content_type:"text",
+         title: "Medium",
+         payload: "Medium"
 
-                   },
-                   {
-                      content_type:"text",
-                      title: "Low",
-                      payload: "Low"
-                   }
-                 ]
-            }
-      };
-      setTimeout(function(){
-        callSendAPI(messageData);  
-      }, 800);
+       },
+       {
+        content_type:"text",
+        title: "Low",
+        payload: "Low"
+      }
+      ]
     }
-  
-    sessionObj.save();
-  }
+  };
+  setTimeout(function(){
+    callSendAPI(messageData);  
+  }, 800);
+}
+
+sessionObj.save();
+}
 }
 
 function getLocation(userID, message) {
@@ -590,106 +596,106 @@ function showList(sessionObj, list, msg) {
   var firstView = false;
   if(offset == 0)
     firstView = true;
-	if(offset + 4 < list.length)
-		btns.push({
-			title: "View More",
-		    type: "postback",
-		    payload: "ViewMore"
-		});
+  if(offset + 4 < list.length)
+    btns.push({
+     title: "View More",
+     type: "postback",
+     payload: "ViewMore"
+   });
 
-	while(offset < list.length && elms.length < 4) {
-		var titlle = list[offset].description;
-      var subtitlle = "Priority: "; 
-    	 subtitlle += list[offset].priority;
-       subtitlle += "/Name: ";
-       subtitlle += list[offset].name;
-    	elms.push({
-    		title: titlle,
-	        subtitle: subtitlle,
-	        buttons: [{
-	          title: "View",
-	          type: "postback",
-	          payload: "ViewEntry_" + list[offset]._id
-	        }]
-    	});
-    	++offset;
-	}
-	if(offset == list.length)
-		sessionObj.offset = 0;
-	else
-		sessionObj.offset = offset + 1;
+  while(offset < list.length && elms.length < 4) {
+    var titlle = list[offset].description;
+    var subtitlle = "Priority: "; 
+    subtitlle += list[offset].priority;
+    subtitlle += "/Name: ";
+    subtitlle += list[offset].name;
+    elms.push({
+      title: titlle,
+      subtitle: subtitlle,
+      buttons: [{
+       title: "View",
+       type: "postback",
+       payload: "ViewEntry_" + list[offset]._id
+     }]
+   });
+    ++offset;
+  }
+  if(offset == list.length)
+    sessionObj.offset = 0;
+  else
+    sessionObj.offset = offset + 1;
 
-	var messageData = {
-		recipient:{
-			id: sessionObj.user_id
-		},
-		message:{
-			attachment:{
-				type : "template",
-				payload:{
-					template_type: "list",
-					top_element_style: "compact",
-					elements: elms,
-					buttons: btns
-				}
-			}
-		}
-	}
-	sessionObj.save();
-  if(firstView)
-    sendTextMessage(sessionObj.user_id, msg);
+  var messageData = {
+    recipient:{
+     id: sessionObj.user_id
+   },
+   message:{
+     attachment:{
+      type : "template",
+      payload:{
+       template_type: "list",
+       top_element_style: "compact",
+       elements: elms,
+       buttons: btns
+     }
+   }
+ }
+}
+sessionObj.save();
+if(firstView)
+  sendTextMessage(sessionObj.user_id, msg);
 
-	if(elms.length == 0) {
-		sendTextMessage(sessionObj.user_id, "No results found!");
-	}
-	else if(elms.length == 1) {
-    console.log(offset);
-    console.log(list.length);
-    if(sessionObj.offset == 0 && list.length > 1)
-      sendTextMessage(sessionObj.user_id, "Only one call for help is left with the following details:")
-    else
-      sendTextMessage(sessionObj.user_id, "Found one suitable call for help with the following details:");
-		setTimeout(function(){
-      showEntry(sessionObj, list[list.length - 1]);
-    }, 900)
-	}
-	else {
-    if(firstView){
-      setTimeout(function(){
-        callSendAPI(messageData);
-      }, 500);
-    }
-    else
-    {
+if(elms.length == 0) {
+  sendTextMessage(sessionObj.user_id, "No results found!");
+}
+else if(elms.length == 1) {
+  console.log(offset);
+  console.log(list.length);
+  if(sessionObj.offset == 0 && list.length > 1)
+    sendTextMessage(sessionObj.user_id, "Only one call for help is left with the following details:")
+  else
+    sendTextMessage(sessionObj.user_id, "Found one suitable call for help with the following details:");
+  setTimeout(function(){
+    showEntry(sessionObj, list[list.length - 1]);
+  }, 900)
+}
+else {
+  if(firstView){
+    setTimeout(function(){
       callSendAPI(messageData);
-    }
+    }, 500);
+  }
+  else
+  {
+    callSendAPI(messageData);
+  }
 
-	}
+}
 }
 
 function getStarted(event, sessionObj, welcomeMessage = false) {
 	var userID = event.sender.id;
 	if(welcomeMessage) {
 		request({
-	      url: "https://graph.facebook.com/v2.6/" + userID,
-	      qs: {
-	        access_token: process.env.PAGE_ACCESS_TOKEN,
-	        fields: "first_name"
-	      },
-	      method: "GET"
-	    }, function(error, response, body) {
-	      var greeting = "";
-	      if (error) {
+     url: "https://graph.facebook.com/v2.6/" + userID,
+     qs: {
+       access_token: process.env.PAGE_ACCESS_TOKEN,
+       fields: "first_name"
+     },
+     method: "GET"
+   }, function(error, response, body) {
+     var greeting = "";
+     if (error) {
 	        //console.log("Error getting user's name: " +  error);
 	        console.log("Error getting user's name!");
 	      } else {
-	        var bodyObj = JSON.parse(body);
-	        name = bodyObj.first_name;
-	        greeting = "Hi " + name + "!\n";
-	      }
-	      var message = greeting + "This messanger bot allows you to reach people in need in your area, and also add information about other possible calls for help so other users can reach them too.\nTogether, we can create a better world!";
-	      sendTextMessage(userID, message);
-	    });
+         var bodyObj = JSON.parse(body);
+         name = bodyObj.first_name;
+         greeting = "Hi " + name + "!\n";
+       }
+       var message = greeting + "This messanger bot allows you to reach people in need in your area, and also add information about other possible calls for help so other users can reach them too.\nTogether, we can create a better world!";
+       sendTextMessage(userID, message);
+     });
 	}
 
   var messageData = {
@@ -766,5 +772,5 @@ function callSendAPI(messageData) {
 
 
 app.listen((process.env.PORT || 5000), function () {
-	console.log("Server Started on Port %d", (process.env.PORT || 5000));
+  console.log("Server Started on Port %d", (process.env.PORT || 5000));
 });
