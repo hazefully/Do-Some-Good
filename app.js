@@ -602,7 +602,7 @@ function showList(sessionObj, list, msg) {
      type: "postback",
      payload: "ViewMore"
    });
-
+  console.log(list);
   while(offset < list.length && elms.length < 4) {
     var titlle = list[offset].description;
     var subtitlle = "Priority: "; 
