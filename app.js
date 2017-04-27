@@ -237,7 +237,7 @@ function createNewEntry(event, sessionObj) {
 		}
 		else if(sessionObj.step == 3) {
       console.log(attachs);
-			if(!attachs || !attachs.length --|| attachs[0].type != 'location') {
+			if(!attachs || !attachs.length || attachs[0].type != 'location') {
 	    		// sendTextMessage(userID, "Invalid Input!");
 	    		// getStarted(event, sessionObj);
 	    		// return;
