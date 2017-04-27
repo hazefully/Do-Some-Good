@@ -224,22 +224,25 @@ function createNewEntry(event, sessionObj) {
 	if(event.message) {
 		var messageText = event.message.text;
 		var attachs = event.message.attachments;
+    if(messageText.length == 0)
+      newEntryErrorHandling(event, sessionObj);
 		if(sessionObj.step == 2) {
 			sessionObj.new_entry.name = messageText;
     		sessionObj.markModified('new_entry');
     		getLocation(userID, "Please share the location of this call for help");
 		}
 		else if(sessionObj.step == 3) {
-			if(!attachs || !attachs.length || attachs[0].type != 'location') {
-	    		sendTextMessage(userID, "Invalid Input!");
-	    		getStarted(event, sessionObj);
-	    		return;
+			if(!attachs || !attachs.length --|| attachs[0].type != 'location') {
+	    		// sendTextMessage(userID, "Invalid Input!");
+	    		// getStarted(event, sessionObj);
+	    		// return;
+          newEntryErrorHandling(event, sessionObj);
 	    	}
 	    	sessionObj.new_entry.location.coordinates[1] = attachs[0].payload.coordinates.lat;
 	    	sessionObj.new_entry.location.coordinates[0] = attachs[0].payload.coordinates.long;
 	    	sessionObj.markModified('new_entry');
 
-	    	var message = "Please specify a description for this call for help.";
+	    var message = "Please specify a description for this call for help.";
 			sendTextMessage(userID, message);
 		}
 		else if(sessionObj.step == 4) {
@@ -275,6 +278,8 @@ function createNewEntry(event, sessionObj) {
 			callSendAPI(messageData);
 		}
 		else if(sessionObj.step == 5) {
+      if(messageText != "High" && messageText != "Medium" && messageText != "Low")
+         newEntryErrorHandling(event, sessionObj);
 			sessionObj.new_entry.priority = messageText;
     		sessionObj.markModified('new_entry');
     		sendTextMessage(userID, "Okay, let's review this entry\n");
@@ -324,11 +329,11 @@ function createNewEntry(event, sessionObj) {
 		var payload = event.postback.payload;
 		if(sessionObj.step == 1) {
 			var message = "Please enter the full name of the person that needs help.";
-      		sendTextMessage(userID, message);
+      sendTextMessage(userID, message);
 		}
 		else {
-			sendTextMessage(userID, "Invalid Input!");
-    		getStarted(event, sessionObj);
+			 sendTextMessage(userID, "Invalid Input!");
+    	 getStarted(event, sessionObj);
     		return;
 		}
 	}
@@ -376,6 +381,59 @@ function sendLocation(sessionObj, lat, long) {
 	    }
 	};
 	callSendAPI(messageData);
+}
+
+function newEntryErrorHandling(event, sessionObj)
+{
+
+  if(sessionObj.step == 2)
+  {
+    sendTextMessage(sessionObj.user_id, "Please enter the full name of the person that needs help.");
+  }
+  else
+  {
+    if(sessionObj.step == 3)
+    {
+        getLocation(userID, "Please share the location of this call for help");
+    }
+    else if(sessionObj.step == 4)
+    {
+      var message = "Please specify a description for this call for help.";
+      sendTextMessage(userID, message);    }
+    else if(sessionObj.step == 5)
+    {
+      var messageData = {
+           recipient: {
+              id: userID
+            },
+            message: {
+              text:"Please specify the priority of this call for help",
+                 quick_replies:[
+                   {
+                     content_type:"text",
+                     title: "High",
+                     payload: "High"
+                   },
+                   {
+                     content_type:"text",
+                     title: "Medium",
+                     payload: "Medium"
+
+                   },
+                   {
+                      content_type:"text",
+                      title: "Low",
+                      payload: "Low"
+                   }
+                 ]
+            }
+      };
+      callSendAPI(messageData);  
+    }
+  
+    sessionObj.step--;
+    sessionObj.save();
+  }
 }
 
 function getLocation(userID, message) {
@@ -444,6 +502,7 @@ function showList(sessionObj, list) {
 		sendTextMessage(sessionObj.user_id, "No results found!");
 	}
 	else if(elms.length == 1) {
+    if(elms.length == 1 && offset == 0 && list.length > 1)
     sendTextMessage(sessionObj.user_id, "Found one call for help near your location");
 		setTimeout(function(){
       showEntry(sessionObj, list[list.length - 1]);
