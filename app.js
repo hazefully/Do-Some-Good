@@ -279,6 +279,8 @@ function triggerUpdateStatus(event, sessionObj){
     sessionObj.fresh = false;
 
     sessionObj.upd_step = 2;
+        sessionObj.offset = 1;
+
     sessionObj.save();
 
     var messageData = {
