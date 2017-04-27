@@ -411,7 +411,7 @@ function showList(sessionObj, list) {
 		    payload: "ViewMore"
 		});*/
 
-	while(offset < list.length && btns.length < 5) {
+	while(offset < list.length && elms.length < 4) {
 		var titlle = list[offset].description;
     	var subtitlle = list[offset].priority;
     	elms.push({
