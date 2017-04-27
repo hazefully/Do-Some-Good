@@ -419,7 +419,21 @@ function showList(sessionObj, list) {
 		sessionObj.offset = 0;
 	else
 		sessionObj.offset = offset + 1;
+  elms = [];
+      elms.push({
+        title: "kkkk",
+          subtitle: "kkkkk",
 
+          buttons: [{
+            title: "View",
+            type: "postback",
+            payload: "$$$" + list[offset]._id
+          }]
+      });
+  elms.push({
+    title:"",
+    subtitle:"",
+  });
 	var messageData = {
 		recipient:{
 			id: sessionObj.user_id
