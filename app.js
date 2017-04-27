@@ -167,6 +167,8 @@ function updateEntry(event, sessionObj){
       }
     }
   }
+  sessionObj.save();
+
 }
 function triggerNewEntry(event, sessionObj) {
 	if(!sessionObj.fresh)
@@ -274,6 +276,18 @@ function processPostback(event, sessionObj) {
 else if(payload == "UpdateStatus")
 {
   triggerUpdateStatus(event, sessionObj);
+}
+else if(payload == "Upvote"){
+
+}
+else if(payload == "Downvote"){
+
+}
+else if(payload == "PrintHistory"){
+
+}
+else if(payload == "AddStatusUpdate"){
+
 }
 	// all other events should be handled before this one
 	else if(sessionObj.step) {
