@@ -497,7 +497,7 @@ function showEntry(sessionObj, theEntry) {
   var lat = theEntry.location.coordinates[1];
   setTimeout(function(){
     sendLocation(sessionObj, lat, long);
-  }, 900);	
+  }, 700);	
 }
 
 function sendLocation(sessionObj, lat, long) {
