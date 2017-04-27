@@ -397,7 +397,8 @@ function showList(sessionObj, list) {
 			}
 		}
 	}
-	console.log(bnts);
+	console.log(btns);
+	console.log(elms);
 	callSendAPI(messageData);
 	sessionObj.save();
 }
