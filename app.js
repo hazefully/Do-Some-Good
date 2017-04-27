@@ -38,6 +38,7 @@ app.post('/webhook', function (req, res) {
 
 			entry.messaging.forEach(function(event) {
 				console.log(event);
+        sendSeenAndTyping(event);
 				if(event.message) {
 					// All message events should be handled in processMessage()
 					session.start(event, processMessage);
@@ -170,7 +171,7 @@ function processPostback(event, sessionObj) {
 	}
 	else if (payload == "ConfirmNewEntry") {
 		if(sessionObj.step < 6) {
-			sendTextMessage(userID, "Incomplete Data! Please try again.");
+			sendTextMessage(userID, "Not enough information to create a new entry");
 		}
 		else {
 			sendTextMessage(userID, "Thank you! Your efforts will help make this world a better world!");
@@ -188,7 +189,27 @@ function processPostback(event, sessionObj) {
 		createNewEntry(event, sessionObj);
 	}
 }
+function sendSeenAndTyping(event){
 
+  var messageData = {
+    recipient: {
+      id: event.sender.id
+    },
+    sender_action: "mark_seen"
+  };
+  callSendAPI(messageData);
+
+  setTimeout(function() {
+    messageData = {
+    recipient: {
+      id: event.sender.id
+    },
+    sender_action: "typing_on"
+  };
+  callSendAPI(messageData);
+  }, 700)
+
+}
 function createNewEntry(event, sessionObj) {
 	var userID = event.sender.id;
 	if(event.message) {
