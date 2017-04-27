@@ -285,7 +285,10 @@ function createNewEntry(event, sessionObj) {
 		}
 		else if(sessionObj.step == 5) {
       if(messageText != "High" && messageText != "Medium" && messageText != "Low")
+      {
          newEntryErrorHandling(event, sessionObj);
+         return;
+      }
 			sessionObj.new_entry.priority = messageText;
     		sessionObj.markModified('new_entry');
     		sendTextMessage(userID, "Okay, let's review this entry\n");
