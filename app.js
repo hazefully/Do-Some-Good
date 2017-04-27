@@ -427,7 +427,7 @@ function showList(sessionObj, list) {
           buttons: [{
             title: "View",
             type: "postback",
-            payload: "$$$" + list[offset]._id
+            payload: "xxx"
           }]
       });
   elms.push({
