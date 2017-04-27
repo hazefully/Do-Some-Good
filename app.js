@@ -537,13 +537,7 @@ function showEntry(sessionObj, theEntry) {
          type:"postback",
          title:"Show Status History",
          payload:"PrintHistory"
-       },
-       {
-         type:"postback",
-         title:"Add Status Update",
-         payload:"AddStatusUpdate"
        }
-
        ]
      }
    }       
