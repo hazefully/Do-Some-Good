@@ -444,7 +444,7 @@ function showList(sessionObj, list) {
     sendTextMessage(sessionObj.user_id, "Found one call for help near your location");
 		setTimeout(function(){
       showEntry(sessionObj, list[list.length - 1]);
-    }, 600)
+    }, 900)
 	}
 	else {
 		callSendAPI(messageData);
@@ -503,9 +503,10 @@ function getStarted(event, sessionObj, welcomeMessage = false) {
       }
     }
   };  
-
-  callSendAPI(messageData);
-
+  setTimeout(function(){
+    callSendAPI(messageData);
+  },1000);
+  
   session.end(sessionObj);
 }
 
