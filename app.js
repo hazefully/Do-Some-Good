@@ -87,6 +87,13 @@ function processMessage(event, sessionObj) {
 	} else {
 		getStarted(event, sessionObj);
 	}
+  messageData = {
+    recipient: {
+      id: event.sender.id
+    },
+    sender_action: "typing_on"
+  };
+  callSendAPI(messageData);
 }
 
 // Main events triggers
@@ -188,6 +195,14 @@ function processPostback(event, sessionObj) {
 	else if(sessionObj.step) {
 		createNewEntry(event, sessionObj);
 	}
+
+  var messageData = {
+    recipient: {
+      id: event.sender.id
+    },
+    sender_action: "typing_off"
+  };
+  callSendAPI(messageData);
 }
 function sendSeenAndTyping(event){
 
@@ -199,15 +214,14 @@ function sendSeenAndTyping(event){
   };
   callSendAPI(messageData);
 
-  // setTimeout(function() {
-  //   messageData = {
-  //   recipient: {
-  //     id: event.sender.id
-  //   },
-  //   sender_action: "typing_on"
-  // };
-  // callSendAPI(messageData);
-  // }, 700)
+  messageData = {
+    recipient: {
+      id: event.sender.id
+    },
+    sender_action: "typing_on"
+  };
+  callSendAPI(messageData);
+  
 
 }
 function createNewEntry(event, sessionObj) {
