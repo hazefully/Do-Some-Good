@@ -224,7 +224,7 @@ function createNewEntry(event, sessionObj) {
 	if(event.message) {
 		var messageText = event.message.text;
 		var attachs = event.message.attachments;
-    if(messageText == null)
+    if(messageText == null && sessionObj.step != 3)
     {
       newEntryErrorHandling(event, sessionObj);
       return;
