@@ -430,11 +430,16 @@ function showList(sessionObj, list) {
             payload: "xxx"
           }]
       });
-  elms.push({
-    title:"    ",
-    subtitle:"  ",
-    buttons:[]
-  });
+      elms.push({
+        title: "kkkk",
+          subtitle: "kkkkk",
+
+          buttons: [{
+            title: "View",
+            type: "postback",
+            payload: "xxx"
+          }]
+      })
 	var messageData = {
 		recipient:{
 			id: sessionObj.user_id
