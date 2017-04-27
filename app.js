@@ -135,7 +135,7 @@ function triggerListEntries(event, sessionObj) {
 		sessionObj.fresh = false;
 		sessionObj.offset = 1;
 		sessionObj.save();
-		getLocation(event.sender.id, "Please share your location to list the calls for help near to you.");
+		getLocation(event.sender.id, "Please share your location to list the calls for help nearest to you.");
 	}
 }
 
