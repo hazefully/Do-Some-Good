@@ -199,15 +199,15 @@ function sendSeenAndTyping(event){
   };
   callSendAPI(messageData);
 
-  setTimeout(function() {
-    messageData = {
-    recipient: {
-      id: event.sender.id
-    },
-    sender_action: "typing_on"
-  };
-  callSendAPI(messageData);
-  }, 700)
+  // setTimeout(function() {
+  //   messageData = {
+  //   recipient: {
+  //     id: event.sender.id
+  //   },
+  //   sender_action: "typing_on"
+  // };
+  // callSendAPI(messageData);
+  // }, 700)
 
 }
 function createNewEntry(event, sessionObj) {
