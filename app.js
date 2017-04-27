@@ -82,16 +82,88 @@ function processMessage(event, sessionObj) {
 			sessionObj.lat = attachs[0].payload.coordinates.lat;
 			sessionObj.long = attachs[0].payload.coordinates.long;
 			sessionObj.save();
-			entry.query(sessionObj, showList);
+			entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
 		}
-	} else {
+	} else if(sessionObj.upd_step){
+     updateEntry(event, sessionObj);
+  } else{
 		getStarted(event, sessionObj);
 	}
   sendStopTyping(event);
 }
 
 // Main events triggers
+function updateEntry(event, sessionObj){
+  if(sessionObj.upd_step == 2)
+  {
+    var query_type = event.message.text;
 
+    if(query_type == "Person's name"){
+      sessionObj.query_type = "Name";
+      sendTextMessage(event.sender.id, "Please specify the name of the person whose call for help you wish to update.");
+      sessionObj.upd_step = 3;
+      sessionObj.save();
+    }
+    else if(query_type == "Description"){
+      sessionObj.query_type = "Description";
+      sendTextMessage(event.sender.id, "Please specify the description of the the call for help you wish to update.");
+      sessionObj.upd_step = 3;
+      sessionObj.save();
+    }
+    else if(query_type == "Location"){
+      sessionObj.query_type = "Location";
+      getLocation(event.sender.id, "Please share the location nearest to the call for help you wish to update.");
+      sessionObj.upd_step = 3;
+      sessionObj.save();
+    }
+    else{
+      sendTextMessage(event.sender.id, "Invalid response, please try again!");
+      setTimeout(function(){
+        getStarted(event, sessionObj);
+      }, 800);
+    }
+  }
+  else if(sessionObj.upd_step == 3)
+  {
+    if(sessionObj.query_type != "Location"){
+      var queryval = event.message.text;
+      if(!queryval)
+      {
+        sendTextMessage(event.sender.id, "Invalid response, please try again!");
+        setTimeout(function(){
+          getStarted(event, sessionObj);
+        }, 800);
+      }
+      else
+      {
+        sessionObj.queryval = queryval;
+        sessionObj.save();
+        if(sessionObj.query_type == "Name"){
+          entry.queryByName(sessionObj, showList, "Please choose from the list the entry you would like to update.");
+        }
+        else{
+          entry.queryByDescription(sessionObj, showList, "Please choose from the list the entry you would like to update.");
+        }
+        sessionObj.upd_step++;
+      }
+    }
+    else{
+      attachs = event.message.attachments;
+      if(!attachs || !attachs.length || attachs[0].type != 'location') {
+        sendTextMessage(event.sender.id, "Invalid response, please try again!");
+        setTimeout(function(){
+          getStarted(event, sessionObj);
+        }, 800);
+      } else {
+        sessionObj.lat = attachs[0].payload.coordinates.lat;
+        sessionObj.long = attachs[0].payload.coordinates.long;
+        sessionObj.save();
+        entry.queryByLocation(sessionObj, showList, "Please choose from the list the entry you would like to update.");
+        sessionObj.upd_step++;
+      }
+    }
+  }
+}
 function triggerNewEntry(event, sessionObj) {
 	if(!sessionObj.fresh)
 		restartSession(event, sessionObj, triggerNewEntry);
@@ -159,9 +231,9 @@ function processPostback(event, sessionObj) {
 		if(sessionObj.offset <= 1)
       triggerListEntries(event, sessionObj);
 		else
-			entry.query(sessionObj, showList);
+			entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
 	}
-	else if(payload.length >= 3 && payload.substring(0, 3) == "$$$") {
+	else if(payload.length >= 10 && payload.substring(0, 10) == "ViewEntry_") {
 		var id = payload.substring(3, payload.length);
 		entry.model.findById(id, function(err, result) {
 			if(err || !result) {
@@ -186,11 +258,57 @@ function processPostback(event, sessionObj) {
 		sendTextMessage(userID, "Your entry has been cancelled, please try again.");
     	getStarted(event, sessionObj);
 	}
+  else if(payload == "UpdateStatus")
+  {
+    triggerUpdateStatus(event, sessionObj);
+  }
 	// all other events should be handled before this one
 	else if(sessionObj.step) {
 		createNewEntry(event, sessionObj);
 	}
   sendStopTyping(event);
+}
+function triggerUpdateStatus(event, sessionObj){
+  if(!sessionObj.fresh) {
+    restartSession(event, sessionObj, triggerListEntries);
+  }if(!sessionObj.fresh) {
+    restartSession(event, sessionObj, triggerListEntries);
+  }
+  else {
+    sessionObj.fresh = false;
+  else {
+    sessionObj.fresh = false;
+
+    sessionObj.upd_step = 2;
+    sessionObj.save();
+
+    var messageData = {
+      recipient: {
+        id: userID
+       },
+       message: {
+        text:"Please choose how you would like to search for the call for help you wish to update.",
+        quick_replies:[
+        {
+         content_type:"text",
+         title: "Person's name",
+         payload: "Person's name"
+       },
+       {
+         content_type:"text",
+         title: "Description",
+         payload: "Description"
+
+       },
+       {
+        content_type:"text",
+        title: "Location",
+        payload: "Location"
+      }
+      ]
+    }
+  };
+  callSendAPI(messageData);
 }
 function sendSeenAndTyping(event){
 
@@ -337,7 +455,7 @@ function createNewEntry(event, sessionObj) {
 	} else if(event.postback) {
 		var payload = event.postback.payload;
 		if(sessionObj.step == 1) {
-			var message = "Please enter the full name of the person that needs help.";
+			var message = "Please enter the full name of the person that needs help. (If you wish to keep this field empty, just reply with \"N\/A\")";
       sendTextMessage(userID, message);
 		}
 		else {
@@ -467,7 +585,7 @@ function getLocation(userID, message) {
 	callSendAPI(messageData);
 }
 
-function showList(sessionObj, list) {
+function showList(sessionObj, list, msg) {
 	var offset = sessionObj.offset - 1;
 	var elms = [];
 	var btns = [];
@@ -483,15 +601,17 @@ function showList(sessionObj, list) {
 
 	while(offset < list.length && elms.length < 4) {
 		var titlle = list[offset].description;
-    	var subtitlle = list[offset].priority;
+      var subtitlle = "Priority: "; 
+    	 subtitlle += list[offset].priority;
+       subtitlle += "/Name: ";
+       subtitlle += list[offset].name;
     	elms.push({
     		title: titlle,
 	        subtitle: subtitlle,
-
 	        buttons: [{
 	          title: "View",
 	          type: "postback",
-	          payload: "$$$" + list[offset]._id
+	          payload: "ViewEntry_" + list[offset]._id
 	        }]
     	});
     	++offset;
@@ -519,7 +639,7 @@ function showList(sessionObj, list) {
 	}
 	sessionObj.save();
   if(firstView)
-    sendTextMessage(sessionObj.user_id, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.")
+    sendTextMessage(sessionObj.user_id, msg);
 
 	if(elms.length == 0) {
 		sendTextMessage(sessionObj.user_id, "No results found!");
@@ -530,7 +650,7 @@ function showList(sessionObj, list) {
     if(sessionObj.offset == 0 && list.length > 1)
       sendTextMessage(sessionObj.user_id, "Only one call for help is left with the following details:")
     else
-      sendTextMessage(sessionObj.user_id, "Found one call for help near your location with the following details:");
+      sendTextMessage(sessionObj.user_id, "Found one suitable call for help with the following details:");
 		setTimeout(function(){
       showEntry(sessionObj, list[list.length - 1]);
     }, 900)

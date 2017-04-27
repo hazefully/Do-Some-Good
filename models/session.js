@@ -8,6 +8,9 @@ var SessionSchema = new Schema({
 	offset: {type: Number, default: 0},
 	long: {type: Number, default: 0},
 	lat: {type: Number, default: 0},
+	upd_step: {type: Number, default: 0},
+	query_type: {type: String, default: 'N/A'},
+	queryval: {type: String, default: 'N/A'},
 	new_entry: Schema.Types.Mixed
 });
 

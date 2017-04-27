@@ -29,7 +29,7 @@ entry = mongoose.model("entry", EntrySchema);
 
 module.exports.model = entry;
 // maxDistance in meters
-module.exports.query = function(sessionObj, callback) {
+module.exports.queryByLocation = function(sessionObj, callback, msg) {
 	entry.find(
 	   {
 	     location:
@@ -42,6 +42,32 @@ module.exports.query = function(sessionObj, callback) {
 	       }
 	   },
 	function (error, results) {
-		callback(sessionObj, results);
+		callback(sessionObj, results, msg);
+	});
+}
+module.exports.queryByName = function(sessionObj, callback, msg) {
+	var expr = ".*";
+	expr += sessionObj.queryval;
+	expr+=".*";
+
+	entry.find(
+	   {
+	   	 name: { $regex: expr, $options: 'i' }
+	   },
+	function (error, results) {
+		callback(sessionObj, results, msg);
+	});
+}
+module.exports.queryByDescription = function(sessionObj, callback, msg) {
+	var expr = ".*";
+	expr += sessionObj.queryval;
+	expr+=".*";
+
+	entry.find(
+	   {
+	   	 description: { $regex: expr, $options: 'i' }
+	   },
+	function (error, results) {
+		callback(sessionObj, results, msg);
 	});
 }
