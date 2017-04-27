@@ -406,7 +406,8 @@ function newEntryErrorHandling(event, sessionObj)
     else if(sessionObj.step == 4)
     {
       var message = "Please specify a description for this call for help.";
-      sendTextMessage(userID, message);    }
+      sendTextMessage(userID, message);   
+     }
     else if(sessionObj.step == 5)
     {
       var messageData = {
@@ -438,7 +439,6 @@ function newEntryErrorHandling(event, sessionObj)
       callSendAPI(messageData);  
     }
   
-    sessionObj.step--;
     sessionObj.save();
   }
 }
