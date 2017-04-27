@@ -122,8 +122,9 @@ function triggerNewEntry(event, sessionObj) {
 	        var message = startNewEntry + "I will guide you through the process of adding a new entry."
 	        sendTextMessage(sessionObj.user_id, message);
 	      });
-
-		createNewEntry(event, sessionObj);
+    setTimeout(function(){
+      createNewEntry(event, sessionObj);
+    }, 1000);
 	}
 }
 function triggerListEntries(event, sessionObj) {
@@ -467,7 +468,6 @@ function getStarted(event, sessionObj, welcomeMessage = false) {
 	      }
 	      var message = greeting + "This messanger bot allows you to reach people in need in your area, and also add information about other possible calls for help so other users can reach them too.\nTogether, we can create a better world!";
 	      sendTextMessage(userID, message);
-        sendSeenAndTyping(event);
 	    });
 	}
 
@@ -500,7 +500,7 @@ function getStarted(event, sessionObj, welcomeMessage = false) {
   };  
   setTimeout(function(){
     callSendAPI(messageData);
-  },850);
+  },1000);
 
   session.end(sessionObj);
 }
