@@ -409,7 +409,7 @@ function showList(sessionObj, list) {
 			title: "View More",
 		    type: "postback",
 		    payload: "ViewMore"
-		});
+		});*/
 
 	while(offset < list.length && btns.length < 5) {
 		var titlle = list[offset].description;
@@ -430,7 +430,7 @@ function showList(sessionObj, list) {
 	if(offset == list.length)
 		sessionObj.offset = 0;
 	else
-		sessionObj.offset = offset + 1;*/
+		sessionObj.offset = offset + 1;
 
 	var messageData = {
 		recipient:{
