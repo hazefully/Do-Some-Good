@@ -89,10 +89,10 @@ function processMessage(event, sessionObj) {
       entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
     }
   } 
- else{
-  getStarted(event, sessionObj);
-}
-sendStopTyping(event);
+  else{
+    getStarted(event, sessionObj);
+  }
+  sendStopTyping(event);
 }
 
 // Main events triggers
@@ -236,38 +236,38 @@ function processPostback(event, sessionObj) {
       triggerListEntries(event, sessionObj);
     else if(sessionObj.upd_step){
       if(sessionObj.query_type == "Name"){
-          entry.queryByName(sessionObj, showList, "Please choose from the list the entry you would like to update.");
-        }
-        else{
-          entry.queryByDescription(sessionObj, showList, "Please choose from the list the entry you would like to update.");
-        } 
+        entry.queryByName(sessionObj, showList, "Please choose from the list the entry you would like to update.");
+      }
+      else{
+        entry.queryByDescription(sessionObj, showList, "Please choose from the list the entry you would like to update.");
+      } 
     }
     else{
       entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest."); 
     }
- }
- else if(payload.length >= 10 && payload.substring(0, 10) == "ViewEntry_") {
-  var id = payload.substring(10, payload.length);
-  entry.model.findById(id, function(err, result) {
-   if(err || !result) {
-    sendTextMessage(userID, "Entry Not Found!");
-  } else {
-    showEntry(sessionObj, result);
   }
-});
-}
-else if (payload == "ConfirmNewEntry") {
-  if(sessionObj.step < 6) {
-   sendTextMessage(userID, "Not enough information to create a new entry");
+  else if(payload.length >= 10 && payload.substring(0, 10) == "ViewEntry_") {
+    var id = payload.substring(10, payload.length);
+    entry.model.findById(id, function(err, result) {
+     if(err || !result) {
+      sendTextMessage(userID, "Entry Not Found!");
+    } else {
+      showEntry(sessionObj, result);
+    }
+  });
+  }
+  else if (payload == "ConfirmNewEntry") {
+    if(sessionObj.step < 6) {
+     sendTextMessage(userID, "Not enough information to create a new entry");
+   }
+   else {
+     sendTextMessage(userID, "Thank you! Your efforts will help make this world a better world!");
+     var newEntry = new entry.model(sessionObj.new_entry);
+     newEntry.save();
+   }
+   getStarted(event, sessionObj);
  }
- else {
-   sendTextMessage(userID, "Thank you! Your efforts will help make this world a better world!");
-   var newEntry = new entry.model(sessionObj.new_entry);
-   newEntry.save();
- }
- getStarted(event, sessionObj);
-}
-else if(payload == "CancelNewEntry") {
+ else if(payload == "CancelNewEntry") {
   sendTextMessage(userID, "Your entry has been cancelled, please try again.");
   getStarted(event, sessionObj);
 }
@@ -283,41 +283,41 @@ else if(payload == "UpdateStatus")
 }
 function triggerUpdateStatus(event, sessionObj){
  if(!sessionObj.fresh) {
-    restartSession(event, sessionObj, triggerUpdateStatus);
-  }
-  else {
-    sessionObj.fresh = false;
-    sessionObj.offset = 1;
-    sessionObj.upd_step = 2;
-    sessionObj.save();
+  restartSession(event, sessionObj, triggerUpdateStatus);
+}
+else {
+  sessionObj.fresh = false;
+  sessionObj.offset = 1;
+  sessionObj.upd_step = 2;
+  sessionObj.save();
 
-    var messageData = {
-      recipient: {
-        id: event.sender.id
-      },
-      message: {
-        text:"Please choose how you would like to search for the call for help you wish to update.",
-        quick_replies:[
-        {
-         content_type:"text",
-         title: "Person's name",
-         payload: "Person's name"
-       },
-       {
-         content_type:"text",
-         title: "Description",
-         payload: "Description"
+  var messageData = {
+    recipient: {
+      id: event.sender.id
+    },
+    message: {
+      text:"Please choose how you would like to search for the call for help you wish to update.",
+      quick_replies:[
+      {
+       content_type:"text",
+       title: "Person's name",
+       payload: "Person's name"
+     },
+     {
+       content_type:"text",
+       title: "Description",
+       payload: "Description"
 
-       },
-       {
-        content_type:"text",
-        title: "Location",
-        payload: "Location"
-      }
-      ]
+     },
+     {
+      content_type:"text",
+      title: "Location",
+      payload: "Location"
     }
-  };
-  callSendAPI(messageData);
+    ]
+  }
+};
+callSendAPI(messageData);
 }
 }
 function sendSeenAndTyping(event){
@@ -498,6 +498,46 @@ function showEntry(sessionObj, theEntry) {
   setTimeout(function(){
     sendLocation(sessionObj, lat, long);
   }, 700);	
+  var messageData = {
+    recipient:{
+     id: userID
+   },
+   message:{
+     attachment:{
+      type: "template",
+      payload:{
+       template_type:"button",
+       text:"What would you like to do with this call for help?",
+       buttons:[
+       {
+         type:"postback",
+         title:"Upvote",
+         payload:"Upvote"
+       },
+       {
+         type:"postback",
+         title:"Downvote",
+         payload:"Downvote"
+       },
+       {
+         type:"postback",
+         title:"Show Status History",
+         payload:"PrintHistory"
+       },
+       {
+         type:"postback",
+         title:"Add Status Update",
+         payload:"AddStatusUpdate"
+       }
+
+       ]
+     }
+   }       
+ }
+};
+setTimeout(function(){
+  callSendAPI(messageData);
+}, 1500);
 }
 
 function sendLocation(sessionObj, lat, long) {
