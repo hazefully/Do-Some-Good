@@ -519,7 +519,7 @@ function showList(sessionObj, list) {
 	}
 	sessionObj.save();
   if(firstView)
-    sendTextMessage(userID, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.")
+    sendTextMessage(sessionObj.user_id, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.")
 
 	if(elms.length == 0) {
 		sendTextMessage(sessionObj.user_id, "No results found!");
