@@ -238,7 +238,7 @@ function processPostback(event, sessionObj) {
      entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
  }
  else if(payload.length >= 10 && payload.substring(0, 10) == "ViewEntry_") {
-  var id = payload.substring(3, payload.length);
+  var id = payload.substring(10, payload.length);
   entry.model.findById(id, function(err, result) {
    if(err || !result) {
     sendTextMessage(userID, "Entry Not Found!");
