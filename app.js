@@ -187,6 +187,19 @@ function createNewEntry(event, sessionObj) {
     		sessionObj.markModified('new_entry');
     		getLocation(userID, "Please share the location of this call for help");
 		}
+		else if(sessionObj.step == 3) {
+			if(!attachs || !attachs.length || attachs[0].type != 'location') {
+	    		sendTextMessage(userID, "Invalid Input!");
+	    		getStarted(event, sessionObj);
+	    		return;
+	    	}
+	    	sessionObj.new_entry.location.coordinates[1] = attachs[0].payload.coordinates.lat;
+	    	sessionObj.new_entry.location.coordinates[0] = attachs[0].payload.coordinates.long;
+	    	sessionObj.markModified('new_entry');
+
+	    	var message = "Please specify a description for this call for help.";
+			sendTextMessage(userID, message);
+		}
 		else if(sessionObj.step == 4) {
 			sessionObj.new_entry.description = messageText;
     		sessionObj.markModified('new_entry');
@@ -264,19 +277,6 @@ function createNewEntry(event, sessionObj) {
 		if(sessionObj.step == 1) {
 			var message = "Please enter the full name of the person that needs help.";
       		sendTextMessage(userID, message);
-		}
-		else if(sessionObj.step == 3) {
-			if(!messageAttachments || !messageAttachments.length || messageAttachments[0].type != 'location') {
-	    		sendTextMessage(userID, "Invalid Input!");
-	    		getStarted(event, sessionObj);
-	    		return;
-	    	}
-	    	sessionObj.new_entry.location.coordinates[1] = messageAttachments[0].payload.coordinates.lat;
-	    	sessionObj.new_entry.location.coordinates[0] = messageAttachments[0].payload.coordinates.long;
-	    	sessionObj.markModified('new_entry');
-
-	    	var message = "Please specify a description for this call for help.";
-			sendTextMessage(userID, message);
 		}
 		else {
 			sendTextMessage(userID, "Invalid Input!");

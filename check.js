@@ -1,8 +1,8 @@
 var fs = require('fs');
 var check = require('syntax-error');
  
-//var file = "./app.js";
-var file = "./models/entry.js";
+var file = "./app.js";
+//var file = "./models/entry.js";
 //var file = "./models/session.js";
 var src = fs.readFileSync(file);
  
