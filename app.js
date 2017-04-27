@@ -347,6 +347,10 @@ function getLocation(userID, message) {
 }
 
 function showList(sessionObj, list) {
+	console.log("++++++++++++++++++++++++++++++++++");
+	console.log("Enter showList");
+	console.log(sessionObj);
+	console.log(list);
 	var offset = sessionObj.offset - 1;
 	var elms = [], btns = [];
 
@@ -393,6 +397,7 @@ function showList(sessionObj, list) {
 			}
 		}
 	}
+	console.log(bnts);
 	callSendAPI(messageData);
 	sessionObj.save();
 }
@@ -484,8 +489,8 @@ function callSendAPI(messageData) {
         messageId, recipientId);
     } else {
       console.error("Unable to send message.");
-      console.error(response);
-      console.error(error);
+      //console.error(response);
+      //console.error(error);
     }
   });  
 }

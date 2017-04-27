@@ -25,8 +25,8 @@ module.exports.start = function(event, callback) {
 }
 
 module.exports.end = function(sessionObj) {
-	console.log("-----------------");
-	console.log(sessionObj);
+	//console.log("-----------------");
+	//console.log(sessionObj);
 	sessionObj.remove();
 	/*session.remove(sessionObj, function(err) {
 		if(err)
