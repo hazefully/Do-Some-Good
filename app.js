@@ -272,10 +272,8 @@ else if(payload == "UpdateStatus")
   sendStopTyping(event);
 }
 function triggerUpdateStatus(event, sessionObj){
-  if(!sessionObj.fresh) {
-    restartSession(event, sessionObj, triggerListEntries);
-  }if(!sessionObj.fresh) {
-    restartSession(event, sessionObj, triggerListEntries);
+ if(!sessionObj.fresh) {
+    restartSession(event, sessionObj, triggerUpdateStatus);
   }
   else {
     sessionObj.fresh = false;
