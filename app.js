@@ -87,13 +87,7 @@ function processMessage(event, sessionObj) {
 	} else {
 		getStarted(event, sessionObj);
 	}
-  messageData = {
-    recipient: {
-      id: event.sender.id
-    },
-    sender_action: "typing_on"
-  };
-  callSendAPI(messageData);
+  sendStopTyping(event);
 }
 
 // Main events triggers
@@ -195,14 +189,7 @@ function processPostback(event, sessionObj) {
 	else if(sessionObj.step) {
 		createNewEntry(event, sessionObj);
 	}
-
-  var messageData = {
-    recipient: {
-      id: event.sender.id
-    },
-    sender_action: "typing_off"
-  };
-  callSendAPI(messageData);
+  sendStopTyping(event);
 }
 function sendSeenAndTyping(event){
 
@@ -221,8 +208,15 @@ function sendSeenAndTyping(event){
     sender_action: "typing_on"
   };
   callSendAPI(messageData);
-  
-
+}
+function sendStopTyping(event){
+  messageData = {
+    recipient: {
+      id: event.sender.id
+    },
+    sender_action: "typing_off"
+  };
+  callSendAPI(messageData);
 }
 function createNewEntry(event, sessionObj) {
 	var userID = event.sender.id;
@@ -473,6 +467,7 @@ function getStarted(event, sessionObj, welcomeMessage = false) {
 	      }
 	      var message = greeting + "This messanger bot allows you to reach people in need in your area, and also add information about other possible calls for help so other users can reach them too.\nTogether, we can create a better world!";
 	      sendTextMessage(userID, message);
+        sendSeenAndTyping(event);
 	    });
 	}
 
