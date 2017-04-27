@@ -419,21 +419,7 @@ function showList(sessionObj, list) {
 		sessionObj.offset = 0;
 	else
 		sessionObj.offset = offset + 1;
-  elms = [];
-      elms.push({
-        title: "kkkk",
-          subtitle: "kkkkk",
 
-          buttons: [{
-            title: "View",
-            type: "postback",
-            payload: "xxx"
-          }]
-      });
-      elms.push({
-        title: "  \n",
-          subtitle: " \t\n",
-      })
 	var messageData = {
 		recipient:{
 			id: sessionObj.user_id
@@ -455,7 +441,10 @@ function showList(sessionObj, list) {
 		sendTextMessage(sessionObj.user_id, "No results found!");
 	}
 	else if(elms.length == 1) {
-		showEntry(sessionObj, list[list.length - 1]);
+    sendTextMessage(sessionObj.user_id, "Found one call for help near your location");
+		setTimeout(function(){
+      showEntry(sessionObj, list[list.length - 1]);
+    }, 600)
 	}
 	else {
 		callSendAPI(messageData);
