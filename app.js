@@ -371,7 +371,8 @@ function showList(sessionObj, list) {
 	        buttons: [{
 	          title: "View",
 	          type: "postback",
-	          payload: list[offset]
+	          payload: "batee5"
+	          //payload: list[offset]
 	        }]
     	})
     	++offset;
