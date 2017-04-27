@@ -352,7 +352,8 @@ function showList(sessionObj, list) {
 	console.log(sessionObj);
 	console.log(list);
 	var offset = sessionObj.offset - 1;
-	var elms = [], btns = [];
+	var elms = [];
+	var btns = [];
 
 	if(offset + 5 < list.length)
 		btns.push({
@@ -371,10 +372,10 @@ function showList(sessionObj, list) {
 	        buttons: [{
 	          title: "View",
 	          type: "postback",
-	          payload: "batee5"
+	          payload: "ViewEntry"
 	          //payload: list[offset]
 	        }]
-    	})
+    	});
     	++offset;
 	}
 	if(offset == list.length)
@@ -492,7 +493,7 @@ function callSendAPI(messageData) {
     } else {
       console.error("Unable to send message.");
       //console.error(response);
-      //console.error(error);
+      console.error(error);
     }
   });  
 }
