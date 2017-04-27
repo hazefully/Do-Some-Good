@@ -239,6 +239,7 @@ function createNewEntry(event, sessionObj) {
 	    		// sendTextMessage(userID, "Invalid Input!");
 	    		// getStarted(event, sessionObj);
 	    		// return;
+          console.log("an error happeened");
           newEntryErrorHandling(event, sessionObj);
 	    	}
 	    	sessionObj.new_entry.location.coordinates[1] = attachs[0].payload.coordinates.lat;
@@ -389,9 +390,10 @@ function sendLocation(sessionObj, lat, long) {
 function newEntryErrorHandling(event, sessionObj)
 {
 
+  var userID = sessionObj.user_id;
   if(sessionObj.step == 2)
   {
-    sendTextMessage(sessionObj.user_id, "Please enter the full name of the person that needs help.");
+    sendTextMessage(userID, "Please enter the full name of the person that needs help.");
   }
   else
   {
