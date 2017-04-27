@@ -471,7 +471,7 @@ function getStarted(event, sessionObj, welcomeMessage = false) {
 	        name = bodyObj.first_name;
 	        greeting = "Hi " + name + "!\n";
 	      }
-	      var message = greeting + "This messanger bot allows you to reach poor people who need help in your area, and also add information about people who need help so other users can reach them too. Together, we can create a better world!";
+	      var message = greeting + "This messanger bot allows you to reach people in need in your area, and also add information about other possible calls for help so other users can reach them too.\nTogether, we can create a better world!";
 	      sendTextMessage(userID, message);
 	    });
 	}
@@ -505,8 +505,8 @@ function getStarted(event, sessionObj, welcomeMessage = false) {
   };  
   setTimeout(function(){
     callSendAPI(messageData);
-  },1000);
-  
+  },850);
+
   session.end(sessionObj);
 }
 
