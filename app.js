@@ -431,14 +431,8 @@ function showList(sessionObj, list) {
           }]
       });
       elms.push({
-        title: "kkkk",
-          subtitle: "kkkkk",
-
-          buttons: [{
-            title: "View",
-            type: "postback",
-            payload: "xxx"
-          }]
+        title: "k",
+          subtitle: "k",
       })
 	var messageData = {
 		recipient:{
