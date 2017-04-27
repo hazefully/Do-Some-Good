@@ -385,31 +385,9 @@ function showList(sessionObj, list) {
 	          payload: "ViewEntry3"
 	          //payload: list[offset]
 	        }]
-    	},
-    	{
-    		title: 'View4',
-	        subtitle: 'View4',
-
-	        buttons: [{
-	          title: "View4",
-	          type: "postback",
-	          payload: "ViewEntry4"
-	          //payload: list[offset]
-	        }]
-    	},
-    	{
-			title: 'View5',
-	        subtitle: 'View5',
-
-	        buttons: [{
-	          title: "View5",
-	          type: "postback",
-	          payload: "ViewEntry5"
-	          //payload: list[offset]
-	        }]
-		}
+    	}
 	];
-	/*elms.push({
+	elms.push({
 		title: 'View5',
         subtitle: 'View5',
 
@@ -419,7 +397,7 @@ function showList(sessionObj, list) {
           payload: "ViewEntry5"
           //payload: list[offset]
         }]
-	});*/
+	});
 	var btns = [{
 		title: "View More",
 	    type: "postback",
