@@ -124,7 +124,7 @@ function triggerNewEntry(event, sessionObj) {
 	      });
     setTimeout(function(){
       createNewEntry(event, sessionObj);
-    }, 1000);
+    }, 1500);
 	}
 }
 function triggerListEntries(event, sessionObj) {
@@ -340,12 +340,14 @@ function showEntry(sessionObj, theEntry) {
 	message += "Full name: " + theEntry.name + "\n";
 	message += "Description: " + theEntry.description + "\n";
 	message += "Priority: " + theEntry.priority + "\n";
+  message += "Location: ";
 	sendTextMessage(sessionObj.user_id, message);
 
 	var long = theEntry.location.coordinates[0];
 	var lat = theEntry.location.coordinates[1];
-		
-	sendLocation(sessionObj, lat, long);
+	setTimeout(function(){
+    sendLocation(sessionObj, lat, long);
+  }, 1000);	
 }
 
 function sendLocation(sessionObj, lat, long) {
