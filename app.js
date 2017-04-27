@@ -294,6 +294,7 @@ function createNewEntry(event, sessionObj) {
 }
 
 function showEntry(sessionObj, theEntry) {
+	var message = "";
 	message += "Full name: " + sessionObj.new_entry.name + "\n";
 	message += "Description: " + sessionObj.new_entry.description + "\n";
 	message += "Priority: " + sessionObj.new_entry.priority + "\n";
