@@ -280,7 +280,7 @@ function createNewEntry(event, sessionObj) {
     		sendTextMessage(userID, "Okay, let's review this entry\n");
     		setTimeout(function(){
           showEntry(sessionObj, sessionObj.new_entry);
-        }, 1000);
+        }, 900);
         
 
 			messageData = {
@@ -312,7 +312,7 @@ function createNewEntry(event, sessionObj) {
 
       setTimeout(function(){
         callSendAPI(messageData);
-      }, 1000);
+      }, 2700);
 		}
 		else {
 			sendTextMessage(userID, "Invalid Input!");
@@ -353,7 +353,7 @@ function showEntry(sessionObj, theEntry) {
 	var lat = theEntry.location.coordinates[1];
 	setTimeout(function(){
     sendLocation(sessionObj, lat, long);
-  }, 1000);	
+  }, 900);	
 }
 
 function sendLocation(sessionObj, lat, long) {
