@@ -74,6 +74,9 @@ function processMessage(event, sessionObj) {
 		createNewEntry(event, sessionObj);
 
 	}
+  if(sessionObj.upd_step){
+    updateEntry(event, sessionObj);
+  }
   else if(sessionObj.offset == 1) {
     attachs = event.message.attachments;
 
@@ -86,9 +89,6 @@ function processMessage(event, sessionObj) {
       entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
     }
   } 
-  else if(sessionObj.upd_step){
-   updateEntry(event, sessionObj);
- }
  else{
   getStarted(event, sessionObj);
 }
@@ -140,6 +140,7 @@ function updateEntry(event, sessionObj){
       else
       {
         sessionObj.queryval = queryval;
+        sessionObj.offset = 1;
         sessionObj.save();
         if(sessionObj.query_type == "Name"){
           entry.queryByName(sessionObj, showList, "Please choose from the list the entry you would like to update.");
@@ -277,10 +278,8 @@ function triggerUpdateStatus(event, sessionObj){
   }
   else {
     sessionObj.fresh = false;
-
+    sessionObj.offset = 1;
     sessionObj.upd_step = 2;
-        sessionObj.offset = 1;
-
     sessionObj.save();
 
     var messageData = {
