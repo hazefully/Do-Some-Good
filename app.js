@@ -158,7 +158,7 @@ function processPostback(event, sessionObj) {
 		else
 			session.query(sessionObj, showList);
 	}
-	else if(payload.type == 'entry') {
+	else if(payload.entryID) {
 		showEntry(sessionObj, payload);
 	}
 	else if (payload == "ConfirmNewEntry") {
@@ -347,24 +347,8 @@ function getLocation(userID, message) {
 }
 
 function showList(sessionObj, list) {
-	console.log("++++++++++++++++++++++++++++++++++");
-	console.log("Enter showList");
-	console.log(sessionObj);
-	console.log(list);
 	var offset = sessionObj.offset - 1;
-	var elms = [
-		{
-    		title: 'View1',
-	        subtitle: 'View1',
-
-	        buttons: [{
-	          title: "View1",
-	          type: "postback",
-	          payload: "ViewEntry1"
-	          //payload: list[offset]
-	        }]
-    	}
-	];
+	var elms = [];
 	var btns = [];
 
 	if(offset + 5 < list.length)
@@ -384,8 +368,7 @@ function showList(sessionObj, list) {
 	        buttons: [{
 	          title: "View",
 	          type: "postback",
-	          //payload: "ViewEntry"
-	          payload: list[offset]._id
+	          payload: {entryID: list[offset]._id}
 	        }]
     	});
     	++offset;
@@ -411,10 +394,16 @@ function showList(sessionObj, list) {
 			}
 		}
 	}
-	console.log(btns);
-	console.log(elms);
-	callSendAPI(messageData);
 	sessionObj.save();
+	if(elms.length == 0) {
+		sendTextMessage(sessionObj.user_id, "No results found!");
+	}
+	else if(elms.length == 1) {
+		showEntry(sessionObj, list[list.length - 1]);
+	}
+	else {
+		callSendAPI(messageData);
+	}
 }
 
 function getStarted(event, sessionObj, welcomeMessage = false) {
