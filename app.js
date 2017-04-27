@@ -93,42 +93,47 @@ function processMessage(event, sessionObj) {
 function triggerNewEntry(event, sessionObj) {
 	if(!sessionObj.fresh)
 		restartSession(event, sessionObj, triggerNewEntry);
-	sessionObj.fresh = false;
-	sessionObj.step = 1;
-	sessionObj.new_entry = new entry.model({user_id: sessionObj.user_id});
-  	sessionObj.markModified('new_entry');
-	sessionObj.save();
+	else {
+		sessionObj.fresh = false;
+		sessionObj.step = 1;
+		sessionObj.new_entry = new entry.model({user_id: sessionObj.user_id});
+	  	sessionObj.markModified('new_entry');
+		sessionObj.save();
 
-	request({
-        url: "https://graph.facebook.com/v2.6/" + sessionObj.user_id,
-        qs: {
-          access_token: process.env.PAGE_ACCESS_TOKEN,
-          fields: "first_name"
-        },
-        method: "GET"
-      }, function(error, response, body) {
-        var startNewEntry = "";
-        if (error) {
-          console.log("Error getting user's name!");
-          //console.log("Error getting user's name: " +  error);
-        } else {
-          var bodyObj = JSON.parse(body);
-          name = bodyObj.first_name;
-          startNewEntry = "Okay " + name + ", ";
-        }
-        var message = startNewEntry + "I will guide you through the process of adding a new entry."
-        sendTextMessage(sessionObj.user_id, message);
-      });
+		request({
+	        url: "https://graph.facebook.com/v2.6/" + sessionObj.user_id,
+	        qs: {
+	          access_token: process.env.PAGE_ACCESS_TOKEN,
+	          fields: "first_name"
+	        },
+	        method: "GET"
+	      }, function(error, response, body) {
+	        var startNewEntry = "";
+	        if (error) {
+	          console.log("Error getting user's name!");
+	          //console.log("Error getting user's name: " +  error);
+	        } else {
+	          var bodyObj = JSON.parse(body);
+	          name = bodyObj.first_name;
+	          startNewEntry = "Okay " + name + ", ";
+	        }
+	        var message = startNewEntry + "I will guide you through the process of adding a new entry."
+	        sendTextMessage(sessionObj.user_id, message);
+	      });
 
-	createNewEntry(event, sessionObj);
+		createNewEntry(event, sessionObj);
+	}
 }
 function triggerListEntries(event, sessionObj) {
-	if(!sessionObj.fresh)
+	if(!sessionObj.fresh) {
 		restartSession(event, sessionObj, triggerListEntries);
-	sessionObj.fresh = false;
-	sessionObj.offset = 1;
-	sessionObj.save();
-	getLocation(event.sender.id, "Please share your location");
+	}
+	else {
+		sessionObj.fresh = false;
+		sessionObj.offset = 1;
+		sessionObj.save();
+		getLocation(event.sender.id, "Please share your location");
+	}
 }
 
 
