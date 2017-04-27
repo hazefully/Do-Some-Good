@@ -354,8 +354,8 @@ function showList(sessionObj, list) {
 	var offset = sessionObj.offset - 1;
 	var elms = [
 		{
-    		title: titlle,
-	        subtitle: subtitlle,
+    		title: 'View1',
+	        subtitle: 'View1',
 
 	        buttons: [{
 	          title: "View1",
@@ -365,8 +365,8 @@ function showList(sessionObj, list) {
 	        }]
     	},
     	{
-    		title: titlle,
-	        subtitle: subtitlle,
+    		title: 'View2',
+	        subtitle: 'View2',
 
 	        buttons: [{
 	          title: "View2",
@@ -376,8 +376,8 @@ function showList(sessionObj, list) {
 	        }]
     	},
     	{
-    		title: titlle,
-	        subtitle: subtitlle,
+    		title: 'View3',
+	        subtitle: 'View3',
 
 	        buttons: [{
 	          title: "View3",
@@ -387,8 +387,8 @@ function showList(sessionObj, list) {
 	        }]
     	},
     	{
-    		title: titlle,
-	        subtitle: subtitlle,
+    		title: 'View4',
+	        subtitle: 'View4',
 
 	        buttons: [{
 	          title: "View4",
