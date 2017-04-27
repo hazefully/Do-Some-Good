@@ -157,12 +157,7 @@ function processPostback(event, sessionObj) {
 	}
 	else if(payload == "ViewMore") {
 		if(sessionObj.offset <= 1)
-    {
-      sendTextMessage(userID, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.")
-			setTimeout(function(){
-        triggerListEntries(event, sessionObj);
-      }, 600);
-    }
+      triggerListEntries(event, sessionObj);
 		else
 			entry.query(sessionObj, showList);
 	}
@@ -476,7 +471,9 @@ function showList(sessionObj, list) {
 	var offset = sessionObj.offset - 1;
 	var elms = [];
 	var btns = [];
-
+  var firstView = false;
+  if(offset == 0)
+    firstView = true;
 	if(offset + 4 < list.length)
 		btns.push({
 			title: "View More",
@@ -521,6 +518,9 @@ function showList(sessionObj, list) {
 		}
 	}
 	sessionObj.save();
+  if(firstView)
+    sendTextMessage(userID, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.")
+
 	if(elms.length == 0) {
 		sendTextMessage(sessionObj.user_id, "No results found!");
 	}
@@ -534,7 +534,16 @@ function showList(sessionObj, list) {
     }, 900)
 	}
 	else {
-		callSendAPI(messageData);
+    if(firstView){
+      setTimeout(function(){
+        callSendAPI(messageData);
+      }, 900);
+    }
+    else
+    {
+      callSendAPI(messageData);
+    }
+
 	}
 }
 
