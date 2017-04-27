@@ -398,6 +398,17 @@ function showList(sessionObj, list) {
 	        }]
     	}
 	];
+	elms.push({
+		title: 'View5',
+        subtitle: 'View5',
+
+        buttons: [{
+          title: "View5",
+          type: "postback",
+          payload: "ViewEntry5"
+          //payload: list[offset]
+        }]
+	});
 	var btns = [{
 		title: "View More",
 	    type: "postback",
