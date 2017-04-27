@@ -525,7 +525,9 @@ function showList(sessionObj, list) {
 		sendTextMessage(sessionObj.user_id, "No results found!");
 	}
 	else if(elms.length == 1) {
-    if(elms.length == 1 && offset == 0 && list.length > 1)
+    console.log(offset);
+    console.log(list.length);
+    if(offset == 0 && list.length > 1)
       sendTextMessage(sessionObj.user_id, "Only one call for help is left with the following details:")
     else
       sendTextMessage(sessionObj.user_id, "Found one call for help near your location with the following details:");
@@ -537,7 +539,7 @@ function showList(sessionObj, list) {
     if(firstView){
       setTimeout(function(){
         callSendAPI(messageData);
-      }, 900);
+      }, 500);
     }
     else
     {
