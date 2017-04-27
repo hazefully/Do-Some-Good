@@ -358,7 +358,7 @@ function showList(sessionObj, list) {
 	var elms = [];
 	var btns = [];
 
-	if(offset + 5 < list.length)
+	if(offset + 4 < list.length)
 		btns.push({
 			title: "View More",
 		    type: "postback",
