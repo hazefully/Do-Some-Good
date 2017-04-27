@@ -352,10 +352,59 @@ function showList(sessionObj, list) {
 	console.log(sessionObj);
 	console.log(list);
 	var offset = sessionObj.offset - 1;
-	var elms = [];
-	var btns = [];
+	var elms = [
+		{
+    		title: titlle,
+	        subtitle: subtitlle,
 
-	if(offset + 5 < list.length)
+	        buttons: [{
+	          title: "View1",
+	          type: "postback",
+	          payload: "ViewEntry1"
+	          //payload: list[offset]
+	        }]
+    	},
+    	{
+    		title: titlle,
+	        subtitle: subtitlle,
+
+	        buttons: [{
+	          title: "View2",
+	          type: "postback",
+	          payload: "ViewEntry2"
+	          //payload: list[offset]
+	        }]
+    	},
+    	{
+    		title: titlle,
+	        subtitle: subtitlle,
+
+	        buttons: [{
+	          title: "View3",
+	          type: "postback",
+	          payload: "ViewEntry3"
+	          //payload: list[offset]
+	        }]
+    	},
+    	{
+    		title: titlle,
+	        subtitle: subtitlle,
+
+	        buttons: [{
+	          title: "View4",
+	          type: "postback",
+	          payload: "ViewEntry4"
+	          //payload: list[offset]
+	        }]
+    	}
+	];
+	var btns = [{
+		title: "View More",
+	    type: "postback",
+	    payload: "ViewMore"
+	}];
+
+	/*if(offset + 5 < list.length)
 		btns.push({
 			title: "View More",
 		    type: "postback",
@@ -381,7 +430,7 @@ function showList(sessionObj, list) {
 	if(offset == list.length)
 		sessionObj.offset = 0;
 	else
-		sessionObj.offset = offset + 1;
+		sessionObj.offset = offset + 1;*/
 
 	var messageData = {
 		recipient:{
