@@ -234,8 +234,17 @@ function processPostback(event, sessionObj) {
 	else if(payload == "ViewMore") {
 		if(sessionObj.offset <= 1)
       triggerListEntries(event, sessionObj);
-    else
-     entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
+    else if(sessionObj.upd_step){
+      if(sessionObj.query_type == "Name"){
+          entry.queryByName(sessionObj, showList, "Please choose from the list the entry you would like to update.");
+        }
+        else{
+          entry.queryByDescription(sessionObj, showList, "Please choose from the list the entry you would like to update.");
+        } 
+    }
+    else{
+      entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest."); 
+    }
  }
  else if(payload.length >= 10 && payload.substring(0, 10) == "ViewEntry_") {
   var id = payload.substring(10, payload.length);
