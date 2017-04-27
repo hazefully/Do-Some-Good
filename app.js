@@ -363,28 +363,6 @@ function showList(sessionObj, list) {
 	          payload: "ViewEntry1"
 	          //payload: list[offset]
 	        }]
-    	},
-    	{
-    		title: 'View2',
-	        subtitle: 'View2',
-
-	        buttons: [{
-	          title: "View2",
-	          type: "postback",
-	          payload: "ViewEntry2"
-	          //payload: list[offset]
-	        }]
-    	},
-    	{
-    		title: 'View3',
-	        subtitle: 'View3',
-
-	        buttons: [{
-	          title: "View3",
-	          type: "postback",
-	          payload: "ViewEntry3"
-	          //payload: list[offset]
-	        }]
     	}
 	];
 	elms.push({
