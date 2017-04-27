@@ -135,7 +135,7 @@ function triggerListEntries(event, sessionObj) {
 		sessionObj.fresh = false;
 		sessionObj.offset = 1;
 		sessionObj.save();
-		getLocation(event.sender.id, "Please share your location");
+		getLocation(event.sender.id, "Please share your location to list the calls for help near to you.");
 	}
 }
 
@@ -157,7 +157,12 @@ function processPostback(event, sessionObj) {
 	}
 	else if(payload == "ViewMore") {
 		if(sessionObj.offset <= 1)
-			triggerListEntries(event, sessionObj);
+    {
+      sendTextMessage(userID, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.")
+			setTimeout(function(){
+        triggerListEntries(event, sessionObj);
+      }, 600);
+    }
 		else
 			entry.query(sessionObj, showList);
 	}
@@ -233,7 +238,7 @@ function createNewEntry(event, sessionObj) {
 		if(sessionObj.step == 2) {
 			sessionObj.new_entry.name = messageText;
     		sessionObj.markModified('new_entry');
-    		getLocation(userID, "Please share the location of this call for help");
+    		getLocation(userID, "Please share the location of this call for help.");
 		}
 		else if(sessionObj.step == 3) {
       console.log(attachs);
@@ -241,8 +246,8 @@ function createNewEntry(event, sessionObj) {
 	    		// sendTextMessage(userID, "Invalid Input!");
 	    		// getStarted(event, sessionObj);
 	    		// return;
-          console.log("an error happeened");
           newEntryErrorHandling(event, sessionObj);
+          return;
 	    	}
 	    	sessionObj.new_entry.location.coordinates[1] = attachs[0].payload.coordinates.lat;
 	    	sessionObj.new_entry.location.coordinates[0] = attachs[0].payload.coordinates.long;
@@ -291,7 +296,7 @@ function createNewEntry(event, sessionObj) {
       }
 			sessionObj.new_entry.priority = messageText;
     		sessionObj.markModified('new_entry');
-    		sendTextMessage(userID, "Okay, let's review this entry\n");
+    		sendTextMessage(userID, "Okay, let's review this entry.\n");
     		setTimeout(function(){
           showEntry(sessionObj, sessionObj.new_entry);
         }, 900);
@@ -394,22 +399,28 @@ function sendLocation(sessionObj, lat, long) {
 
 function newEntryErrorHandling(event, sessionObj)
 {
-
   var userID = sessionObj.user_id;
+  sendTextMessage(userID, "Invalid response, please try again.");
   if(sessionObj.step == 2)
   {
-    sendTextMessage(userID, "Please enter the full name of the person that needs help.");
+    setTimeout(function(){
+      sendTextMessage(userID, "Please enter the full name of the person that needs help.");
+    }, 800);
   }
   else
   {
     if(sessionObj.step == 3)
     {
-        getLocation(userID, "Please share the location of this call for help");
+      setTimeout(function(){
+        getLocation(userID, "Please share the location of this call for help.");
+      }, 800);
     }
     else if(sessionObj.step == 4)
     {
-      var message = "Please specify a description for this call for help.";
-      sendTextMessage(userID, message);   
+      setTimeout(function(){
+        var message = "Please specify a description for this call for help.";
+        sendTextMessage(userID, message);  
+      }, 800);
      }
     else if(sessionObj.step == 5)
     {
@@ -418,7 +429,7 @@ function newEntryErrorHandling(event, sessionObj)
               id: userID
             },
             message: {
-              text:"Please specify the priority of this call for help",
+              text:"Please specify the priority of this call for help.",
                  quick_replies:[
                    {
                      content_type:"text",
@@ -439,7 +450,9 @@ function newEntryErrorHandling(event, sessionObj)
                  ]
             }
       };
-      callSendAPI(messageData);  
+      setTimeout(function(){
+        callSendAPI(messageData);  
+      }, 800);
     }
   
     sessionObj.save();
@@ -513,7 +526,9 @@ function showList(sessionObj, list) {
 	}
 	else if(elms.length == 1) {
     if(elms.length == 1 && offset == 0 && list.length > 1)
-    sendTextMessage(sessionObj.user_id, "Found one call for help near your location");
+      sendTextMessage(sessionObj.user_id, "Only one call for help is left with the following details:")
+    else
+      sendTextMessage(sessionObj.user_id, "Found one call for help near your location with the following details:");
 		setTimeout(function(){
       showEntry(sessionObj, list[list.length - 1]);
     }, 900)
