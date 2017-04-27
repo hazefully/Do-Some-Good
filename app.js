@@ -75,24 +75,24 @@ function processMessage(event, sessionObj) {
 
 	}
   else if(sessionObj.offset == 1) {
-		  attachs = event.message.attachments;
+    attachs = event.message.attachments;
 
-		  if(!attachs || !attachs.length || attachs[0].type != 'location') {
-			 triggerListEntries(event, sessionObj);
-		  } else {
-			 sessionObj.lat = attachs[0].payload.coordinates.lat;
-			 sessionObj.long = attachs[0].payload.coordinates.long;
-			 sessionObj.save();
-			 entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
-      }
+    if(!attachs || !attachs.length || attachs[0].type != 'location') {
+      triggerListEntries(event, sessionObj);
+    } else {
+      sessionObj.lat = attachs[0].payload.coordinates.lat;
+      sessionObj.long = attachs[0].payload.coordinates.long;
+      sessionObj.save();
+      entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
+    }
   } 
   else if(sessionObj.upd_step){
    updateEntry(event, sessionObj);
  }
  else{
   getStarted(event, sessionObj);
- }
-  sendStopTyping(event);
+}
+sendStopTyping(event);
 }
 
 // Main events triggers
@@ -285,7 +285,7 @@ function triggerUpdateStatus(event, sessionObj){
 
     var messageData = {
       recipient: {
-        id: userID
+        id: event.sender.id
       },
       message: {
         text:"Please choose how you would like to search for the call for help you wish to update.",
