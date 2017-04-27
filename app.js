@@ -431,8 +431,8 @@ function showList(sessionObj, list) {
           }]
       });
       elms.push({
-        title: "k",
-          subtitle: "k",
+        title: "",
+          subtitle: "",
       })
 	var messageData = {
 		recipient:{
