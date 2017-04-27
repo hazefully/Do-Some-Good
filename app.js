@@ -276,8 +276,6 @@ function triggerUpdateStatus(event, sessionObj){
   }
   else {
     sessionObj.fresh = false;
-  else {
-    sessionObj.fresh = false;
 
     sessionObj.upd_step = 2;
     sessionObj.save();
