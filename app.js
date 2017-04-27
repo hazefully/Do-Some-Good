@@ -156,7 +156,7 @@ function processPostback(event, sessionObj) {
 		if(sessionObj.offset <= 1)
 			triggerListEntries(event, sessionObj);
 		else
-			session.query(sessionObj, showList);
+			entry.query(sessionObj, showList);
 	}
 	else if(payload.length >= 3 && payload.substring(0, 3) == "$$$") {
 		var id = payload.substring(3, payload.length);
