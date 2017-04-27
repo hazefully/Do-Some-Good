@@ -236,7 +236,7 @@ function createNewEntry(event, sessionObj) {
 			sessionObj.new_entry.priority = messageText;
     		sessionObj.markModified('new_entry');
     		sendTextMessage(userID, "Okay, let's review this entry\n");
-    		showEntry(sessionObj.new_entry);
+    		showEntry(sessionObj, sessionObj.new_entry);
 
 			messageData = {
 				recipient:{
@@ -295,13 +295,13 @@ function createNewEntry(event, sessionObj) {
 
 function showEntry(sessionObj, theEntry) {
 	var message = "";
-	message += "Full name: " + sessionObj.new_entry.name + "\n";
-	message += "Description: " + sessionObj.new_entry.description + "\n";
-	message += "Priority: " + sessionObj.new_entry.priority + "\n";
+	message += "Full name: " + theEntry.name + "\n";
+	message += "Description: " + theEntry.description + "\n";
+	message += "Priority: " + theEntry.priority + "\n";
 	sendTextMessage(sessionObj.user_id, message);
 
-	var long = sessionObj.new_entry.location.coordinates[0];
-	var lat = sessionObj.new_entry.location.coordinates[1];
+	var long = theEntry.location.coordinates[0];
+	var lat = theEntry.location.coordinates[1];
 		
 	sendLocation(sessionObj, lat, long);
 }
