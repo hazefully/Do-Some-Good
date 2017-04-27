@@ -158,8 +158,15 @@ function processPostback(event, sessionObj) {
 		else
 			session.query(sessionObj, showList);
 	}
-	else if(payload.entryID) {
-		showEntry(sessionObj, payload);
+	else if(payload.length >= 3 && payload.substring(0, 3) == "$$$") {
+		var id = payload.substring(3, payload.length);
+		entry.model.findById(id, function(err, result) {
+			if(err || !result) {
+				sendTextMessage(userID, "Entry Not Found!");
+			} else {
+				showEntry(sessionObj, result);
+			}
+		});
 	}
 	else if (payload == "ConfirmNewEntry") {
 		if(sessionObj.step < 6) {
@@ -368,7 +375,7 @@ function showList(sessionObj, list) {
 	        buttons: [{
 	          title: "View",
 	          type: "postback",
-	          payload: {entryID: list[offset]._id}
+	          payload: "$$$" + list[offset]._id
 	        }]
     	});
     	++offset;
