@@ -527,7 +527,7 @@ function showList(sessionObj, list) {
 	else if(elms.length == 1) {
     console.log(offset);
     console.log(list.length);
-    if(offset == 0 && list.length > 1)
+    if(sessionObj.offset == 0 && list.length > 1)
       sendTextMessage(sessionObj.user_id, "Only one call for help is left with the following details:")
     else
       sendTextMessage(sessionObj.user_id, "Found one call for help near your location with the following details:");
