@@ -500,7 +500,7 @@ function showEntry(sessionObj, theEntry) {
   }, 700);	
   var messageData = {
     recipient:{
-     id: userID
+     id: sessionObj.user_id
    },
    message:{
      attachment:{
