@@ -27,10 +27,11 @@ module.exports.start = function(event, callback) {
 module.exports.end = function(sessionObj) {
 	console.log("-----------------");
 	console.log(sessionObj);
-	session.remove(sessionObj, function(err) {
+	sessionObj.remove();
+	/*session.remove(sessionObj, function(err) {
 		if(err)
 			console.error("Couldn't remove session!");
 		else
 			console.log("Session Removed Successfully");
-	});
+	});*/
 }
