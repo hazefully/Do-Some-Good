@@ -513,39 +513,41 @@ function showEntry(sessionObj, theEntry) {
     sendLocation(sessionObj, lat, long);
   }, 700);	
   var messageData = {
-    recipient:{
-     id: sessionObj.user_id
-   },
-   message:{
-     attachment:{
-      type: "template",
-      payload:{
-       template_type:"button",
-       text:"What would you like to do with this call for help?",
-       buttons:[
-       {
-         type:"postback",
-         title:"Upvote",
-         payload:"Upvote"
-       },
-       {
-         type:"postback",
-         title:"Downvote",
-         payload:"Downvote"
-       },
-       {
-         type:"postback",
-         title:"Show Status History",
-         payload:"PrintHistory"
-       }
-       ]
-     }
-   }       
+    recipient: {
+      id: userID
+    },
+    message: {
+      text:"Please specify the priority of this call for help",
+      quick_replies:[
+      {
+       content_type:"text",
+       title: "Upvote",
+       payload: "Upvote"
+     },
+     {
+       content_type:"text",
+       title: "Downvote",
+       payload: "Downvote"
+
+     },
+     {
+      content_type:"text",
+      title: "Show status history",
+      payload: "PrintHistory"
+    },
+    {
+     content_type:"text",
+     title:"Add Status Update",
+     payload:"AddStatusUpdate"
+   }
+   ]
  }
 };
+
 setTimeout(function(){
   callSendAPI(messageData);
 }, 1500);
+
 }
 
 function sendLocation(sessionObj, lat, long) {
