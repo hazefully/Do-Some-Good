@@ -6,8 +6,6 @@ var EntrySchema = new Schema({
 	type: {type: String, default: 'entry'},
 	user_id: String,
   	name: {type: String, default: 'N/A'},
-  	lat: {type: Number, default: 0},
-  	long: {type: Number, default: 0},
  	date: { type: Date, default: Date.now },
  	description: {type: String, default: 'N/A'},
  	

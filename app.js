@@ -79,7 +79,7 @@ function processMessage(event, sessionObj) {
 			triggerListEntries(event, sessionObj);
 		} else {
 			sessionObj.lat = attachs[0].payload.coordinates.lat;
-			sessionObj.long = attachs[1].payload.coordinates.long;
+			sessionObj.long = attachs[0].payload.coordinates.long;
 			sessionObj.save();
 			session.query(sessionObj, showList);
 		}
