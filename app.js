@@ -226,6 +226,7 @@ function createNewEntry(event, sessionObj) {
 		var attachs = event.message.attachments;
     if(messageText == null && sessionObj.step != 3)
     {
+      console.log("handle error");
       newEntryErrorHandling(event, sessionObj);
       return;
     }
@@ -235,7 +236,7 @@ function createNewEntry(event, sessionObj) {
     		getLocation(userID, "Please share the location of this call for help");
 		}
 		else if(sessionObj.step == 3) {
-      console.log(message);
+      console.log(attachs);
 			if(!attachs || !attachs.length --|| attachs[0].type != 'location') {
 	    		// sendTextMessage(userID, "Invalid Input!");
 	    		// getStarted(event, sessionObj);
