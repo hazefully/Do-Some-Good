@@ -278,7 +278,10 @@ function createNewEntry(event, sessionObj) {
 			sessionObj.new_entry.priority = messageText;
     		sessionObj.markModified('new_entry');
     		sendTextMessage(userID, "Okay, let's review this entry\n");
-    		showEntry(sessionObj, sessionObj.new_entry);
+    		setTimeout(function(){
+          showEntry(sessionObj, sessionObj.new_entry);
+        }, 1000);
+        
 
 			messageData = {
 				recipient:{
@@ -306,7 +309,10 @@ function createNewEntry(event, sessionObj) {
 					}       
 				}
 			};
-			callSendAPI(messageData);
+
+      setTimeout(function(){
+        callSendAPI(messageData);
+      }, 1000);
 		}
 		else {
 			sendTextMessage(userID, "Invalid Input!");
