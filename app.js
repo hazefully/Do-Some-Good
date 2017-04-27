@@ -365,31 +365,16 @@ function showList(sessionObj, list) {
 	        }]
     	}
 	];
-	/*elms.push({
-		title: 'View5',
-        subtitle: 'View5',
+	var btns = [];
 
-        buttons: [{
-          title: "View5",
-          type: "postback",
-          payload: "ViewEntry5"
-          //payload: list[offset]
-        }]
-	});*/
-	var btns = [{
-		title: "View More",
-	    type: "postback",
-	    payload: "ViewMore"
-	}];
-
-	/*if(offset + 5 < list.length)
+	if(offset + 5 < list.length)
 		btns.push({
 			title: "View More",
 		    type: "postback",
 		    payload: "ViewMore"
-		});*/
+		});
 
-	while(offset < list.length && elms.length < 0) {
+	while(offset < list.length && elms.length < 4) {
 		var titlle = list[offset].description;
     	var subtitlle = list[offset].priority;
     	elms.push({
@@ -399,8 +384,8 @@ function showList(sessionObj, list) {
 	        buttons: [{
 	          title: "View",
 	          type: "postback",
-	          payload: "ViewEntry"
-	          //payload: list[offset]
+	          //payload: "ViewEntry"
+	          payload: list[offset]
 	        }]
     	});
     	++offset;
