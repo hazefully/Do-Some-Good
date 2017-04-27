@@ -37,7 +37,7 @@ module.exports.query = function(sessionObj, callback) {
 	          {
 	            $geometry: { type: "Point",  coordinates: [ sessionObj.long, sessionObj.lat ] },
 	            //$minDistance: 1000,
-	            $maxDistance: 5000
+	            //$maxDistance: 5000
 	          }
 	       }
 	   },
