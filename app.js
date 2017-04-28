@@ -623,8 +623,10 @@ function showEntry(sessionObj, theEntry, notPreview = true) {
     message += "Full name: " + theEntry.name + "\n";
     message += "Description: " + theEntry.description + "\n";
     message += "Priority: " + theEntry.priority + "\n";
-    message += "Upvotes: " + theEntry.upvotes.length + "\n";
-    message += "Downvotes: " + theEntry.downvotes.length + "\n";
+    if(notPreview) {
+        message += "Upvotes: " + theEntry.upvotes.length + "\n";
+        message += "Downvotes: " + theEntry.downvotes.length + "\n";
+    }
     message += "Location: ";
 
     sendTextMessage(sessionObj.user_id, message);
