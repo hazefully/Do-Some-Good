@@ -146,7 +146,7 @@ function deleteEntry(sessionObj, theEntry) {
     theEntry.remove();
     sendTextMessage(sessionObj.user_id, "Entry removed successfully!");
     setTimeout(function() {
-        getStarted(event, sessionObj);
+        getStarted({sender: {id: sessionObj.user_id}}, sessionObj);
     }, 1000);
 }
 
