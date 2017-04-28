@@ -110,6 +110,8 @@ function doUpvote(sessionObj, theEntry) {
         sendTextMessage(sessionObj.user_id, "Sorry, You can only vote once!");
     else {
         theEntry.upvotes.push(sessionObj.user_id);
+        theEntry.markModified('upvotes');
+        theEntry.save();
         sendTextMessage(sessionObj.user_id, "Thanks for your contribution.");
     }
     setTimeout(function(){
@@ -122,6 +124,8 @@ function doDownvote(sessionObj, theEntry) {
         sendTextMessage(sessionObj.user_id, "Sorry, You can only vote once!");
     else {
         theEntry.downvotes.push(sessionObj.user_id);
+        theEntry.markModified('downvotes');
+        theEntry.save();
         sendTextMessage(sessionObj.user_id, "Thanks for your contribution.");
     }
     setTimeout(function(){
