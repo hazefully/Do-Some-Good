@@ -517,7 +517,7 @@ function showEntry(sessionObj, theEntry) {
       id: sessionObj.user_id
     },
     message: {
-      text:"Please specify the priority of this call for help",
+      text:"What would you like to do with this call for help?",
       quick_replies:[
       {
        content_type:"text",
@@ -671,7 +671,7 @@ function showList(sessionObj, list, msg) {
       title: titlle,
       subtitle: subtitlle,
       buttons: [{
-       title: "View",
+       title: "Open",
        type: "postback",
        payload: "ViewEntry_" + list[offset]._id
      }]
