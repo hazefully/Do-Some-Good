@@ -481,7 +481,7 @@ function createNewEntry(event, sessionObj) {
                     id: userID
                 },
                 message: {
-                    text: "Please specify the priority of this call for help",
+                    text: "Please specify the priority of this call for help.",
                     quick_replies: [{
                             content_type: "text",
                             title: "High",
