@@ -697,7 +697,7 @@ function newEntryErrorHandling(event, sessionObj) {
             }, 800);
         } else if (sessionObj.step == 4) {
             setTimeout(function() {
-                var message = "Please specify a description for this call for help.";
+                var message = "Please specify a description for this call for help. State the needs of this person and how everyone can help.";
                 sendTextMessage(userID, message);
             }, 800);
         } else if (sessionObj.step == 5) {
