@@ -62,6 +62,13 @@ app.post('/webhook', function(req, res) {
     }
 });
 
+function getSemiFresh(sessionObj) {
+    sessionObj.step = sessionObj.upd_step = 0;
+    sessionObj.status_upd = false;
+    sessionObj.query_type = sessionObj.queryval = 'N/A';
+    sessionObj.save();
+}
+
 function restartSession(event, sessionObj, callback) {
     console.log("Restarting Session!");
     sessionObj.remove(function(err, sessionObj) {
@@ -591,6 +598,8 @@ function createNewEntry(event, sessionObj) {
 }
 
 function showEntryOptions(sessionObj, theEntry, flag = false) {
+    getSemiFresh(sessionObj);
+
     var messageData = {
         recipient: {
             id: sessionObj.user_id
@@ -658,6 +667,7 @@ function showEntry(sessionObj, theEntry, notPreview = true) {
     message += "Description: " + theEntry.description + "\n";
     message += "Priority: " + theEntry.priority + "\n";
     if(notPreview) {
+        getSemiFresh(sessionObj);
         message += "Upvotes: " + theEntry.upvotes.length + "\n";
         message += "Downvotes: " + theEntry.downvotes.length + "\n";
     }
