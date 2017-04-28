@@ -124,8 +124,13 @@ function showStatusUpdates(event, sessionObj) {
                 }
                 sendTextMessage(sessionObj.user_id, message);
             }
+            sessionObj.status_upd = 0;
+            sessionObj.save();
+            setTimeout(function(){
+                getEntryFromID(event, sessionObj, showEntryOptions);
+            }, 1000);
         }
-        getEntryFromID(event, sessionObj, showEntryOptions);
+        
     });
 }
 
