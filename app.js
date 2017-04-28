@@ -497,7 +497,7 @@ function createNewEntry(event, sessionObj) {
             sessionObj.markModified('new_entry');
             sendTextMessage(userID, "Okay, let's review this entry.\n");
             setTimeout(function() {
-                showEntry(sessionObj, sessionObj.new_entry);
+                showEntry(sessionObj, sessionObj.new_entry, false);
             }, 900);
 
 
@@ -616,7 +616,7 @@ function getEntryFromID(event, sessionObj, callback) {
     });
 }
 
-function showEntry(sessionObj, theEntry) {
+function showEntry(sessionObj, theEntry, notPreview = true) {
     var message = "";
     message += "Full name: " + theEntry.name + "\n";
     message += "Description: " + theEntry.description + "\n";
@@ -629,10 +629,11 @@ function showEntry(sessionObj, theEntry) {
     setTimeout(function() {
         sendLocation(sessionObj, lat, long);
     }, 700);
-    
-    setTimeout(function() {
-        showEntryOptions(sessionObj, theEntry, true);
-    }, 2000);
+    if(notPreview) {
+        setTimeout(function() {
+            showEntryOptions(sessionObj, theEntry, true);
+        }, 2000);
+    }
 }
 
 function sendLocation(sessionObj, lat, long) {
