@@ -548,6 +548,12 @@ function showEntryOptions(sessionObj, theEntry, flag = false) {
                     content_type: "text",
                     title: "Add Status Update",
                     payload: "Add Status Update"
+                },
+                {
+                    content_type: "text",
+                    title: "Cancel",
+                    payload: "Cancel"
+
                 }
             ]
         }
