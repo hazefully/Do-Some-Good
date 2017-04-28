@@ -337,8 +337,6 @@ function processPostback(event, sessionObj) {
             if (err || !result) {
                 sendTextMessage(userID, "Entry Not Found!");
             } else {
-                sessionObj.last_opened_entry = id;
-                sessionObj.save();
                 showEntry(sessionObj, result);
             }
         });
@@ -613,7 +611,7 @@ function showEntryOptions(sessionObj, theEntry, flag = false) {
 function getEntryFromID(event, sessionObj, callback) {
     entry.model.findById(sessionObj.last_opened_entry, function(err, result) {
         if (err || !result) {
-            sendTextMessage(userID, "Entry Not Found!");
+            sendTextMessage(sessionObj.user_id, "Entry Not Found!");
         } else {
             callback(sessionObj, result);
         }
@@ -630,6 +628,10 @@ function showEntry(sessionObj, theEntry, notPreview = true) {
 
     var long = theEntry.location.coordinates[0];
     var lat = theEntry.location.coordinates[1];
+
+    sessionObj.last_opened_entry = theEntry._id;
+    sessionObj.save();
+
     setTimeout(function() {
         sendLocation(sessionObj, lat, long);
     }, 700);
@@ -809,7 +811,6 @@ function showList(sessionObj, list, msg) {
 }
 
 function getStarted(event, sessionObj, welcomeMessage = false) {
-    console.log("da5al getStarted");
     var userID = event.sender.id;
     if (welcomeMessage) {
         request({
