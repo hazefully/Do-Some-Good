@@ -94,10 +94,10 @@ function processMessage(event, sessionObj) {
   } 
   else if(event.message.text){
     var messageText = event.message.text;
-    messageText.toUpperCase();
-    console.log(messageText);
-    console.log("Add Status Update".toUpperCase());
-    
+    messageText = messageText.toUpperCase();
+  
+    console.log("messageText == \"Add Status Update\".toUpperCase()";
+
     if(messageText == "Add Status Update".toUpperCase()){
       triggerNewStatusUpdate(event, sessionObj);
     }
