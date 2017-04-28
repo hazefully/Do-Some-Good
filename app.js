@@ -944,14 +944,14 @@ function getDateTime() {
 
     var date = new Date();
 
-    var aorp = "AM";
+    //var aorp = "AM";
 
     var hour = date.getHours();
-    if(hour >= 12)
-      aorp = "PM", hour -= 12;
-    if(hour == 0)
-      hour = "12";
-    else
+    //if(hour >= 12)
+     // aorp = "PM", hour -= 12;
+    //if(hour == 0)
+     // hour = "12";
+    //else
       hour = (hour < 10 ? "0" : "") + hour;
 
     var min = date.getMinutes();
@@ -970,7 +970,7 @@ function getDateTime() {
 
 
    // return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
-    return day + "/" + month + "/" + year + " " + hour + ":" + min + ":" + sec + " " + aorp;
+    return day + "/" + month + "/" + year + " " + hour + ":" + min + ":" + sec;// + " " + aorp;
   }
 
 
