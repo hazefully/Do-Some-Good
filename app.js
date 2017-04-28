@@ -113,7 +113,7 @@ function showStatusUpdates(event, sessionObj) {
         if (err || !result) {
             sendTextMessage(sessionObj.user_id, "Entry Not Found!");
         } else {
-            if (!result.updates.length.length)
+            if (!result.updates.length)
                 sendTextMessage(sessionObj.user_id, "There are no status updates for this entry!");
             else {
                 var message = "Found " + result.updates.length + " status updates for this entry!\n";
@@ -141,6 +141,7 @@ function addStatusUpdate(event, sessionObj) {
             result.updates.push(event.message.text);
             result.updateDates.push(getDateTime());
             result.markModified('updates');
+            result.markModified('updateDates');
             result.save();
             sendTextMessage(sessionObj.user_id, "Your status update was added successfully!");
         }
