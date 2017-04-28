@@ -114,7 +114,7 @@ function doUpvote(sessionObj, theEntry) {
         theEntry.upvotes.push(sessionObj.user_id);
         theEntry.markModified('upvotes');
         theEntry.save();
-        sendTextMessage(sessionObj.user_id, "Thanks for your contribution.");
+        sendTextMessage(sessionObj.user_id, "Thank you for your vote.");
     }
     setTimeout(function(){
         showEntryOptions(sessionObj, theEntry);
