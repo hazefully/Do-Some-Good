@@ -513,13 +513,12 @@ function createNewEntry(event, sessionObj) {
     sessionObj.save();
 }
 
-function showEntryOptions(sessionObj, theEntry) {
+function showEntryOptions(sessionObj, theEntry, flag = false) {
     var messageData = {
         recipient: {
             id: sessionObj.user_id
         },
         message: {
-            text: "What would you like to do with this call for help?",
             quick_replies: [{
                     content_type: "text",
                     title: "Upvote",
@@ -544,6 +543,10 @@ function showEntryOptions(sessionObj, theEntry) {
             ]
         }
     };
+
+    if(flag)
+        messageData.message.text = "What would you like to do with this call for help?";
+
     if (theEntry.user_id == sessionObj.user_id)
         messageData.message.quick_replies.push({
             content_type: "text",
@@ -578,7 +581,7 @@ function showEntry(sessionObj, theEntry) {
     }, 700);
     
     setTimeout(function() {
-        showEntryOptions(sessionObj, theEntry);
+        showEntryOptions(sessionObj, theEntry, true);
     }, 2000);
 }
 
