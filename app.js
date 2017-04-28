@@ -68,6 +68,7 @@ function restartSession(event, sessionObj, callback) {
 
 function processMessage(event, sessionObj) {
 
+  var messageText = message.text;
 	console.log("New Message recieved!");
 	if(sessionObj.step) {
 		// if there's ongoing create new entry process
@@ -78,10 +79,15 @@ function processMessage(event, sessionObj) {
     findEntry(event, sessionObj);
   }
   else if(sessionObj.status_upd){
-    addStatusUpdate(event, sessionObj);
+    if(!event.message.text) {
+      sendTextMessage(sessionObj.user_id, "Invalid response! Please try again").
+      getStarted(event, sessionObj);
+    } else {
+      addStatusUpdate(event, sessionObj);
+    }
   }
-  else if(sessionObj.offset == 1) {
-    attachs = event.message.attachments;
+  /*else if(sessionObj.offset == 1) {
+    var attachs = event.message.attachments;
 
     if(!attachs || !attachs.length || attachs[0].type != 'location') {
       triggerListEntries(event, sessionObj);
@@ -91,32 +97,21 @@ function processMessage(event, sessionObj) {
       sessionObj.save();
       entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
     }
-  } 
-  else if(event.message.text){
-    var messageText = event.message.text;
-    messageText = messageText.toUpperCase();
-  
-    console.log("messageText == \"Add Status Update\".toUpperCase()");
+  }*/
+  else if(messageText.toUpperCase() == "Add Status Update".toUpperCase()) {
+    triggerNewStatusUpdate(event, sessionObj);
+  }
+  else if(messageText.toUpperCase() == "View status history".toUpperCase()) {
 
-    if(messageText == "Add Status Update".toUpperCase()){
-      triggerNewStatusUpdate(event, sessionObj);
-    }
-    else if(messageText == "View status history".toUpperCase()){
+  }
+  else if(messageText.toUpperCase() == "Upvote".toUpperCase()) {
 
-    }
-    else if(messageText == "Upvote".toUpperCase()){
+  }
+  else if(messageText.toUpperCase() == "Downvote".toUpperCase()) {
 
-    }
-    else if(messageText == "Downvote".toUpperCase()){
+  }
+  else if(messageText.toUpperCase() == "Delete This Entry".toUpperCase()) {
 
-    }
-    else if(messageText == "Delete This Entry".toUpperCase()){
-      
-    }
-    else
-    {
-      getStarted(event, sessionObj);
-    }
   }
   else{
     getStarted(event, sessionObj);
@@ -126,26 +121,28 @@ function processMessage(event, sessionObj) {
 
 // Main events triggers
 function triggerNewStatusUpdate(event, sessionObj){
-  sendTextMessage(sessionObj.user_id, "Enter any new updates for this call for help, be as detailed as possible so your status update can help keep this entry up-to-date.")
-  sessionObj.status_upd = 1;
-  sessionObj.save();
+  if(!sessionObj.fresh)
+    restartSession(event, sessionObj, triggerNewStatusUpdate);
+  else {
+    sessionObj.fresh = false;
+    sessionObj.status_upd = 1;
+    sessionObj.save();
+    sendTextMessage(sessionObj.user_id, "Write any new updates for this call for help, be as detailed as possible, Your status update can help keep this entry up-to-date.");
+  }
 }
+
 function addStatusUpdate(event, sessionObj){
   var id = sessionObj.last_opened_entry;
- entry.model.findById(id, function(err, result) {
-  if(!event.message.text)
-  {
-    sendTextMessage(sessionObj.user_id, "Invalid response! Please try again").
-    getStarted(event, sessionObj);
-  }
-     if(err || !result) {
+  entry.model.findById(id, function(err, result) {
+    if(err || !result) {
       sendTextMessage(sessionObj.user_id, "Entry Not Found!");
     } else {
       result.updates.push(event.message.text);
       result.markModified('updates');
       result.save();
-    sendTextMessage(sessionObj.user_id, "Your status update was added successfully!");
+      sendTextMessage(sessionObj.user_id, "Your status update was added successfully!");
     }
+    getStarted(event, sessionObj);
   });
 }
 function findEntry(event, sessionObj){
@@ -282,12 +279,13 @@ function processPostback(event, sessionObj) {
 	else if (payload == "NewEntry") {
 		triggerNewEntry(event, sessionObj);
 	}
-	else if (payload == "ListEntries") {
+	/*else if (payload == "ListEntries") {
 		triggerListEntries(event, sessionObj);
-	}
+	}*/
 	else if(payload == "ViewMore") {
 		if(sessionObj.offset <= 1)
-      triggerListEntries(event, sessionObj);
+      triggerFindEntry(event, sessionObj);
+      //triggerListEntries(event, sessionObj);
     else if(sessionObj.upd_step){
       if(sessionObj.query_type == "Name"){
         entry.queryByName(sessionObj, showList, "Please choose from the list the entry you would like to open.");
