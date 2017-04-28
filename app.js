@@ -286,7 +286,17 @@ function processPostback(event, sessionObj) {
             entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
         }
     } else if (payload.length >= 10 && payload.substring(0, 10) == "ViewEntry_") {
-        getEntryFromID(event, sessionObj, showEntry);
+        var id = payload.substring(10, payload.length);
+        entry.model.findById(id, function(err, result) {
+
+            if (err || !result) {
+                sendTextMessage(userID, "Entry Not Found!");
+            } else {
+                sessionObj.last_opened_entry = id;
+                sessionObj.save();
+                showEntry(sessionObj, result);
+            }
+        });
 
     } else if (payload == "ConfirmNewEntry") {
         if (sessionObj.step < 6) {
@@ -544,17 +554,13 @@ function showEntryOptions(sessionObj, theEntry) {
 }
 
 function getEntryFromID(event, sessionObj, callback) {
-    var id = payload.substring(10, payload.length);
-        entry.model.findById(id, function(err, result) {
-
-            if (err || !result) {
-                sendTextMessage(userID, "Entry Not Found!");
-            } else {
-                sessionObj.last_opened_entry = id;
-                sessionObj.save();
-                callback(sessionObj, result);
-            }
-        });
+    entry.model.findById(sessionObj.last_opened_entry, function(err, result) {
+        if (err || !result) {
+            sendTextMessage(userID, "Entry Not Found!");
+        } else {
+            callback(sessionObj, result);
+        }
+    });
 }
 
 function showEntry(sessionObj, theEntry) {
