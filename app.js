@@ -2,6 +2,7 @@ var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
+var path = require("path");
 
 var db = mongoose.connect(process.env.MONGODB_URI);
 
@@ -19,9 +20,8 @@ app.get("/", function(req, res) {
     res.send("Deployed!");
 });
 
-
 app.get("/privacypolicy", function(req, res) {
-    res.sendFile('privacypolicy.htm');
+    res.sendFile(path.join(__dirname+'/privacypolicy.htm'));
 })
 
 app.get("/webhook", function(req, res) {
