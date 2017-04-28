@@ -93,14 +93,21 @@ function processMessage(event, sessionObj) {
     } else if (messageText && messageText.toUpperCase() == "Downvote".toUpperCase()) {
 
     } else if (messageText && messageText.toUpperCase() == "Delete This Entry".toUpperCase()) {
-
+        getEntryFromID(event, sessionObj, deleteEntry);
     } else {
         getStarted(event, sessionObj);
     }
     sendStopTyping(event);
 }
 
-// Main events triggers
+function deleteEntry(sessionObj, theEntry) {
+    theEntry.remove();
+    sendTextMessage(sessionObj.user_id, "Entry removed successfully!");
+    setTimeout(function() {
+        getStarted(event, sessionObj);
+    }, 1000);
+}
+
 function triggerNewStatusUpdate(event, sessionObj) {
     sessionObj.status_upd = true;
     sessionObj.save();
