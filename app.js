@@ -749,8 +749,11 @@ function showList(sessionObj, list, msg) {
         var titlle = list[offset].description;
         var subtitlle = "Priority: ";
         subtitlle += list[offset].priority;
-        subtitlle += "/Name: ";
+        subtitlle += " / Name: ";
         subtitlle += list[offset].name;
+        subtitlle += " / Votes: ";
+        subtitlle += "+ " + list[offset].upvotes.length;
+        subtitlle += " - " + list[offset].downvotes.length;
         elms.push({
             title: titlle,
             subtitle: subtitlle,
