@@ -775,8 +775,6 @@ function showList(sessionObj, list, msg) {
         }
     }
     sessionObj.save();
-    if (firstView)
-        sendTextMessage(sessionObj.user_id, msg);
 
     if (elms.length == 0) {
         sendTextMessage(sessionObj.user_id, "No results found!");
@@ -792,6 +790,7 @@ function showList(sessionObj, list, msg) {
         }, 900)
     } else {
         if (firstView) {
+            sendTextMessage(sessionObj.user_id, msg);
             setTimeout(function() {
                 callSendAPI(messageData);
             }, 500);
