@@ -113,7 +113,7 @@ function doUpvote(sessionObj, theEntry) {
         sendTextMessage(sessionObj.user_id, "Thanks for your contribution.");
     }
     setTimeout(function(){
-        getEntryFromID(event, sessionObj, showEntryOptions);
+        showEntryOptions(sessionObj, theEntry);
     }, 1000);
 }
 
@@ -125,7 +125,7 @@ function doDownvote(sessionObj, theEntry) {
         sendTextMessage(sessionObj.user_id, "Thanks for your contribution.");
     }
     setTimeout(function(){
-        getEntryFromID(event, sessionObj, showEntryOptions);
+        showEntryOptions(sessionObj, theEntry);
     }, 1000);
 }
 
