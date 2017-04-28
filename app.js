@@ -563,7 +563,7 @@ function showEntryOptions(sessionObj, theEntry, flag = false) {
         messageData.message.text = "What would you like to do with this call for help?";
 
     if (theEntry.user_id == sessionObj.user_id)
-        messageData.message.quick_replies.push({
+        messageData.message.quick_replies.splice(messageData.message.quick_replies.length - 1, 0, {
             content_type: "text",
             title: "Delete This Entry",
             payload: "Delete This Entry"
