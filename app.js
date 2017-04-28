@@ -84,22 +84,24 @@ function processMessage(event, sessionObj) {
         } else {
             addStatusUpdate(event, sessionObj);
         }
-    } else if (messageText && messageText.toUpperCase() == "Add Status Update".toUpperCase()) {
+    } else if (sessionObj.entry_option && messageText && messageText.toUpperCase() == "Add Status Update".toUpperCase()) {
         triggerNewStatusUpdate(event, sessionObj);
-    } else if (messageText && messageText.toUpperCase() == "View status history".toUpperCase()) {
+    } else if (sessionObj.entry_option && messageText && messageText.toUpperCase() == "View status history".toUpperCase()) {
         showStatusUpdates(event, sessionObj);
-    } else if (messageText && messageText.toUpperCase() == "Upvote".toUpperCase()) {
+    } else if (sessionObj.entry_option && messageText && messageText.toUpperCase() == "Upvote".toUpperCase()) {
         getEntryFromID(event, sessionObj, doUpvote);
 
-    } else if (messageText && messageText.toUpperCase() == "Downvote".toUpperCase()) {
+    } else if (sessionObj.entry_option && messageText && messageText.toUpperCase() == "Downvote".toUpperCase()) {
         getEntryFromID(event, sessionObj, doDownvote);
 
-    } else if (messageText && messageText.toUpperCase() == "Delete This Entry".toUpperCase()) {
+    } else if (sessionObj.entry_option && messageText && messageText.toUpperCase() == "Delete This Entry".toUpperCase()) {
         getEntryFromID(event, sessionObj, deleteEntry);
-        setTimeout(function() {
-            getStarted(event, sessionObj);
-        }, 1000);
-    } else {
+    } else if(sessionObj.entry_option){
+      sendTextMessage(sessionObj.user_id, "Invalid response, please try again!");
+      setTimeout(function() {
+        getEntryFromID(event, sessionObj, showEntryOptions);
+      }, 800); 
+    }  else {
         getStarted(event, sessionObj);
     }
     sendStopTyping(event);
@@ -134,14 +136,24 @@ function doDownvote(sessionObj, theEntry) {
 }
 
 function deleteEntry(sessionObj, theEntry) {
+    if(sessionObj.user_id != theEntry.user_id){
+      sendTextMessage(sessionObj.user_id, "Invalid response, please try again!");
+      setTimeout(function() {
+          showEntryOptions(sessionObj, theEntry);
+      }, 800); 
+      return;  
+    }
     theEntry.remove();
     sendTextMessage(sessionObj.user_id, "Entry removed successfully!");
+    setTimeout(function() {
+        getStarted(event, sessionObj);
+    }, 1000);
 }
 
 function triggerNewStatusUpdate(event, sessionObj) {
     sessionObj.status_upd = true;
     sessionObj.save();
-    sendTextMessage(sessionObj.user_id, "Write any new updates for this call for help, be as detailed as possible, Your status update can help keep this entry up-to-date.");
+    sendTextMessage(sessionObj.user_id, "Write any new updates for this call for help, be as detailed as possible so that your status update can help keep this entry up-to-date.");
 }
 
 function showStatusUpdates(event, sessionObj) {
@@ -153,8 +165,8 @@ function showStatusUpdates(event, sessionObj) {
             if (!result.updates.length)
                 sendTextMessage(sessionObj.user_id, "There are no status updates for this entry!");
             else {
-                var message = "Found " + result.updates.length + " status updates for this entry!\n";
-                message += "Staus Updates are sorted starting from the latest one.\n\n";
+                var message = "Found " + result.updates.length + " status updates for this entry.\n";
+                message += "Newest status updates are shown first.\n\n";
                 for (var i = result.updates.length - 1; i >= 0; --i) {
                     message += result.updates[i] + "\n";
                     message += "Date: " + result.updateDates[i] + "\n\n";
@@ -196,17 +208,17 @@ function findEntry(event, sessionObj) {
 
         if (query_type == "Person's name") {
             sessionObj.query_type = "Name";
-            sendTextMessage(event.sender.id, "Please specify the name of the person whose call for help you wish to open.");
+            sendTextMessage(event.sender.id, "Please specify the name of the person whose call for help you wish to find.");
             sessionObj.upd_step = 3;
             sessionObj.save();
         } else if (query_type == "Description") {
             sessionObj.query_type = "Description";
-            sendTextMessage(event.sender.id, "Please specify the description of the the call for help you wish to open.");
+            sendTextMessage(event.sender.id, "Please specify the description of the the call for help you wish to find.");
             sessionObj.upd_step = 3;
             sessionObj.save();
         } else if (query_type == "Location") {
             sessionObj.query_type = "Location";
-            getLocation(event.sender.id, "Please share the location you wish to search around.");
+            getLocation(event.sender.id, "Please share the location you wish to search for calls for help around.");
             sessionObj.upd_step = 3;
             sessionObj.save();
         } else {
@@ -377,7 +389,7 @@ function triggerFindEntry(event, sessionObj) {
                 id: event.sender.id
             },
             message: {
-                text: "Please choose how you would like to search for the call for help you wish to open.",
+                text: "Please choose how you would like to find calls for help.",
                 quick_replies: [{
                         content_type: "text",
                         title: "Person's name",
@@ -606,6 +618,8 @@ function showEntryOptions(sessionObj, theEntry, flag = false) {
             payload: "Delete This Entry"
         });
     callSendAPI(messageData);
+    sessionObj.entry_option = 1;
+    sessionObj.save();
 }
 
 function getEntryFromID(event, sessionObj, callback) {
@@ -754,11 +768,11 @@ function showList(sessionObj, list, msg) {
         var titlle = list[offset].description;
         var subtitlle = "Priority: ";
         subtitlle += list[offset].priority;
-        subtitlle += " / Name: ";
+        subtitlle += "\nName: ";
         subtitlle += list[offset].name;
-        subtitlle += " / Votes: ";
-        subtitlle += "+ " + list[offset].upvotes.length;
-        subtitlle += " - " + list[offset].downvotes.length;
+        subtitlle += "\nVotes: ";
+        subtitlle += "+" + list[offset].upvotes.length;
+        subtitlle += " | -" + list[offset].downvotes.length;
         elms.push({
             title: titlle,
             subtitle: subtitlle,
@@ -930,8 +944,15 @@ function getDateTime() {
 
     var date = new Date();
 
+    var aorp = "AM";
+
     var hour = date.getHours();
-    hour = (hour < 10 ? "0" : "") + hour;
+    if(hour >= 12)
+      aorp = "PM", hour -= 12;
+    if(hour == 0)
+      hour = "12";
+    else
+      hour = (hour < 10 ? "0" : "") + hour;
 
     var min = date.getMinutes();
     min = (min < 10 ? "0" : "") + min;
@@ -947,8 +968,10 @@ function getDateTime() {
     var day = date.getDate();
     day = (day < 10 ? "0" : "") + day;
 
-    return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
-}
+
+   // return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
+    return day + "/" + month + "/" + year + " " + hour + ":" + min + ":" + sec + " " + aorp;
+  }
 
 
 
