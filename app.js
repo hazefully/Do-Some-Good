@@ -133,6 +133,7 @@ function triggerNewStatusUpdate(event, sessionObj){
 
 function addStatusUpdate(event, sessionObj){
   var id = sessionObj.last_opened_entry;
+  console.log("here second ", sessionObj.last_opened_entry);
   entry.model.findById(id, function(err, result) {
     if(err || !result) {
       sendTextMessage(sessionObj.user_id, "Entry Not Found!");
@@ -307,6 +308,7 @@ function processPostback(event, sessionObj) {
     } else {
       sessionObj.last_opened_entry = id;
       sessionObj.save();
+      console.log("here first ", sessionObj.last_opened_entry);
       showEntry(sessionObj, result);
     }
   });
