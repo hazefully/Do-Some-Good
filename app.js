@@ -549,10 +549,10 @@ function showEntry(sessionObj, theEntry) {
       title: "Delete This Entry",
       payload: "DeleteEntry"
     });
-  
+
 setTimeout(function(){
   callSendAPI(messageData);
-}, 1900);
+}, 2000);
 
 }
 
