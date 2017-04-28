@@ -96,7 +96,7 @@ function processMessage(event, sessionObj) {
     var messageText = event.message.text;
     messageText = messageText.toUpperCase();
   
-    console.log("messageText == \"Add Status Update\".toUpperCase()";
+    console.log("messageText == \"Add Status Update\".toUpperCase()");
 
     if(messageText == "Add Status Update".toUpperCase()){
       triggerNewStatusUpdate(event, sessionObj);
