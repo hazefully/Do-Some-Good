@@ -124,8 +124,6 @@ function showStatusUpdates(event, sessionObj) {
                 }
                 sendTextMessage(sessionObj.user_id, message);
             }
-            sessionObj.status_upd = false;
-            sessionObj.save();
             setTimeout(function(){
                 getEntryFromID(event, sessionObj, showEntryOptions);
             }, 1000);
@@ -146,6 +144,8 @@ function addStatusUpdate(event, sessionObj) {
             result.save();
             sendTextMessage(sessionObj.user_id, "Your status update was added successfully!");
         }
+        sessionObj.status_upd = false;
+        sessionObj.save();
         setTimeout(function(){
             getEntryFromID(event, sessionObj, showEntryOptions);
         }, 1000);
@@ -526,6 +526,7 @@ function showEntryOptions(sessionObj, theEntry, flag = false) {
             id: sessionObj.user_id
         },
         message: {
+            text: "",
             quick_replies: [{
                     content_type: "text",
                     title: "Upvote",
