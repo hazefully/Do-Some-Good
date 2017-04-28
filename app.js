@@ -543,7 +543,13 @@ function showEntry(sessionObj, theEntry) {
    ]
  }
 };
-
+  if(theEntry.user_id == sessionObj.user_id)
+    messageData.message.quick_replies.push({
+      content_type:"text",
+      title: "Delete This Entry",
+      payload: "DeleteEntry"
+    });
+  
 setTimeout(function(){
   callSendAPI(messageData);
 }, 1900);
