@@ -110,6 +110,9 @@ function processMessage(event, sessionObj) {
     else if(messageText == "Downvote".toUpperCase()){
 
     }
+    else if(messageText == "Delete This Entry".toUpperCase()){
+      
+    }
     else
     {
       getStarted(event, sessionObj);
@@ -588,7 +591,7 @@ function showEntry(sessionObj, theEntry) {
     messageData.message.quick_replies.push({
       content_type:"text",
       title: "Delete This Entry",
-      payload: "DeleteEntry"
+      payload: "Delete This Entry"
     });
 
 setTimeout(function(){
