@@ -546,7 +546,7 @@ function showEntry(sessionObj, theEntry) {
 
 setTimeout(function(){
   callSendAPI(messageData);
-}, 1700);
+}, 1900);
 
 }
 
