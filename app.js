@@ -20,9 +20,8 @@ app.get("/", function(req, res) {
 });
 
 
-app.get("/privacy_policy", function(req, res) {
-    var priv = "put privacy policy here";
-    res.status(200).send(priv);
+app.get("/privacypolicy", function(req, res) {
+    res.sendFile('privacypolicy.htm');
 })
 
 app.get("/webhook", function(req, res) {
