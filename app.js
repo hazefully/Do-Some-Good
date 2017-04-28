@@ -75,7 +75,7 @@ function processMessage(event, sessionObj) {
         // if there's ongoing create new entry process
         createNewEntry(event, sessionObj);
     }
-    if (sessionObj.upd_step) {
+    else if (sessionObj.upd_step) {
         findEntry(event, sessionObj);
     } else if (sessionObj.status_upd) {
         if (!event.message.text) {
