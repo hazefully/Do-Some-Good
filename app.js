@@ -442,6 +442,7 @@ function createNewEntry(event, sessionObj) {
             sessionObj.new_entry.name = messageText;
             sessionObj.markModified('new_entry');
             getLocation(userID, "Please share the location of this call for help.");
+            console.log("b3d getLoaction");
         } else if (sessionObj.step == 3) {
             console.log(attachs);
             if (!attachs || !attachs.length || attachs[0].type != 'location') {
@@ -552,6 +553,7 @@ function createNewEntry(event, sessionObj) {
     }
     ++sessionObj.step;
     sessionObj.save();
+    console.log("hytla3 mn createNewEntry aho");
 }
 
 function showEntryOptions(sessionObj, theEntry, flag = false) {
@@ -802,6 +804,7 @@ function showList(sessionObj, list, msg) {
 }
 
 function getStarted(event, sessionObj, welcomeMessage = false) {
+    console.log("da5al getStarted");
     var userID = event.sender.id;
     if (welcomeMessage) {
         request({
