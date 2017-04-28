@@ -795,6 +795,9 @@ function showList(sessionObj, list, msg) {
 
     if (elms.length == 0) {
         sendTextMessage(sessionObj.user_id, "No results found!");
+        setTimeout(function() {
+            getStarted({sender: {id: sessionObj.user_id}}, sessionObj);
+        })
     } else if (elms.length == 1) {
         console.log(offset);
         console.log(list.length);
