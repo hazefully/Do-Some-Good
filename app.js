@@ -94,6 +94,9 @@ function processMessage(event, sessionObj) {
 
     } else if (messageText && messageText.toUpperCase() == "Delete This Entry".toUpperCase()) {
         getEntryFromID(event, sessionObj, deleteEntry);
+        setTimeout(function() {
+            getStarted(event, sessionObj);
+        }, 1000);
     } else {
         getStarted(event, sessionObj);
     }
@@ -103,9 +106,6 @@ function processMessage(event, sessionObj) {
 function deleteEntry(sessionObj, theEntry) {
     theEntry.remove();
     sendTextMessage(sessionObj.user_id, "Entry removed successfully!");
-    setTimeout(function() {
-        getStarted(event, sessionObj);
-    }, 1000);
 }
 
 function triggerNewStatusUpdate(event, sessionObj) {
