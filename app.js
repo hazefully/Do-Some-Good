@@ -970,7 +970,7 @@ function getDateTime() {
 
 
    // return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
-    return day + "/" + month + "/" + year + " " + hour + ":" + min + ":" + sec + " " + aorp;
+    return day + "/" + month + "/" + year + " " + hour + ":" + min + ":" + sec + " " + aorp + " UTC";
   }
 
 
