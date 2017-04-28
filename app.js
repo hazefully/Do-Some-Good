@@ -121,14 +121,9 @@ function processMessage(event, sessionObj) {
 
 // Main events triggers
 function triggerNewStatusUpdate(event, sessionObj){
-  if(!sessionObj.fresh)
-    restartSession(event, sessionObj, triggerNewStatusUpdate);
-  else {
-    sessionObj.fresh = false;
     sessionObj.status_upd = 1;
     sessionObj.save();
     sendTextMessage(sessionObj.user_id, "Write any new updates for this call for help, be as detailed as possible, Your status update can help keep this entry up-to-date.");
-  }
 }
 
 function addStatusUpdate(event, sessionObj){
@@ -823,11 +818,11 @@ function getStarted(event, sessionObj, welcomeMessage = false) {
               type: "postback",
               title: "Add a Call for Help",
               payload: "NewEntry",
-            }, {
+            }, /*{
               type: "postback",
               title: "List Calls for Help",
               payload: "ListEntries",
-            }, {
+            },*/ {
               type: "postback",
               title: "Find a Call for Help",
               payload: "FindEntry",
