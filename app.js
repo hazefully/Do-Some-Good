@@ -68,7 +68,7 @@ function restartSession(event, sessionObj, callback) {
 
 function processMessage(event, sessionObj) {
 
-  var messageText = message.text;
+  var messageText = event.message.text;
 	console.log("New Message recieved!");
 	if(sessionObj.step) {
 		// if there's ongoing create new entry process
