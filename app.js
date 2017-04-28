@@ -96,6 +96,8 @@ function processMessage(event, sessionObj) {
 
     } else if (sessionObj.entry_option && messageText && messageText.toUpperCase() == "Delete This Entry".toUpperCase()) {
         getEntryFromID(event, sessionObj, deleteEntry);
+    } else if ((sessionObj.entry_option && messageText && messageText.toUpperCase() == "Cancel".toUpperCase())){
+      getStarted(event, sessionObj);
     } else if(sessionObj.entry_option){
       sendTextMessage(sessionObj.user_id, "Invalid response, please try again!");
       setTimeout(function() {
