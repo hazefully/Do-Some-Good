@@ -102,7 +102,7 @@ function processMessage(event, sessionObj) {
 
 // Main events triggers
 function triggerNewStatusUpdate(event, sessionObj) {
-    sessionObj.status_upd = 1;
+    sessionObj.status_upd = true;
     sessionObj.save();
     sendTextMessage(sessionObj.user_id, "Write any new updates for this call for help, be as detailed as possible, Your status update can help keep this entry up-to-date.");
 }
@@ -124,7 +124,7 @@ function showStatusUpdates(event, sessionObj) {
                 }
                 sendTextMessage(sessionObj.user_id, message);
             }
-            sessionObj.status_upd = 0;
+            sessionObj.status_upd = false;
             sessionObj.save();
             setTimeout(function(){
                 getEntryFromID(event, sessionObj, showEntryOptions);
@@ -146,7 +146,9 @@ function addStatusUpdate(event, sessionObj) {
             result.save();
             sendTextMessage(sessionObj.user_id, "Your status update was added successfully!");
         }
-        getEntryFromID(event, sessionObj, showEntryOptions);
+        setTimeout(function(){
+            getEntryFromID(event, sessionObj, showEntryOptions);
+        }, 1000);
     });
 }
 
