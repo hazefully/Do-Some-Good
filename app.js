@@ -89,8 +89,10 @@ function processMessage(event, sessionObj) {
     } else if (messageText && messageText.toUpperCase() == "View status history".toUpperCase()) {
         showStatusUpdates(event, sessionObj);
     } else if (messageText && messageText.toUpperCase() == "Upvote".toUpperCase()) {
+        getEntryFromID(event, sessionObj, doUpvote);
 
     } else if (messageText && messageText.toUpperCase() == "Downvote".toUpperCase()) {
+        getEntryFromID(event, sessionObj, doDownvote);
 
     } else if (messageText && messageText.toUpperCase() == "Delete This Entry".toUpperCase()) {
         getEntryFromID(event, sessionObj, deleteEntry);
@@ -101,6 +103,30 @@ function processMessage(event, sessionObj) {
         getStarted(event, sessionObj);
     }
     sendStopTyping(event);
+}
+
+function doUpvotes(sessionObj, theEntry) {
+    if(theEntry.upvotes.indexOf(sessionObj.user_id) > -1)
+        sendTextMessage(sessionObj.user_id, "Sorry, You can only vote once!");
+    else {
+        theEntry.upvotes.push(sessionObj.user_id);
+        sendTextMessage(sessionObj.user_id, "Thanks for your contribution.");
+    }
+    setTimeout(function(){
+        getEntryFromID(event, sessionObj, showEntryOptions);
+    }, 1000);
+}
+
+function doDownvotes(sessionObj, theEntry) {
+    if(theEntry.downvotes.indexOf(sessionObj.user_id) > -1)
+        sendTextMessage(sessionObj.user_id, "Sorry, You can only vote once!");
+    else {
+        theEntry.downvotes.push(sessionObj.user_id);
+        sendTextMessage(sessionObj.user_id, "Thanks for your contribution.");
+    }
+    setTimeout(function(){
+        getEntryFromID(event, sessionObj, showEntryOptions);
+    }, 1000);
 }
 
 function deleteEntry(sessionObj, theEntry) {
