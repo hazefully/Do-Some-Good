@@ -19,6 +19,12 @@ app.get("/", function(req, res) {
     res.send("Deployed!");
 });
 
+
+app.get("/privacy_policy", function(req, res) {
+    var priv = "put privacy policy here";
+    res.status(200).send(priv);
+})
+
 app.get("/webhook", function(req, res) {
     if (req.query["hub.verify_token"] === process.env.VERIFICATION_TOKEN) {
         console.log("Verified webhook");
