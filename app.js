@@ -526,7 +526,7 @@ function showEntryOptions(sessionObj, theEntry, flag = false) {
             id: sessionObj.user_id
         },
         message: {
-            text: "",
+            text: "What would you like to do next?",
             quick_replies: [{
                     content_type: "text",
                     title: "Upvote",
