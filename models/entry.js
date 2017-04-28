@@ -15,6 +15,7 @@ var EntrySchema = new Schema({
  	upvotes: { type: Number, default: 0 },
  	downvotes: { type: Number, default: 0 },
  	updates: [String],
+ 	updateDates: [String],
  	location : {
 	    type: { 
 			type: String,
