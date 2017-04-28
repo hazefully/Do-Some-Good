@@ -14,6 +14,7 @@ var EntrySchema = new Schema({
  	priority: {type: String, default: 'Low'}, // range from  1 to 10
  	upvotes: { type: Number, default: 0 },
  	downvotes: { type: Number, default: 0 },
+ 	updates: [String],
  	location : {
 	    type: { 
 			type: String,

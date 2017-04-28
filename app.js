@@ -77,6 +77,9 @@ function processMessage(event, sessionObj) {
   if(sessionObj.upd_step){
     findEntry(event, sessionObj);
   }
+  else if(sessionObj.status_upd){
+    addStatusUpdate(event, sessionObj);
+  }
   else if(sessionObj.offset == 1) {
     attachs = event.message.attachments;
 
@@ -89,6 +92,26 @@ function processMessage(event, sessionObj) {
       entry.queryByLocation(sessionObj, showList, "Here are the calls for help nearest to your shared location sorted from nearest to furthest.");
     }
   } 
+  else if(event.message.text){
+    var messageText = event.message.text;
+    messageText.toUpperCase();
+    if(messageText == "Add Status Update".toUpperCase()){
+      triggerNewStatusUpdate(event, sessionObj);
+    }
+    else if(messageText == "View status history".toUpperCase()){
+
+    }
+    else if(messageText == "Upvote".toUpperCase()){
+
+    }
+    else if(messageText == "Downvote".toUpperCase()){
+
+    }
+    else
+    {
+      getStarted(event, sessionObj);
+    }
+  }
   else{
     getStarted(event, sessionObj);
   }
@@ -96,6 +119,29 @@ function processMessage(event, sessionObj) {
 }
 
 // Main events triggers
+function triggerNewStatusUpdate(event, sessionObj){
+  sendTextMessage(sessionObj.user_id, "Enter any new updates for this call for help, be as detailed as possible so your status update can help keep this entry up-to-date.")
+  sessionObj.status_upd = 1;
+  sessionObj.save();
+}
+function addStatusUpdate(event, sessionObj){
+  var id = sessionObj.last_opened_entry;
+ entry.model.findById(id, function(err, result) {
+  if(!event.message.text)
+  {
+    sendTextMessage(sessionObj.user_id, "Invalid response! Please try again").
+    getStarted(event, sessionObj);
+  }
+     if(err || !result) {
+      sendTextMessage(sessionObj.user_id, "Entry Not Found!");
+    } else {
+      result.updates.push(event.message.text);
+      result.markModified('updates');
+      result.save();
+    sendTextMessage(sessionObj.user_id, "Your status update was added successfully!");
+    }
+  });
+}
 function findEntry(event, sessionObj){
   if(sessionObj.upd_step == 2)
   {
@@ -148,7 +194,7 @@ function findEntry(event, sessionObj){
         else{
           entry.queryByDescription(sessionObj, showList, "Please choose from the list the entry you would like to open.");
         }
-        sessionObj.upd_step++;
+        sessionObj.upd_step = 0;
       }
     }
     else{
@@ -163,7 +209,7 @@ function findEntry(event, sessionObj){
         sessionObj.long = attachs[0].payload.coordinates.long;
         sessionObj.save();
         entry.queryByLocation(sessionObj, showList, "Please choose from the list the entry you would like to open.");
-        sessionObj.upd_step++;
+        sessionObj.upd_step = 0;
       }
     }
   }
@@ -251,9 +297,12 @@ function processPostback(event, sessionObj) {
   else if(payload.length >= 10 && payload.substring(0, 10) == "ViewEntry_") {
     var id = payload.substring(10, payload.length);
     entry.model.findById(id, function(err, result) {
+
      if(err || !result) {
       sendTextMessage(userID, "Entry Not Found!");
     } else {
+      sessionObj.last_opened_entry = id;
+      sessionObj.save();
       showEntry(sessionObj, result);
     }
   });
@@ -277,24 +326,13 @@ else if(payload == "FindEntry")
 {
   triggerFindEntry(event, sessionObj);
 }
-else if(payload == "Upvote"){
-
-}
-else if(payload == "Downvote"){
-
-}
-else if(payload == "PrintHistory"){
-
-}
-else if(payload == "AddStatusUpdate"){
-
-}
 	// all other events should be handled before this one
-	else if(sessionObj.step) {
+else if(sessionObj.step) {
 		createNewEntry(event, sessionObj);
-	}
+}
   sendStopTyping(event);
 }
+
 function triggerFindEntry(event, sessionObj){
  if(!sessionObj.fresh) {
   restartSession(event, sessionObj, triggerFindEntry);
@@ -532,13 +570,13 @@ function showEntry(sessionObj, theEntry) {
      },
      {
       content_type:"text",
-      title: "Show status history",
-      payload: "PrintHistory"
+      title: "View Status History",
+      payload: "View Status History"
     },
     {
      content_type:"text",
      title:"Add Status Update",
-     payload:"AddStatusUpdate"
+     payload:"Add Status Update"
    }
    ]
  }
