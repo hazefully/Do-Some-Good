@@ -75,7 +75,7 @@ function processMessage(event, sessionObj) {
 
 	}
   if(sessionObj.upd_step){
-    updateEntry(event, sessionObj);
+    findEntry(event, sessionObj);
   }
   else if(sessionObj.offset == 1) {
     attachs = event.message.attachments;
@@ -96,26 +96,26 @@ function processMessage(event, sessionObj) {
 }
 
 // Main events triggers
-function updateEntry(event, sessionObj){
+function findEntry(event, sessionObj){
   if(sessionObj.upd_step == 2)
   {
     var query_type = event.message.text;
 
     if(query_type == "Person's name"){
       sessionObj.query_type = "Name";
-      sendTextMessage(event.sender.id, "Please specify the name of the person whose call for help you wish to update.");
+      sendTextMessage(event.sender.id, "Please specify the name of the person whose call for help you wish to open.");
       sessionObj.upd_step = 3;
       sessionObj.save();
     }
     else if(query_type == "Description"){
       sessionObj.query_type = "Description";
-      sendTextMessage(event.sender.id, "Please specify the description of the the call for help you wish to update.");
+      sendTextMessage(event.sender.id, "Please specify the description of the the call for help you wish to open.");
       sessionObj.upd_step = 3;
       sessionObj.save();
     }
     else if(query_type == "Location"){
       sessionObj.query_type = "Location";
-      getLocation(event.sender.id, "Please share the location nearest to the call for help you wish to update.");
+      getLocation(event.sender.id, "Please share the location nearest to the call for help you wish to open.");
       sessionObj.upd_step = 3;
       sessionObj.save();
     }
@@ -143,10 +143,10 @@ function updateEntry(event, sessionObj){
         sessionObj.offset = 1;
         sessionObj.save();
         if(sessionObj.query_type == "Name"){
-          entry.queryByName(sessionObj, showList, "Please choose from the list the entry you would like to update.");
+          entry.queryByName(sessionObj, showList, "Please choose from the list the entry you would like to open.");
         }
         else{
-          entry.queryByDescription(sessionObj, showList, "Please choose from the list the entry you would like to update.");
+          entry.queryByDescription(sessionObj, showList, "Please choose from the list the entry you would like to open.");
         }
         sessionObj.upd_step++;
       }
@@ -162,7 +162,7 @@ function updateEntry(event, sessionObj){
         sessionObj.lat = attachs[0].payload.coordinates.lat;
         sessionObj.long = attachs[0].payload.coordinates.long;
         sessionObj.save();
-        entry.queryByLocation(sessionObj, showList, "Please choose from the list the entry you would like to update.");
+        entry.queryByLocation(sessionObj, showList, "Please choose from the list the entry you would like to open.");
         sessionObj.upd_step++;
       }
     }
@@ -238,10 +238,10 @@ function processPostback(event, sessionObj) {
       triggerListEntries(event, sessionObj);
     else if(sessionObj.upd_step){
       if(sessionObj.query_type == "Name"){
-        entry.queryByName(sessionObj, showList, "Please choose from the list the entry you would like to update.");
+        entry.queryByName(sessionObj, showList, "Please choose from the list the entry you would like to open.");
       }
       else{
-        entry.queryByDescription(sessionObj, showList, "Please choose from the list the entry you would like to update.");
+        entry.queryByDescription(sessionObj, showList, "Please choose from the list the entry you would like to open.");
       } 
     }
     else{
@@ -273,9 +273,9 @@ function processPostback(event, sessionObj) {
   sendTextMessage(userID, "Your entry has been cancelled, please try again.");
   getStarted(event, sessionObj);
 }
-else if(payload == "UpdateStatus")
+else if(payload == "FindEntry")
 {
-  triggerUpdateStatus(event, sessionObj);
+  triggerFindEntry(event, sessionObj);
 }
 else if(payload == "Upvote"){
 
@@ -295,9 +295,9 @@ else if(payload == "AddStatusUpdate"){
 	}
   sendStopTyping(event);
 }
-function triggerUpdateStatus(event, sessionObj){
+function triggerFindEntry(event, sessionObj){
  if(!sessionObj.fresh) {
-  restartSession(event, sessionObj, triggerUpdateStatus);
+  restartSession(event, sessionObj, triggerFindEntry);
 }
 else {
   sessionObj.fresh = false;
@@ -310,7 +310,7 @@ else {
       id: event.sender.id
     },
     message: {
-      text:"Please choose how you would like to search for the call for help you wish to update.",
+      text:"Please choose how you would like to search for the call for help you wish to open.",
       quick_replies:[
       {
        content_type:"text",
@@ -771,12 +771,16 @@ function getStarted(event, sessionObj, welcomeMessage = false) {
             image_url: "https://cdn.pixabay.com/photo/2017/02/10/12/03/volunteer-2055010_960_720.png",
             buttons: [{
               type: "postback",
-              title: "Add a call for help",
+              title: "Add a Call for Help",
               payload: "NewEntry",
             }, {
               type: "postback",
-              title: "List calls for help",
+              title: "List Calls for Help",
               payload: "ListEntries",
+            }, {
+              type: "postback",
+              title: "Find a Call for Help",
+              payload: "FindEntry",
             }],
           }]
         }
