@@ -105,7 +105,7 @@ function processMessage(event, sessionObj) {
     sendStopTyping(event);
 }
 
-function doUpvotes(sessionObj, theEntry) {
+function doUpvote(sessionObj, theEntry) {
     if(theEntry.upvotes.indexOf(sessionObj.user_id) > -1)
         sendTextMessage(sessionObj.user_id, "Sorry, You can only vote once!");
     else {
@@ -117,7 +117,7 @@ function doUpvotes(sessionObj, theEntry) {
     }, 1000);
 }
 
-function doDownvotes(sessionObj, theEntry) {
+function doDownvote(sessionObj, theEntry) {
     if(theEntry.downvotes.indexOf(sessionObj.user_id) > -1)
         sendTextMessage(sessionObj.user_id, "Sorry, You can only vote once!");
     else {
